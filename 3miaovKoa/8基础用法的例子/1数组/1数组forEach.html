@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+var arr = [1,2,3,4,5];
+// arr.forEach((item, i, k) => {
+//     console.log(item, i, k);   /*arr[i], i, arr*/
+//     console.log(this);  /*传入的第三个参数值（arr）*/
+// }, arr)
+
+/*forEach的实现原理*/
+// const _forEach = (data, callback, thisArg) => {
+//     for(let i=0;i<data.length;i++){
+//         callback.call(thisArg, data[i], i, data);
+//     }
+// }
+// 或者说挂载到Array的实例上
+Array.prototype._forEach = function(callback, thisArg) {
+    console.log("this=====", this);
+    for(let i=0;i<this.length;i++){
+        callback.call(thisArg, this[i], i)
+    }
+}
+
+// _forEach(arr, (item, index) => {
+//     console.log(item, index);
+// }, arr);
+
+arr._forEach((item, index) => {
+    console.log(item, index);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+/**
+ * 数组中有一项为真则为真，全部为假则为假；跟every相反
+ * */
+let arr = [1, 12, 33, 40];
+const current = arr.some((item, index) => {
+    return item < 15;
+})
+console.log(current);
+</script>
+</body>
+</html>

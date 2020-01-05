@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<button>1</button>
+<button>2</button>
+<button>3</button>
+<script>
+// const btns = document.querySelectorAll("button")
+const btns = document.getElementsByTagName("button")
+
+/*
+  * 作用域：变量的作用范围
+*/
+for(let i=0;i< btns.length;i++){
+    btns[i].onclick = function(){
+        // 会产生三个作用域，而var只会产生一个作用域
+        alert(i);
+    }
+}
+</script>
+</body>
+</html>

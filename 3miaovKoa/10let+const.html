@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<script>
+/**
+ * 1、不会出现变量提升
+*/
+console.log(a); // 报错
+let a = 2;
+
+/**
+ * 2、暂时性死区
+*/
+let f= 10;
+function fn(){
+    f = 20;
+    let f = 100 //不能重复定义
+}
+fn();
+
+/**
+ * let 不允许在同一个作用域下声明已经存在的变量，即：
+ * 3、不能重复声明
+ * 以下两种定义都会报错
+*/
+var b = 0;
+let b = 1;
+
+let c = 0;
+let c = 1;
+
+
+
+/**
+ * 在循环语句之内是一个父作用域，在循环体之中是一个子作用域
+*/
+for(let i=0;i<3;i++){
+    let i = 10;
+    console.log(i); // 打印3次10
+}
+console.log(i); //报错，在循环体外获取不到i
+
+
+
+
+
+/**
+ * const的定义除了上述3条之外，还需要注意：
+ * 1、声明的时候必须赋值
+ * 2、声明常量存储简单的数据类型时候不可改变其值，如果储存的是对象，那么引用不可以被改变，
+ * 至于对象里面的数据如何变化是没有关系的
+*/
+
+const ab = {name: "111"}
+ab.name = "cc";  //这样写是不会报错的，因为只是修改了对象内部的属性
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+/*
+ * Symbol的作用：
+    —— 属性私有化(数据保护)
+*/
+
+// 希望Person的性别在出生之后能够被确定，并且一直保存到结束
+// var Person = (() => {
+//     用私有变量保存
+//     var _gender = "";
+//     function P(name, gender) {
+//         this.name = name;
+//         _gender = gender;
+//     }
+//     P.prototype.getGender = function(){
+//         return _gender
+//     }
+//     return P;
+// })()
+
+// var p1 = new Person("默默", "女");
+// console.log(p1.getGender());
+
+
+    var Person = (() => {
+        var _gender = Symbol("gender");
+        function P(name, gender) {
+            this.name = name;
+            // _gender属性是私有的，一般情况下外面无法访问。
+            this[_gender] = gender;
+        }
+        P.prototype.getGender = function(){
+            return _gender
+        }
+        return P;
+    })()
+
+    var p1 = new Person("默默", "女");
+    console.log(p1);
+    // 直接获取对应的属性，也不能得到值
+    console.log(p1[Symbol("gender")]);
+
+
+</script>
+</body>
+</html>

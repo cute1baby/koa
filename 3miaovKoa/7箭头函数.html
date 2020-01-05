@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button>1111</button>
+<script>
+// 箭头函数的this指向问题
+/*
+* 普通函数的this指向是在调用函数的时候才能确定的，定义的时候是没法确定
+* 箭头函数在定义的时候就能确定this的指向，它指向创建该箭头函数所在的作用域对象
+
+注意事项：
+    内部this对象指向创建期上下文对象
+    不能作为构造函数
+    没有arguments
+    不能作为生成器函数
+*/
+
+var btns = document.getElementsByTagName('button')[0];
+const fn = () => {
+    console.log(this);
+}
+// 一般情况下的函数应该是指向btn对象，使用了箭头函数之后定义后this不会再变化
+btns.onclick = fn;
+</script>
+</body>
+</html>

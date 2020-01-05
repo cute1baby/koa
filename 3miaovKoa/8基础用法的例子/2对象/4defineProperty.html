@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+let base = {x: 10}
+// 通过.[]添加的属性，configurable|enumerable|writable默认是true
+base.z= 30
+Object.defineProperty(base, "y", {
+    configurable: false, //默认是false
+    enumerable: true, //默认是false
+    writable: true, //默认是false
+    value: "aaa"
+})
+
+delete base.y
+console.log(base);
+
+// for in 是去遍历该对象和其原型链上的所有属性，能遍历出来的其属性的enumerable设置都是true，否则为false
+</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    const map = new Map([
+        ['a', 1], ['b', 2]
+    ])
+    // 返回map的长度
+    console.log(map.size);
+
+    // 设置map的属性和属性值
+    map.set('miaov', 'ktang').set('hh', 'wodeer')
+
+    // get方法获取key值对应的键值
+    console.log(map.get('miaov'))
+
+    // 删除某个键,返回布尔值，看是否删除成功
+    console.log(map.delete('miaov'))   //true
+
+    // has(key)方法返回一个布尔值，表示某个键是否在当前的Map对象之中
+    console.log(map.has('miaov'));
+
+    // clear()清除所有数据，没有返回值
+    // console.log(map.clear())
+
+    // keys() 返回键名的遍历器
+    console.log(map.keys());
+
+    // values() 返回键值的遍历器
+    console.log(map.values());
+
+    // values() 返回键值对的集合
+    console.log(map.entries());
+
+    // forEach() 返回键值对的集合
+    map.forEach((index, value, list) => {
+        console.log(index + ":" + value, list);
+    })
+
+
+
+    /**
+     * map中要注意的一些事项
+    */
+    map.set(NaN, 1).set(NaN, 10);  //此时NaN只会出现一次
+
+    // 两个空对象的内存地址不一样，所以认为是两个键
+    map.set({}, 1).set({}, 10);
+
+    console.log(map)
+
+
+</script>
+</body>
+</html>

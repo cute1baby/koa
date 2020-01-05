@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+let arr = [1, 2, 18, 10, 28, 30];
+/*结果中有全部为真则返回真，有一个为假则为假*/
+const current = arr.every((item, index) => {
+    console.log(item, index);
+    return item < 40
+})
+console.log(current);
+</script>
+</body>
+</html>

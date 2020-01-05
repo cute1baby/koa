@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+/*
+ * 迭代协议
+    规定了迭代与实现的逻辑
+
+ * 迭代器
+    具体的迭代实现逻辑，看该对象中是否有[Symbol.iterator]属性
+
+ * 迭代对象
+    可被迭代的对象，辨别标准是看他是否有迭代器方法[Symbol.iterator]
+
+ * 常用到的迭代语句
+    for in 以原始插入的顺序迭代对象的可枚举属性
+    for of 根据迭代对象的迭代器具体实现迭代对象数据
+*/
+
+var arr = ["a", "b", "c"];
+/*遍历得到的attr是每项的下标*/
+for(var attr in arr){
+    console.log(attr, arr[attr]);
+}
+
+/*遍历的得到的attr是每一项的值
+    迭代器的使用过程是先找该对象是否有[Symbol.iterator]属性,然后找return值的next函数，再去找done的值是否为true,
+    如果是true，则停止迭代；如果是false则继续迭代
+*/
+for (var attr of arr) {
+    console.log(attr);
+}
+
+var objs = {
+    name: "lizhong",
+    age: 29
+}
+
+/*
+明显上面的obj不是一个迭代对象，
+判断是不是迭代对象应该看是否有[Symbol.iterator]属性
+下面给obj增加迭代器
+*/
+function iterator(obj){
+    obj[Symbol.iterator] = function () {
+        let ob = Object.keys(obj);
+        let lens = ob.length;
+        let n = 0;
+        return {
+            next: function () {
+                if (n < lens) {
+                    return {
+                        value: ob[n++],
+                        done: false
+                    }
+                } else {
+                    return {
+                        value: "",
+                        done: true
+                    }
+                }
+
+            }
+        }
+    }
+}
+
+iterator(objs)
+// 可以通过是上面迭代
+for (var attr of objs) {
+    console.log(attr);
+}
+</script>
+</body>
+</html>

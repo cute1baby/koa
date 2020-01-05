@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+let obj1 = {name:"111", age: 19};
+// 将obj1中的值合并到obj2中，obj1的值不更改（浅拷贝:只拷贝一层）
+let obj2 = {name:"lihzhong", sex:"男"}
+Object.assign(obj2, obj1);
+console.log(obj2, obj1);
+</script>
+</body>
+</html>

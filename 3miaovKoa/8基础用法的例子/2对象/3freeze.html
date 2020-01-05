@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// 锁定对象
+const base = {name:"李钟", age: 20}
+Object.freeze(base)
+// 锁定对象之后修改属性，属性值不变
+base.age = 30;
+console.log(base);
+</script>
+</body>
+</html>

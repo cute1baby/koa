@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+var set = new Set();
+set.add(1);
+console.log(set);
+// 地址相同的引用类型数据也可以去重
+const a = [2222];
+let arr1 = [1, 2, 5, a, 2, 10, 3, 5, a];
+arr1 = [...new Set(arr1)];
+console.log(arr1);
+</script>
+</body>
+</html>
