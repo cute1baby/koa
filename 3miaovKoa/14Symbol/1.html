@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+let s1 = Symbol();
+let s2 = Symbol();
+
+console.log(typeof s1);  // 'symbol'
+console.log(typeof s1===s2);  // false
+
+// let s3 = new Symbol();
+
+let s3 = Symbol(111);
+let s4 = Symbol(222);
+console.log(s3, s4);
+
+
+// Symbol数据类型转换
+console.log(String(Symbol('miaov')));  // Symbol(miaov)
+console.log(String(Symbol('v').toString()));  // Symbol(v)
+console.log(!!Symbol());  //true
+
+
+
+// 作为对象的属性名
+let yy = Symbol('yyy');
+ const obj = {}
+ obj[yy] = 'hello'
+ console.log(obj)
+console.log(obj[yy])
+
+const ss = Symbol('ss')
+const data = {
+    [ss]: 'mm',
+    a:1,
+    b:2
+}
+console.log(data)
+console.log("Symbol")  //拿不到对应键的值
+
+for(let i in data){
+    console.log(i);  //a,b  Symbol不可枚举
+}
+
+// 获取对象中key为Symbol的属性集合
+console.log(Object.getOwnPropertySymbols(data)[0])
+
+</script>
+</body>
+</html>

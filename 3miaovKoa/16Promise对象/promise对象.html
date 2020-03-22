@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+img{
+    width: 200px;
+    vertical-align: middle;
+}
+</style>
+<body>
+<script>
+const imgPaths = [
+    'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1583122167348&di=11f968bd0efe510189c2dd2b0c627bdb&imgtype=0&src=http%3A%2F%2Fa0.att.hudong.com%2F78%2F52%2F01200000123847134434529793168.jpg',
+    'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1583123280985&di=930892a3f838557500c02d1d291c0bfd&imgtype=0&src=http%3A%2F%2Fa4.att.hudong.com%2F21%2F09%2F01200000026352136359091694357.jpg',
+    'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1583123280986&di=6f7ebfdb81896de502998407efc84cbf&imgtype=0&src=http%3A%2F%2Fa3.att.hudong.com%2F68%2F61%2F300000839764127060614318218_950.jpg'
+]
+const imgPath = (url) => {
+    const p1 = new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = url;
+        img.onload = function () {
+            resolve(this)
+        }
+        img.onerror = function () {
+            reject(new Error('图片加载失败'))
+        }
+    })
+    return p1
+}
+
+const imgAll = Promise.all([
+    imgPath(imgPaths[0]), imgPath(imgPaths[1]), imgPath(imgPaths[2])
+])
+
+// 一般建议将错误信息的捕获放在catch方法中
+/*
+ * 当所有的Promise对象都变成resolved状态时才会走then中的第一个回调；否则只要有一个
+*/
+imgAll.then(imgs => {
+    imgs.forEach(img => {
+        document.body.appendChild(img);
+    })
+}).catch(err => {
+    console.log(err);
+})
+</script>
+</body>
+</html>

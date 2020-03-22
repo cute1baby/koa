@@ -1,0 +1,17 @@
+{
+  "name": "mytest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./1.js",
+  "bin": {
+    "mytest": "./1.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^4.1.1"
+  }
+}

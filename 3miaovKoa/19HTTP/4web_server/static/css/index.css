@@ -1,0 +1,17 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+ul, li{
+    list-style: none;
+}
+li{
+    height: 40px;
+    line-height: 40px;
+    padding-left: 24px;
+    color: orangered;
+}
+body{
+    background: green;
+    font-size: 24px;
+}

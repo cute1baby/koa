@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style lang="">
+.box{
+    margin: 50px auto 0;
+    width: 600px;
+}
+.canvas{
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.4);
+}
+</style>
+<body>
+<div class="box">
+    <canvas id="canvas" class="canvas"></canvas>
+</div>
+<script>
+const canvas = document.querySelector('#canvas');
+const ctx = canvas.getContext('2d');
+
+const w = canvas.width = 600;
+const h = canvas.height = 400;
+
+// 定义一个球的基本值
+class Ball {
+    constructor(x, y, r){
+        this.x = x;
+        this.y = y;
+        this.r = r;
+        this.color = `rgb(${Ball.rpFn([55,255])}, ${Ball.rpFn([55, 255])}, ${Ball.rpFn([55, 255])})`
+        return this;
+    }
+    render(ctx){
+        ctx.save()
+        ctx.translate(this.x, this.y)
+        ctx.fillStyle = this.color;
+        ctx.beginPath()
+        ctx.arc(0, 0, this.r, 0, 2*Math.PI);
+        ctx.fill()
+        ctx.restore()
+        return this;
+    }
+    static rpFn(arr){ // Ball.rpFn([1, 10])
+        const max = Math.max(...arr),
+              min = Math.min(...arr);
+        return Math.floor(Math.random()*[max-min] + min)
+    }
+}
+
+775235600
+// const ball = new Ball(100, 100, 30).render(ctx)
+
+// 继承基本球并定义一个运动的小球
+class SuperBall extends Ball{
+    constructor(x, y, r){
+        // 调用父类的构造函数
+        super(x, y, r)
+
+        // 纵向速度
+        this.vy = SuperBall.rpFn([2,4])
+        // 加速度
+        this.g = SuperBall.rpFn([0.2, 0.4])
+        this.a = 0;
+        return this
+    }
+
+    // 运动函数
+    move(ctx){
+        this.y += this.vy;
+        this.vy += this.g;
+
+        let current = this.vy * -0.75;
+
+        if(this.y + this.r >= ctx.canvas.height){
+            this.y = ctx.canvas.height - this.r;
+
+            if(Math.abs(current - this.a) < 0.01) return false;
+            this.a = this.vy *= -0.75
+        }
+        console.log(`current=${current},a=${this.a}`)
+
+        // 绘制小球
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+        // 父类的原型对象
+        super.render(ctx)
+
+        return true
+    }
+}
+
+
+let ball, timer
+canvas.onclick = function(e){
+    let x = e.offsetX, y = e.offsetY
+    let r = Math.floor(Ball.rpFn([25, 55]))
+
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+    ball = new SuperBall(x,y,r).render(ctx);
+
+    ballMove()
+
+}
+
+const ballMove = () => {
+    timer = window.requestAnimationFrame(ballMove)
+    if(!ball.move(ctx)){
+        window.cancelAnimationFrame(timer)
+    }
+}
+
+// const ball = new SuperBall(100, 100, 30).render(ctx)
+</script>
+</body>
+</html>

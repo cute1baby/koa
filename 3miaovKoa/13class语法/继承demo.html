@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// 定义父类
+class Father {
+    constructor(name){
+        this.name = name;
+    }
+
+    run(){
+        console.log(`快看${this.name}，他学会跑步了!`);
+    }
+}
+
+const f = new Father('小d');
+f.run();
+
+// 定义子类并且继承父类
+class Child extends Father{
+    constructor(name, age) {
+        // 使用超类继承父类的特征
+        super(name);
+        this.age = age;
+    }
+
+    say(){
+        console.log(`我叫${this.name}，我今年${this.age}岁`);
+    }
+}
+const c = new Child("小李", 30)
+c.run()
+c.say()
+</script>
+</body>
+</html>

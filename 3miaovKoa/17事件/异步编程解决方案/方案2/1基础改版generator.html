@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script>
+// 用来验证next函数返回值的{value:"",done:true}中value的来源：来自异步函数的返回值（这里以同步函数演示）
+let a = 0;
+
+// 定义一个generator函数
+function* fn(){
+	console.log(1);
+
+	// 用yield将函数体划分成很多个片段,用next方法执行这些片段（有点类似断点）
+	const data1 = yield getData();
+	console.log(data1);
+
+	const data2 = yield getData();
+	console.log(data2);
+	
+}
+
+function getData(){
+	a++;
+	return `这是要返回的value值a=${a}`
+}
+
+function co(callback){
+	let cb = callback();
+
+	// co递归：调用cb的next方法
+	function next(d){
+		let result = cb.next(d); //{value,done}
+		console.log("result===", result);
+		if(result.done){
+			return;
+		}
+		next(result.value)
+	}
+	next()
+}
+
+co(fn)
+
+// 返回一个迭代器函数,直接执行generator函数并不执行里面的语句
+let f = fn();
+// 通过执行迭代器函数的next方法才会执行函数体内的内容
+f.next();
+
+</script>
+</body>
+</html>

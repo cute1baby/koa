@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style lang="">
+img{
+    width: 100px;
+    vertical-align: middle;
+}
+</style>
+<body>
+<script>
+const imgUrl = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1583122167348&di=11f968bd0efe510189c2dd2b0c627bdb&imgtype=0&src=http%3A%2F%2Fa0.att.hudong.com%2F78%2F52%2F01200000123847134434529793168.jpg';
+const imgPath = (url) => {
+    const p1 = new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = url;
+        img.onload = function () {
+            resolve(this)
+        }
+        img.onerror = function () {
+            reject(new Error('图片加载失败'))
+        }
+    })
+    return p1
+}
+/** 参数是一个Promise对象 */
+// Promise.resolve(imgPath(imgUrl)).then(res => {
+//     document.body.appendChild(res)
+// })
+
+/*
+ * 参数是一个包括then函数的普通对象
+ * 这个then函数有点特别
+ */
+Promise.resolve({
+    then(resolve, reject){
+        const img = new Image();
+        img.src = imgUrl;
+        img.onload = function () {
+            resolve(this)
+        }
+    }
+}).then(img => {
+    document.body.appendChild(img)
+})
+
+/*
+* 参数是一个基本类型的数据
+*/
+Promise.resolve('hello world').then(res => {
+    console.log("直接将字面量的值打印出来===", res)
+})
+</script>
+</body>
+</html>

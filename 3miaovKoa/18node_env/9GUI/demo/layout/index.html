@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<h3>App</h3>
+<button>按钮</button>
+<button>按钮2</button>
+<script>
+/**
+ * 在渲染进程中不能获取主进程的数据。但在渲染进程中可以使用electron对象；
+ * electron对象下面有的属性方法只能在主进程中使用，有的是在渲染进程中有的
+ *
+*/
+const { remote, ipcRenderer} = require('electron');
+// console.log(electron)
+
+// 如果需要访问主进程中的数据，那么我们可以通过渲染进程中的electron下有一个子对象：remote => 主进程
+console.log(remote)
+// 该对象下有一个方法：getGlobal,可以通过该方法来获取主进程中的全局数据
+console.log('====getGlobal("userName")====>>', remote.getGlobal('userName'))
+
+// IPC: 渲染进程和主进程之间的通信
+const buttons = document.getElementsByTagName('button');
+buttons[0].onclick = function(){
+    // 发送消息给主进程
+    ipcRenderer.send('getData', 'userName')
+}
+
+// 接收从主线程中返回的数据
+ipcRenderer.on('sendData', function(e, data){
+    console.log('接收从主线程中返回的数据', data)
+})
+
+// 监听主线程发过来的消息
+ipcRenderer.on('hello', function (e, ...data) {
+    console.log('this is ====>>>', data)
+})
+
+
+// 点击第二个按钮，往storage中存储数据
+buttons[1].onclick = function () {
+    localStorage.setItem('btndata', 'lizhong_name');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="./css/iconfont.css" />
+</head>
+
+<body>
+    <div id="root">
+        <div class="todoApp">
+            <div class="header">
+                <span class="iconfont icon-guanbi close" @click="closeApp"></span>
+                <span class="iconfont icon-zuixiaohua min" @click="miniApp"></span>
+            </div>
+            <div class="todo">
+                <h1>{{title}}</h1>
+                <ul class="todo-list">
+                    <li 
+                        class="todo-item"
+                        :class="{'done': todo.done}"
+                        v-for="todo of showTodos"
+                        @click="toggle(todo)"
+                    >
+                        <span 
+                            class="iconfont checkbox"
+                            :class="todo.done?'icon-duoxuanxuanzhong':'icon-duoxuanweixuan'"
+                        ></span>
+                        <label class="text">{{todo.title}}</label>
+                        <span 
+                            class="iconfont icon-lajitong recycle-bin"
+                            @click="remove(todo)"
+                        ></span>
+                    </li>
+                </ul>
+            </div>
+            <div class="filter">
+                <div class="filter-box">
+                    <b class="filter-item" :class="{'selected': type=='done'}" @click="choose('done')">DONE</b>
+                    <b class="filter-item" :class="{'selected': type=='undone'}" @click="choose('undone')">TODO</b>
+                    <b class="filter-item" :class="{'selected': type=='all'}" @click="choose('all')">ALL</b>
+                </div>
+            </div>
+            <div class="add-todo">
+                <div>
+                    <input class="new-todo" v-model="newTodo" placeholder="这里输入内容" @keydown.enter="addTodo" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/vue.min.js"></script>
+    <script src="./js/index.js"></script>
+
+    <!-- <script>
+    
+        const Vue = require('vue');
+
+        console.log(Vue);
+
+    </script> -->
+</body>
+
+</html>

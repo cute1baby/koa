@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+App2
+<button>按钮1</button>
+<script>
+// 在App页面点击按钮2，往storage中存一个数据，然后点击这个组件中的按钮1，获取按钮2传过来的数据
+var btns = document.querySelectorAll('button')
+btns[0].onclick = function(){
+    console.log('获取本地存储的数据:'+ localStorage.getItem('btndata'));
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script>
+async function fn(){
+	try {
+		console.log(1);
+
+		const data1 = await getData();
+		console.log(data1);
+
+		const data2 = await getData();
+		console.log(data2);
+
+		const data3 = await getData();
+		console.log(data3);
+	} catch(err){
+		// 使用catch捕获错误
+		console.log(err)
+	}
+
+}
+
+function getData(){
+	return new Promise((resolve, reject) => {
+		setTimeout(() => {
+			const res = Math.random() * 10;
+			if(res > 5){
+				resolve(res)
+			}else{
+				reject("数据不符合要求")
+			}
+			
+		}, 1000)
+	})
+}
+
+fn();
+</script>
+</body>
+</html>

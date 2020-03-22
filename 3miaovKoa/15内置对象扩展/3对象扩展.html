@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+var obj = {
+    fn: function(){console.log(111)},
+    fn1() { console.log(222) }
+}
+obj.fn();
+obj.fn1();
+
+console.log(Object.is(NaN, NaN));  //认为这两个值相等
+console.log(Object.is(+0, -0));  // 认为这两个值不相等
+
+let a1 = {a:1}
+let a2 = {b:2, c:3, a:10}
+let a3 = {name: "李钟"}
+Object.assign(a1, a2, a3)
+console.log(a1)
+</script>
+</body>
+</html>

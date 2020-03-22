@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+let p1 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve("p1成功");
+        // reject("p1失败");
+    }, 1500)
+})
+
+let p2 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve("p2成功");
+        //reject("p2失败");
+    }, Math.random() * 1000)
+})
+
+// 所有的成功才是成功
+Promise.all([p1,p2]).then(data => {
+    console.log("获取Promise.all数据", data) // ["p1成功", "p2成功"]
+}).catch(err => {
+    console.log("获取Promise.all捕获的错误", err) // p1失败
+})
+
+/*
+* 谁先返回异步，then回调就获取谁的值。
+  使用场景：如测试某几个接口的响应速度，
+*/
+
+// Promise.race([p1, p2]).then(data => {
+//     console.log("获取Promise.race数据", data) // p2成功
+// }).catch(err => {
+//     console.log("获取Promise.race捕获的错误", err) // p1失败
+// })
+</script>
+</body>
+</html>

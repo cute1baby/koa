@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="./css/index.css">
+<body>
+    <div id="app">
+        这是主页
+        <ul>
+            <li v-for="name in users">{{name}}</li>
+        </ul>
+    </div>
+
+</body>
+<script src="https://cdn.bootcss.com/vue/2.0.0/vue.min.js"></script>
+<script>
+new Vue({
+    el: "#app",
+    data(){
+        return {
+            users: []
+        }
+    },
+    created(){
+        this.getData()
+    },
+    methods:{
+        getData(){
+            fetch('/getUser').then(res => {
+                // 转成json类型的Promise对象
+                return res.json()
+            }).then(data =>{
+                this.users = data;
+            })
+        }
+    }
+})
+</script>
+</html>

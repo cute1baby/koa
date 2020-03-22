@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// 创建构造函数Miaov
+const Miaov = function(a, b){
+    this.a = a;
+    this.b = b;
+    return this;
+}
+
+Miaov.prototype = {
+    constructor: Miaov,
+    print: function(){
+        console.log(this.a + ','+ this.b);
+    }
+}
+
+const m = new Miaov("小李", "小强");
+m.print()
+</script>
+</body>
+</html>

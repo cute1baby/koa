@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+const Person = (function() {
+    // 把属性跟
+    let _gender = new Map()
+    function P(name, gender) {
+        this.name = name;
+        _gender.set(this, gender)
+    }
+
+    P.prototype.getGender = function() {
+        return _gender.get(this)
+    }
+
+    P.prototype.setGender = function(newGender) {
+         _gender.set(this, newGender)
+    }
+
+    P.getPgender = function(){
+        return _gender;
+    }
+    return P
+})()
+let p1 = new Person('丽丽', '女');
+let p2 = new Person('蔡坤', '女');
+p1.setGender('男')
+
+console.log(p1.getGender());
+console.log(p2.getGender());
+</script>
+</body>
+</html>

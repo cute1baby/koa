@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script>
+// 同步操作
+alert(11)
+
+// 异步操作
+setTimeout(() => {
+	console.log("数字1");
+})
+
+// 回调地狱
+// 由于回调地狱，急于一种方式来解决异步编程问题。
+setTimeout(() => {
+	console.log(10);
+	setTimeout(() => {
+		console.log(20);
+		setTimeout(() => {
+			console.log(30);
+		}, 100)
+	}, 100)
+}, 100)
+
+
+</script>
+</body>
+</html>

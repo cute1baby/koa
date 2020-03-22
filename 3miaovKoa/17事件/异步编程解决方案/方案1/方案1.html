@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script>
+/*
+ * Promise是一个构造函数，它接收一个参数callback，我们要把执行的异步任务放置在这个callback中。
+
+ * Promise对象内部会维护一个状态，默认是：
+ 		pedding(进行中)，
+		resolved(成功)，
+		rejected(失败)
+
+ * Promise对象有一个then方法，该方法在Promsie对象的状态改变的时候触发then的回调
+*/
+let p1 = new Promise((resolve, reject) => {
+	// 当Promise被实例化的时候，callback的异步任务会被执行
+	// 我们可以通过传入的resolve,reject去改变当前Promise任务的状态。而resolve,reject是两个函数。若调用resolve函数，会把状态改成resolved，否则改成rejected
+	setTimeout(() => {
+		console.log(111);
+		reject();
+	})
+})
+
+/*
+ * then会接收2个参数：这两个参数都是回调。
+ * 当对应的promise对象状态变成了resolved,就会执行第一个函数
+ * 当对应的promise对象状态变成了rejected,就会执行第二个函数
+
+ * 执行then之后，会在原有函数的基础下返回一个默认为resolved的promise对象。
+   像下面的这个例子，将返回失败、222、333、444。
+
+ * catch方法跟then方法一样也会返回一个默认的resolved的promise对象。
+ * 所以建议在写promise的then方法的时候统一不写第二个参数，产生的错误由catch统一去捕获，
+ * 它就不会再向下执行then方法了
+*/
+p1.then(() => {
+	console.log("成功")
+}, () => {
+	console.log("失败")
+	// 因为then方法执行后会默认返回一个resolved的promise对象，所以可以在这里返回一个Promise.reject()强制返回一个rejected状态的Promise.从而可以在下一个then的第二个回调函数中执行。
+	return Promise.reject()
+}).then(() => {
+	console.log(222)
+}).then(() => {
+	console.log(333)
+}).then(() => {
+	console.log(444)
+}).catch(() => {
+	console.log('产生错误了');
+})
+
+
+
+</script>
+</body>
+</html>
