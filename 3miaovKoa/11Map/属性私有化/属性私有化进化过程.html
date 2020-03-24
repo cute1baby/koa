@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+/*
+* 版本1.0（闭包+函数自执行）
+* 优点：在外部只能通过提供的原型方法访问到对象的性别，不能直接通过p1.gender的方式获取。
+* 缺点：所有的性别属性都保留在闭包的一个变量中，重新实例化赋值的属性会覆盖前一个实例化的属性值。如：
+* 下面设置的kuku性别男会覆盖lili的性别女
+*/
+const Person = (() => {
+    let _gender;
+    function P(name, gender){
+        this.name = name;
+        _gender = gender
+    }
+    P.prototype.getGender = function(){
+        return _gender
+    }
+    return P;
+})()
+
+const p1 = new Person('lili', '女')
+const p2 = new Person('kuku', '男')
+console.log("普通类型："+ p1.getGender());
+console.log("普通类型："+ p2.getGender());
+
+
+/*
+* 版本2.0（闭包+函数自执行+Symbol）
+* 优点：在外部只能通过提供的原型方法访问到对象的性别，不能直接通过p1.gender的方式获取。同时解决了多次实例化性别属性不被覆盖的问题
+* 
+*/
+const PersonSym = (() => {
+    let _gender = Symbol('gender');
+    function P(name, gender){
+        this.name = name;
+        this[_gender] = gender
+    }
+    P.prototype.getGender = function(){
+        return this[_gender]
+    }
+    return P;
+})()
+
+const pSym1 = new PersonSym('lili', '女')
+const pSym2 = new PersonSym('kuku', '男')
+console.log("symbol类型："+ pSym1.getGender());
+console.log("symbol类型："+ pSym2.getGender());
+
+
+/*
+* 版本3.0（Map方式）
+* 优点：用较少的代码实现版本2.0即可完成的功能
+* 
+*/
+const PersonMap = (() => {
+    // 使用对象this作为map的key值
+    let _gender = new Map();
+    function P(name, gender){
+        this.name = name;
+        _gender.set(this, gender)
+    }
+    P.prototype.getGender = function(){
+        return _gender.get(this)
+    }
+    P.prototype.setGender = function(gender){
+        _gender.set(this, gender)
+    }
+    return P;
+})()
+
+const pMap1 = new PersonMap('lili', '女')
+const pMap2 = new PersonMap('kuku', '男')
+console.log("Map类型："+ pMap1.getGender());
+console.log("Map类型："+ pMap2.getGender());
+pMap2.setGender('变性人');
+console.log("Map类型："+ pMap2.getGender());
+</script>
+</body>
+</html>

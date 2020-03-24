@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script>
+/*
+* 使用迭代的方式封装自动执行
+* 
+*/
+// 封装的自动执行
+function run(gen) {
+  var g = gen()                     //由于每次gen()获取到的都是最新的迭代器,因此获取迭代器操作要放在step()之前,否则会进入死循环
+
+  function step(val) {              //封装一个方法, 递归执行next()
+    var res = g.next(val)           //获取迭代器对象，并返回resolve的值
+    if(res.done) return res.value   //递归终止条件
+    res.value.then(val => {         //Promise的then方法是实现自动迭代的前提
+      step(val)                     //等待Promise完成就自动执行下一个next，并传入resolve的值
+    })
+  }
+  step()  //第一次执行
+}
+
+
+
+function* myGenerator() {
+  // 获得的是next参数的返回值
+	const a = yield Promise.resolve(1);   
+	const b = yield Promise.resolve(2);
+	const c = yield Promise.resolve(3);
+	console.log("获得了异步编程的书写方式",a,b,c)
+}
+
+run(myGenerator)
+
+</script>
+</body>
+</html>

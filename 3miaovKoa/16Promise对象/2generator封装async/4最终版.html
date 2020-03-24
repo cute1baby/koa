@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script>
+/*
+*需要兼容3个问题:
+1、需要兼容基本类型：这段代码能自动执行的前提是yield后面跟Promise，为了兼容后面跟着基本类型值的情况，我们需要把yield跟的内容(gen().next.value)都用Promise.resolve()转化一遍
+2、缺少错误处理：上边代码里的Promise如果执行失败，就会导致后续执行直接中断，我们需要通过调用Generator.prototype.throw()，把错误抛出来，才能被外层的try-catch捕获到
+3、返回值是Promise：async/await的返回值是一个Promise，我们这里也需要保持一致，给返回值包一个Promise
+*/
+// 封装的自动执行
+function run(gen) {
+  //把返回值包装成promise
+  return new Promise((resolve, reject) => {
+    var g = gen()
+
+    function step(val) {
+      //错误处理
+      try {
+        var res = g.next(val) 
+      } catch(err) {
+        return reject(err); 
+      }
+      if(res.done) {
+        return resolve(res.value);
+      }
+      //res.value包装为promise，以兼容yield后面跟基本类型的情况
+      Promise.resolve(res.value).then(
+        val => {
+          step(val);
+        }, 
+        err => {
+          //抛出错误
+          g.throw(err)
+        });
+    }
+    step();
+  });
+}
+
+
+
+
+function* myGenerator() {
+  // 获得的是next参数的返回值
+  try{
+    const a = yield Promise.resolve(1);   
+    const b = yield 2;
+    console.log("获得了异步编程的书写方式",a,b)
+    const c = yield Promise.reject('抛出错误');
+    const d = yield 4;
+    console.log(c,d)
+  }catch(err){
+    console.log(err)
+  }
+
+}
+
+run(myGenerator)
+
+</script>
+</body>
+</html>

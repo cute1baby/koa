@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script>
+const p1 = new Promise((resolve, reject) => {
+  resolve(1)
+})
+
+
+p1
+  .then(res => {
+    console.log(res)
+    //then回调中可以return一个Promise
+    return new Promise((resolve, reject) => {
+      resolve(2)
+    })
+  })
+  .then(res => {
+    console.log(res)
+    //then回调中也可以return一个值
+    return 3
+  })
+  .then(res => {
+    console.log(res)
+  })
+// 输出结果：1  2  3
+
+// p1
+//   .then(res => {
+//     console.log(res)
+//     //then回调中可以return一个Promise
+//     setTimeout(() => {
+//         console.log(22)
+//       }, 1000);
+//     return 2
+//   })
+//   .then(res => {
+//     console.log(res)
+//     //then回调中也可以return一个值
+//     return 3
+//   })
+//   .then(res => {
+//     console.log(res)
+//   })
+// 输出结果：1  2  3 22
+
+/*
+* 结论：
+* 1、显然.then()需要返回一个Promise，这样才能找到then方法，所以我们会把then方法的返回值包装成Promise。
+* 2、.then()的回调需要顺序执行，以上面这段代码为例，虽然中间return了一个Promise，但执行顺序仍要保证是1->2->3。我们要【等待当前Promise状态变更后，再执行下一个then收集的回调】，这就要求我们对then的返回值分类讨论
+*/
+</script>
+</body>
+</html>

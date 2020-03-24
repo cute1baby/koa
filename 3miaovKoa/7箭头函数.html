@@ -23,7 +23,7 @@
 
 var btns = document.getElementsByTagName('button')[0];
 const fn = () => {
-    console.log(this);
+    console.log(this);  // 指向window,而不是btns
 }
 // 一般情况下的函数应该是指向btn对象，使用了箭头函数之后定义后this不会再变化
 btns.onclick = fn;

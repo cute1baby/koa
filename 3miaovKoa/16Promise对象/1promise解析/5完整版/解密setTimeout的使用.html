@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script>
+/*
+  * 解密 setTimeout传参问题
+  * setTimeout(function, milliseconds, param1, param2, ...)
+  * function：需要执行的回调函数【必填】
+  * milliseconds：延迟执行的毫秒数【可选】
+  * param1，param1：传给回调函数的参数【可选】
+*/
+function myFunction() {
+    setTimeout(alertFunc, 100, 1, 2, 3, 4);
+}
+
+function alertFunc(...data) {
+  console.log("1111》》》》》》》》》》》》", data);
+}
+
+myFunction();
+</script>
+</body>
+</html>

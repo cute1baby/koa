@@ -8,19 +8,26 @@
 </head>
 <body>
 <script>
+/*
+ * Symbol.iterator 为每一个对象定义了默认的迭代器。该迭代器可以被 for...of 循环使用。
+ * 常见的实现Symbol.iterator的有：String、Array、Set、Map等
+*/
+const str = '';
 const arr = [2,5,8]
 const set = new Set(['a', 'b', 'c'])
 const map = new Map([['a', 1], ['b', 10]])
 
+const itStr = str[Symbol.iterator]();
 const itArr = arr[Symbol.iterator]();
 const itSet = set[Symbol.iterator]();
 const itMap = map[Symbol.iterator]();
 
+console.log(itStr);
 console.log(itArr);
 console.log(itSet);
 console.log(itMap);
 
-// 执行Iterator接口
+// 以数组举例，执行Iterator接口
 console.log(itArr.next())
 console.log(itArr.next())
 console.log(itArr.next())

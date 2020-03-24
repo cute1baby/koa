@@ -74,6 +74,38 @@ function iterator(obj){
     }
 }
 
+
+var sampleIterator = {
+  index: 0,
+  [Symbol.iterator]: function() {
+    return this;
+  },
+  next: function() {
+    if (this.index < 3) {
+      return {
+        done: false,
+        value: this.index++
+      };
+    } else {
+      return {
+        done: true,
+        value: undefined
+      };
+    }
+  }
+};
+
+for (var val of sampleIterator) {
+  console.log(val);
+}
+
+// 结果为：
+// 0
+// 1
+// 2
+// [Finished in 2.7s]
+
+
 iterator(objs)
 // 可以通过是上面迭代
 for (var attr of objs) {
