@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+function * gene(a, b) {
+    console.log(a, b);
+    var c = yield 'c';
+    console.log("c====", c);
+    var d = yield "d";
+    console.log("d====", d)
+    return 6;
+}
+var g = gene("a", "b");
+var e = g.next("e1", "e2");  // 到第一个yield就结束了，传入的参数没用。e是一个有done和value属性的对象，第一个yield 'c'中c函数或者变量返回值是value的值。
+var f = g.next("f1", "f2"); // 开始第一个yield赋值一直到第二个结束，传入的参数c返回值为f1
+console.log("e====", e);
+console.log("f====", f);
+// ab  f1  {value:'c',done: false}   {value:'d',done: false}
+</script>
+</body>
+</html>
