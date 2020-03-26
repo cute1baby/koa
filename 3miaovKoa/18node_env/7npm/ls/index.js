@@ -34,4 +34,5 @@ commander.action((path) => {
 if (process.argv.length < 3){
     process.argv.push(__dirname)
 }
+
 commander.parse(process.argv)
