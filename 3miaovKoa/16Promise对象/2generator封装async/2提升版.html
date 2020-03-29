@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script>
+function* myGenerator() {
+	// 获得的是next参数的返回值
+	const a = yield Promise.resolve(1);   
+	const b = yield Promise.resolve(2);
+	const c = yield Promise.resolve(3);
+	console.log("获得了异步编程的书写方式",a,b,c)
+}
+
+// 获取迭代器
+const gen = myGenerator()
+
+gen.next().value.then(val => {
+  console.log(val)
+  gen.next(val+10).value.then(val => {
+    console.log(val)
+    gen.next(val+100).value.then(val => {
+      console.log(val)
+      gen.next(val+ 50)
+    })
+  })
+})
+
+
+
+</script>
+</body>
+</html>

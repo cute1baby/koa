@@ -38,7 +38,7 @@ const imgAll = Promise.all([
 
 // 一般建议将错误信息的捕获放在catch方法中
 /*
- * 当所有的Promise对象都变成resolved状态时才会走then中的第一个回调；否则只要有一个
+ * 当所有的Promise对象都变成resolved状态时才会走then中的第一个回调；否则只要有一个是rejected状态则会返回错误（通过catch得到）
 */
 imgAll.then(imgs => {
     imgs.forEach(img => {

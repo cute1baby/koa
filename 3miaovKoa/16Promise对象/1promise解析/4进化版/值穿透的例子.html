@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script>
+/*
+ * 值穿透原理：.then 或者 .catch 的参数期望是函数，传入非函数则会发生值穿透。
+*/
+Promise.resolve(1)
+.then(2)
+.then(Promise.resolve(3))
+.then(res => console.log(res))
+// 输出1
+
+
+Promise.resolve(1)
+.then(2)
+.then(Promise.resolve(3))
+.then(() => {return 4})
+.then(res => console.log(res))
+// 输出4
+
+</script>
+</body>
+</html>

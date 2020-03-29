@@ -3,9 +3,9 @@ const http = require('http')
 const server = http.createServer()
 
 // 监听端口
-server.on('listening', () => {
-    console.log('正在监听...')
-})
+// server.on('listening', () => {
+//     console.log('正在监听...')
+// })
 
 // 监听请求
 server.on('request', (req, res) => {

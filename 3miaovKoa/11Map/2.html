@@ -8,23 +8,35 @@
 </head>
 <body>
 <script>
+/*
+*map.size  获取长度
+*map.set  设置属性和属性值
+*map.get  获取属性值
+*map.delete  删除属性值，返回是否删除的布尔值
+*map.has('miaov')  判断是否有某个属性
+*map.keys()  获取集合所有的属性
+*map.values()  获取集合所有的属性值
+*map.entries()  返回键值对的集合
+*map.forEach((index,val) => )  遍历集合
+*
+*/
     const map = new Map([
         ['a', 1], ['b', 2]
     ])
     // 返回map的长度
-    console.log(map.size);
+    console.log(map.size);  // 2
 
     // 设置map的属性和属性值
     map.set('miaov', 'ktang').set('hh', 'wodeer')
 
     // get方法获取key值对应的键值
-    console.log(map.get('miaov'))
+    console.log(map.get('miaov'))  // ktang
 
     // 删除某个键,返回布尔值，看是否删除成功
-    console.log(map.delete('miaov'))   //true
+    console.log(map.delete('miaov'))   // true
 
     // has(key)方法返回一个布尔值，表示某个键是否在当前的Map对象之中
-    console.log(map.has('miaov'));
+    console.log(map.has('miaov'));  // false
 
     // clear()清除所有数据，没有返回值
     // console.log(map.clear())
@@ -37,6 +49,7 @@
 
     // values() 返回键值对的集合
     console.log(map.entries());
+    console.log(map);
 
     // forEach() 返回键值对的集合
     map.forEach((index, value, list) => {
@@ -48,7 +61,7 @@
     /**
      * map中要注意的一些事项
     */
-    map.set(NaN, 1).set(NaN, 10);  //此时NaN只会出现一次
+    map.set(NaN, 1).set(NaN, 10);  //此时NaN只会出现一次，NaN认为是一个键
 
     // 两个空对象的内存地址不一样，所以认为是两个键
     map.set({}, 1).set({}, 10);

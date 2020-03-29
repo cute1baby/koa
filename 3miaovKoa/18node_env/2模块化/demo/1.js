@@ -8,7 +8,8 @@
 let m = require('./module')
 
 console.log(m);
-
+// m.module.handleCul(1 + 4);
+m.val.module.handleCul(1, 4)
 
 /**
  * 如果我们导入的模块是在node_modules目录下，会有另外一种规则
@@ -22,4 +23,4 @@ console.log(m);
 // let m2 = require('./node_modules/m2')
 let m2 = require("m2");  //可以直接引入
 console.log(m2)
-console.log("module======>>>>", module)
+// console.log("module======>>>>", module)

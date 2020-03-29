@@ -54,6 +54,21 @@ Promise.resolve({
 Promise.resolve('hello world').then(res => {
     console.log("直接将字面量的值打印出来===", res)
 })
+
+
+// 值穿透的问题
+Promise.resolve('hello').
+then(2).
+then(Promise.resolve(4)).
+then(data => {console.log(data)})  //最后得到的是hello
+
+// 原因
+Promise.resolve('hello').
+then(2).
+then(Promise.resolve(4)).
+// then(() => 10).
+then(() => Promise.resolve(10)).
+then(data => {console.log(data)})  //最后得到的是10
 </script>
 </body>
 </html>

@@ -19,13 +19,14 @@ try{
         console.log('this folder is exit, please do it again');
         process.exit(); //退出程序
     }
-    // 创建对应的文件夹
+    // 创建外层项目文件夹，然后创建内部的图片，js，css文件夹
     fs.mkdirSync(appRoot)
     fs.mkdirSync(`${appRoot}/images`)
     fs.mkdirSync(`${appRoot}/js`)
     fs.mkdirSync(`${appRoot}/css`)
 
     if (process.argv.includes("-i")){
+        // 将模板html写入到index.html中
         fs.writeFileSync(`${appRoot}/index.html`, `
         <!DOCTYPE html>
             <html lang="en">

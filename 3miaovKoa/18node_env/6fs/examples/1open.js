@@ -14,7 +14,7 @@ fs.open('../1.txt', 'r', function(err, fd){
 
 
 /**
- * 同步方式
+ * 同步方式，返回的fd是打开的文件下标
 */
 try{
     const fd = fs.openSync('../1.txt', 'r');

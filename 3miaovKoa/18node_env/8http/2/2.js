@@ -31,7 +31,7 @@ server.on('request', (req, res) => {
             // console.log('url>>>>', querystring.parse(urlStr.query))
 
             // 使用post请求
-            // 注意：post发送的数据会被写入缓冲区中，需要通富哦request的data事件和end事件来进行数据拼接处理
+            // 注意：post发送的数据会被写入缓冲区中，需要通过request的data事件和end事件来进行数据拼接处理
             if(req.method.toUpperCase() === 'POST'){
                 var str = '';
                 req.on('data', function(chunk){

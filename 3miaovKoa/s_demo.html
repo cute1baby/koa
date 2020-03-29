@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// Symbool目的是让属性私有化
+const Conf = (() => {
+    let _gender = Symbol('gender')
+    class P{
+        constructor(name, gender){
+            this.name = name;
+            this[_gender] = gender;
+        }
+        genGender(){
+            return _gender;
+        }
+    }
+    return P
+})()
+
+const c = new Conf('李钟', '男')
+const key = c.genGender();
+console.log(key);
+console.log(c[key])
+
+
+// 迭代器
+let obj = {
+    name: '李钟',
+    age: 20,
+    hobby: ['sing', 'rap', 'wamp']
+}
+// 同时兼容数组和对象的迭代器
+const iterator = (obj) => {
+    let n = 0;
+    let lens = Object.keys(obj), val = {};
+    obj[Symbol.iterator] = function() {
+        return {
+            next: () => {
+                if(n < lens){
+                    val = {
+                        value: ++n,
+                        done: false
+                    }
+                }else{
+                    val = {
+                        value: '',
+                        done: true
+                    }
+                }
+            }
+        }
+    }
+}
+iterator(obj)
+console.log(obj);
+for(var j in obj){
+    console.log(obj[j]);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script>
+function* myGenerator() {
+  const a = yield '1'
+  const b = yield '2'
+  console.log('打印一下返回值:', a, b)
+  return '3'
+}
+
+// 可以通过给next()传参, 让yield具有返回值
+const gen = myGenerator();  // 获取迭代器
+console.log(gen.next())  //{value: "1", done: false}
+console.log(gen.next('呵呵'))  //{value: "2", done: false}
+console.log(gen.next('哈哈'))  //{value: "3", done: true}
+
+
+
+
+</script>
+</body>
+</html>

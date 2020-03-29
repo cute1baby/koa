@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// generator函数内部有构造器对象
+function *fn(){
+    console.log(1);
+    
+    // 这里的y1是第二个next函数的参数值
+    const y1 = yield getData();
+    console.log('这是第二部分' + y1);
+    debugger
+    const y2 = yield getData();
+    debugger
+    console.log('这是第三部分' + y2);
+
+} 
+
+let val = 0;
+function getData(){
+    // 这个返回值是{value:##, done: false}中的value值。
+    return new Promise((resolve, reject) => {
+        val++;
+        const v = '执行异步操作';
+        resolve(v + val);
+    })
+}
+
+function setFn(callback){
+    const cb = callback();
+    function next(val){
+        // f是一个对象 => {value:##, done:##},value的值是第一个getData的返回值
+        const f = cb.next(val);
+        console.log(">>>>>>", f)
+        // 当done为真的时候，返回
+        if(f.done){
+            return
+        }
+        // value是异步函数返回的值，即getData的返回值
+        f.value.then(res => {
+            next(res);
+        })
+    }
+    next()
+}
+
+// setFn(fn)
+
+/*
+* 下面直接拆分成一个个的next函数进行分析：
+*   （1）执行第一个next时，到第一个yield停止，第一个yield函数赋值还未完成。
+        此时next函数返回值可得到，即对象{value:##, done:##},value的值是第一个getData的返回值；
+        且此时不能得到y1的赋值。
+*   （2）执行第二个next时，到第二个yield停止，第二个yield函数赋值还未完成。
+        此时next函数返回值可得到，即对象{value:##, done:##},value的值是第二个getData的返回值；
+        且此时不能得到y2的赋值。
+        ......
+*
+*  根据上面的理论可以将上面的generator函数进行下面的划分
+    next()   =>   {console.log(1); const y1 = yield getData(); (第一个yield未赋值)}
+    next()   =>   {const y1 = yield getData();console.log('这是第二部分' + y1);const y2 = yield getData(); (第一个yield赋值+第二个yield未赋值)}
+    ......
+
+*   next函数的返回值是yield函数的返回值（第一个next执行后便能拿到）
+    y1,y2的值是从第二个next开始的参数值（第二个next执行后才能拿到）
+    
+*
+*/
+const f1 = fn();
+console.log(f1.next(1))
+console.log(f1.next(2))
+// console.log(f1.next(3))
+</script>
+</body>
+</html>

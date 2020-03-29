@@ -1,12 +1,12 @@
 const fs = require('fs')
 
 /**
- * 监听文件数据变化触发（异步）
+ * 监听文件数据变化触发（异步）更推荐使用watch
  * fs.watchFile(filename[, options], listener)
  */
-fs.watchFile('./1.txt', (curr, prev) => {
-    console.log(`prev value:${JSON.stringify(prev)}`)
-    console.log(`current value:${JSON.stringify(curr)}`)
+fs.watchFile('./1.json', (curr, prev) => {
+    console.log(`prev value:${JSON.stringify(prev.dev)}`)
+    console.log(`current value:${JSON.stringify(curr.dev)}`)
 })
 
 

@@ -4,8 +4,8 @@
  * argv：用来获取当前运行node程序的相关参数。如在命令行输入node 1.js -v，此时在argv打印的值中也会把-v打印出来
 现实作用：比如通过argv方法给node一些命令做扩展，如node -v,node --save
  */
-
-// console.log(process.argv)
+/**返回的数组默认两个值：一个是node环境路径，一个是当前文件的地址 */
+console.log(process.argv)
 
 // 下面我举一个例子，我在命令行输入： node 1.js -v
 if (process.argv.includes("-v")){
@@ -27,7 +27,7 @@ let a = 0;
 setInterval(() => {
     a++;
     console.log(a);
-    if(a > 9){
+    if(a > 3){
         // 退出程序的进程
         process.exit();
     }

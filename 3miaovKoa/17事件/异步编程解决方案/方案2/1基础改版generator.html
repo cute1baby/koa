@@ -9,11 +9,16 @@
 // 用来验证next函数返回值的{value:"",done:true}中value的来源：来自异步函数的返回值（这里以同步函数演示）
 let a = 0;
 
+/*
+ * 要区分generator函数和Iterator函数的概念和使用
+*/
+
 // 定义一个generator函数
 function* fn(){
 	console.log(1);
 
-	// 用yield将函数体划分成很多个片段,用next方法执行这些片段（有点类似断点）
+	// 用yield将函数体划分成很多个片段（这里相当于划分成3个片段）,
+    // 用next方法执行这些片段（有点类似断点）
 	const data1 = yield getData();
 	console.log(data1);
 
@@ -27,6 +32,7 @@ function getData(){
 	return `这是要返回的value值a=${a}`
 }
 
+
 function co(callback){
 	let cb = callback();
 
@@ -39,11 +45,17 @@ function co(callback){
 		}
 		next(result.value)
 	}
-	next()
+	next()  // 初始调用时不传入参数
 }
 
+// 如果fn是迭代器函数，那么执行该函数之后会返回一个带有next方法的对象。执行next函数能得到该函数阶段的值。
 co(fn)
 
+
+
+/*
+ * 下面是执行co(fn)方法的第一步实现
+*/
 // 返回一个迭代器函数,直接执行generator函数并不执行里面的语句
 let f = fn();
 // 通过执行迭代器函数的next方法才会执行函数体内的内容

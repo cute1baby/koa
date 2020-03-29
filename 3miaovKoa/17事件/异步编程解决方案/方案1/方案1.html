@@ -33,7 +33,7 @@ let p1 = new Promise((resolve, reject) => {
  * 执行then之后，会在原有函数的基础下返回一个默认为resolved的promise对象。
    像下面的这个例子，将返回失败、222、333、444。
 
- * catch方法跟then方法一样也会返回一个默认的resolved的promise对象。
+ * catch方法跟then方法一样也会返回一个resolved的promise对象。
  * 所以建议在写promise的then方法的时候统一不写第二个参数，产生的错误由catch统一去捕获，
  * 它就不会再向下执行then方法了
 */

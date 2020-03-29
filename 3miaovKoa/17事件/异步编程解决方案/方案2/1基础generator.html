@@ -9,29 +9,38 @@
 // 定义一个generator函数
 function* fn(){
 	console.log(1);
-
 	// 用yield将函数体划分成很多个片段,用next方法执行这些片段（有点类似断点）
 	const data1 = yield getData();
 	console.log(data1);
 
 	const data2 = yield getData();
 	console.log(data2);
-	
 }
 
+let v = 0;
 function getData(){
+    v++;
 	setTimeout(() => {
-		const data = "我是异步获取的结果"
+		const data = `我是异步获取的结果`
 		// 可以将需要暴露的值作为参数传入到next函数中。
 		const obj = f.next(data)
 		console.log("obj=====", obj);
-	}, 1000)
+	})
+    return v;
 }
+
+// 如果是下面的同步代码会报错： Generator is already running
+// function getData(){
+//     const data = `我是异步获取的结果${a}`
+//     // 可以将需要暴露的值作为参数传入到next函数中。
+//     const obj = f.next(data)
+//     console.log("obj=====", obj);
+// }
 
 // 返回一个迭代器函数,直接执行generator函数并不执行里面的语句
 let f = fn();
 // 通过执行迭代器函数的next方法才会执行函数体内的内容
-f.next();
+console.log(f.next());
 
 </script>
 </body>

@@ -26,6 +26,7 @@ commander.action(() => {
     // 把当前目录下的文件和文件夹显示在控制台中
     try{
         const files = fs.readdirSync(commander.path)
+        console.log('>>>>>', files);
         // 没有默认值，默认是true
         if (commander.list){
             const fileList = files.map((item, index) => {

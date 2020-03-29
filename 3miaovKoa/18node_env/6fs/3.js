@@ -5,6 +5,12 @@ let fs = require('fs')
  * fs.mkdirSync(path[, options])
  */
 try {
+    if(fs.existsSync('./images')){
+        console.log('已经存在该文件，无需重复创建');
+        const txt = fs.readdirSync('./images');
+        fs.writeFileSync('./images/1.txt', `images文件夹下面的文件有：【${txt}】`)
+        return;
+    }
     // 创建文件夹images，并且在文件夹下面创建1.txt，2.txt，3.txt文件。
     fs.mkdirSync('./images')
     fs.writeFileSync('./images/1.txt', 'hello world11')
@@ -34,6 +40,7 @@ try {
 function removeDir(path){
     try{
         const files = fs.readdirSync(path);
+        console.log("......files", files);
         files && files.forEach(child => {
             let childPath = `${ path }/${child}`;
             // 判断当前是否为文件夹
@@ -52,4 +59,4 @@ function removeDir(path){
     }
 }
 // 调用删除方法
-//removeDir('./images')
+// removeDir('./images')

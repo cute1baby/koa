@@ -21,7 +21,7 @@ let p2 = new Promise((resolve, reject) => {
     }, Math.random() * 1000)
 })
 
-// 所有的成功才是成功
+// 所有的成功才是成功，并返回成功后的值的数组集合；否则返回失败的那个接口的值
 Promise.all([p1,p2]).then(data => {
     console.log("获取Promise.all数据", data) // ["p1成功", "p2成功"]
 }).catch(err => {
