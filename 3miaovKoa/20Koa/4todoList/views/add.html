@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<h3 class="title">{{data.name}}</h3>
+<hr>
+<!-- 保存数据，所以method用的是post -->
+<form action="/add" method="POST">
+    <input type="text" name="title">
+    <button>提交</button>
+</form>
+</body>
+</html>

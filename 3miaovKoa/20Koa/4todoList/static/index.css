@@ -1,0 +1,30 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+ul,li{
+    list-style: none;
+}
+body{
+    color: red;
+}
+ul{
+    width: 300px;
+}
+li{
+    height: 50px;
+    line-height: 50px;
+    margin-left: 30px;
+}
+
+.title{
+    line-height: 50px;
+    text-align: center;
+}
+.finished{
+    text-decoration: line-through;
+    color: #666;
+}
+button{
+    margin: 0 8px;
+}

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>这是图书页面:生成10-20的随机数整数
+        <span>（{{Math.floor(Math.random()* 11) + 10}}）</span>
+    </p>
+    <ul>
+        {% for user in userList%}
+            <li>他叫做{{user.name}}，他今年{{user.age}}岁</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

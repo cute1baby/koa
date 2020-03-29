@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="/static/index.css">
+</head>
+<body>
+    <h3 class="title">{{data.name}}</h3>
+    <hr>
+    <a href="/add" style="margin-left: 30px;">增加栏目</a>
+    <ul>
+        {% for item in data.todoList %}
+            {% if item.isFinish %}
+            <li class="finished">
+                <!-- [{{item.id}}] -->
+                {{item.name}}
+                <button onclick="change({{item.id}})">修改状态</button>
+                <a href="/remove/{{item.id}}">删除</a>
+            </li>
+            {% else %}
+            <li>
+                <!-- [{{item.id}}] -->
+                {{item.name}}
+                <button onclick="change({{item.id}})">修改状态</button>
+                <a href="/remove/{{item.id}}">删除</a>
+            </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</body>
+<script>
+function change(id){
+    location.href = '/change/' + id;
+}
+</script>
+</html>

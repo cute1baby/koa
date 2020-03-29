@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/css/index.css">
+</head>
+<body>
+<div id="app">
+    <p class="title">todolist</p>
+    <hr/>
+    <div class="top">
+        <input type="text" v-model="name" @keyup.enter="addItem">
+        <button @click="addItem">添加</button>
+    </div>
+
+    <ul v-if="todos.length > 0">
+        <li v-for="(todo, index) in todos" :class="todo.isFinish? 'finished':''">
+            <input type="checkbox" @click.prevent="toggle(todo.id)" :checked="todo.isFinish">
+            {{todo.name}}
+            <button @click="deleteItem(todo.id)">删除</button>
+        </li>
+    </ul>
+</div>
+<script src="https://cdn.bootcss.com/vue/2.6.2/vue.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+new Vue({
+    el: "#app",
+    data(){
+        return {
+            name: '',
+            todos: []
+        }
+    },
+    created(){
+        this.getList();
+    },
+    methods: {
+        getList(){
+            fetch('/getList').then(res => {
+                return res.json()
+            }).then(data => {
+                // 返回成功的状态
+                if(!data.code){
+                    this.todos = data.list;
+                }else{
+                    console.log(data);
+                }
+            })
+        },
+        toggle(id){
+            const that = this;
+            axios.get('/changeStatus', {
+                params: {
+                    id
+                }
+            })
+            .then(res => {
+                const data = res.data;
+                if(!data.code){
+                    that.todos = data.list;
+                }else{
+                    console.log(data)
+                }
+            })
+        },
+        deleteItem(id){
+            const that = this;
+            axios.get('/deleteItem', {
+                params: {
+                    id
+                }
+            })
+            .then(res => {
+                const data = res.data;
+                if (!data.code) {
+                    that.todos = that.todos.filter(todo => String(todo.id) != String(id));
+                } else {
+                    console.log(data)
+                }
+            })
+        },
+        addItem(){
+            const that = this;
+            const name = this.name;
+            if(!name.trim()){
+                alert('请填写内容再提交');
+                return;
+            }
+            axios.post('/addItem', {
+                name
+            })
+            .then(res => {
+                const data = res.data;
+                if (!data.code) {
+                    console.log(data);
+                    that.todos = data.list;
+                    that.name = '';
+                } else {
+                    console.log(data)
+                }
+            })
+        }
+    },
+})
+</script>
+</body>
+</html>

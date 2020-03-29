@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 注意：
+        这里请求css的路径不能看文件在服务器的位置，而是要看在app.js中定义的静态文件访问规则。
+        (1)绝对路径的方式：/public/index.css。我们定义了请求静态文件是/public/+文件在static下的路径，所以这样就能取到
+        (2)相对路径的方式：./index.css。那其实是在就相当于是去pub
+    -->
+    <link rel="stylesheet" href="/public/index.css">
+</head>
+<body>
+<div class="box">
+    <strong>在这里存放静态文件资源11</strong>
+</div>
+</body>
+</html>

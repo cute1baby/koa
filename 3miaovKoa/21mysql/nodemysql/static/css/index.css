@@ -1,0 +1,54 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+ul,li{
+    list-style: none;
+}
+.top{
+    margin: 20px 30px;
+}
+.title{
+    font-size: 32px;
+    line-height: 60px;
+}
+.finished{
+    text-decoration: line-through;
+    color: #666;
+}
+li{
+    height: 50px;
+    line-height: 50px;
+    margin-left: 30px;
+}
+
+button{
+    margin: 0 8px;
+}
+
+.tips{
+    margin: 20px 30px;
+}
+.tip{
+    margin-right: 10px;
+    padding: 0 5px;
+    border: 1px solid #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+.tip.active{
+    border: 1px solid red;
+    color: red;
+}
+
+.select{
+    margin: 30px 0 30px 20px;
+}
+.select button{
+    padding: 5px 10px;
+    cursor: pointer;
+}
+.select button.active{
+    border: 1px solid blue;
+    color: blue;
+}

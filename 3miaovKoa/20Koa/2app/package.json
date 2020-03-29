@@ -1,0 +1,21 @@
+{
+  "name": "1app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "supervisor app"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^2.11.0",
+    "koa-router": "^8.0.8",
+    "koa-static-cache": "^5.1.2"
+  },
+  "devDependencies": {
+    "supervisor": "^0.12.0"
+  }
+}
