@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<button>测试按钮</button>
+<script src="https://cdn.bootcss.com/jquery/3.4.0/jquery.min.js"></script>
+<script>
+const before = (n, func) => {
+  let result
+  if (typeof func != 'function') {
+    throw new TypeError('Expected a function')
+  }
+  console.log('>>>>outter', this)
+  return function(...args) {
+    if (--n > 0) {
+      console.log('>>>>inner', this)
+      result = func.apply(this, args)
+    }
+    if (n <= 1) {
+      func = undefined
+    }
+    return result
+  }
+}
+
+const addContactToList = () => {
+    console.log(10);
+    return 30;
+}
+
+// outter部分
+/*
+* 如果在其他地方主动去调用before这个函数，那么this一定是指向window的；
+* 而在当前的事件监听'click'后面执行返回一个回调，其本质其实是由button触发的，所以此时this指向button
+*
+*/
+$('button').on('click', before(5, addContactToList))
+
+// $('button').on('click', function(){
+//     console.log(111);
+// })
+</script>
+</body>
+</html>

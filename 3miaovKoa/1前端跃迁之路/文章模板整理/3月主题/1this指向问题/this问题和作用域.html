@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script>
+var name = "Bob"
+var obj = {
+	name: "Lucy",
+	getName: function(){
+		var name = "嘴炮"
+		return this.name
+	}
+}
+console.log(obj.getName()) //返回Lucy
+console.log((obj.getName)()) //返回Lucy
+
+console.log((obj.getName = obj.getName)()); //进行了赋值，重点看函数在哪声明的
+// 上面这个相当于
+console.log((func = obj.getName)());
+
+// 逗号运算符相当于赋值，例子：var a =2,b=4; console.log((a,b)) //4
+console.log((obj.getName, obj.getName)()); 
+
+
+var l = "111";
+function abc(){
+	var l = "222"
+	console.log(window.l)   // 打印111
+    
+    /*
+    * 这里是输出222
+    * 因为它会从最近的作用域（即当前的局部作用域）去找，如果找到了即打印出来222；否则会去外层作用域去找111
+    * 所以window.l是外层的值，这里输出的l是局部作用域的值，两者不是同一个东西。
+    */
+    // console.log(l)
+}
+abc();
+</script>
+</body>
+</html>

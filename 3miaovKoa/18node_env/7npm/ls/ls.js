@@ -2,7 +2,8 @@
 /**
  * ls
  * 输出当前运行命令所在的目录下的文件和文件夹  (node ls)
- * 指定显示的目录：(node ls -p d:)
+ * 指定显示的目录：(node ls -p E:) => 报错的原因是当前系统下没有D:盘
+ * 指定显示有排版有颜色的目录：(node ls -l) 当前的文件夹下的文件有样式和排版
  * 注意：当commander版本为^2.17.1，commander.action的参数path则是有效的；其他版本不一定
 */
 const commander = require('commander');
@@ -20,13 +21,14 @@ commander.option('-l, --list', '设置列表显示')
 
 // 实现命令的具体逻辑
 commander.action(() => {
-    // option中的变量会挂在当前commander对象的同名属性下
+    // option中的变量会挂在当前commander对象的同名属性下  commander.path
     console.log('ls', commander.path)
 
     // 把当前目录下的文件和文件夹显示在控制台中
     try{
         const files = fs.readdirSync(commander.path)
-        console.log('>>>>>', files);
+        console.log('>>>>files>', files);
+        console.log('>>>>commander.list>', commander.list);
         // 没有默认值，默认是true
         if (commander.list){
             const fileList = files.map((item, index) => {
@@ -38,7 +40,6 @@ commander.action(() => {
         }else{
             console.log(files)
         }
-
 
     }catch(err){
         console.log("=====》》", err)
