@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    var abs = function(x){
+        log('这是一个匿名function');
+        return x<0?-x:x;
+    };
+
+    function abs(x){
+        log('这是一个function');
+        return x<0?-x:x;
+    }
+
+    abs(-1);    //匿名
+    abs(2);     //匿名        
+    abs(-8);    //匿名
+</script>
+</body>
+</html>

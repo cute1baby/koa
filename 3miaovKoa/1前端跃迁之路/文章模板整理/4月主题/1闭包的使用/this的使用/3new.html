@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+a = 4
+function A() {
+	this.a = 3
+	this.callA = function() {
+		console.log(this.a)
+	}
+}
+A() // 啥也不会打印
+var a = new A()
+a.callA() // 3
+
+
+
+
+var obj = {
+    a: 10,
+    getAge: function(){
+        console.log(this.a)
+    }
+}
+obj.getAge.call() //A的实例， 相当于obj.getAge.call(null) => obj.getAge.call(window)
+
+
+</script>
+</body>
+</html>

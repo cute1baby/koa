@@ -15,7 +15,7 @@ var obj = {
 	}
 }
 console.log(obj.getName()) //返回Lucy
-console.log((obj.getName)()) //返回Lucy
+console.log((obj.getName)()) //返回Lucy,类似函数自执行
 
 console.log((obj.getName = obj.getName)()); //进行了赋值，重点看函数在哪声明的
 // 上面这个相当于

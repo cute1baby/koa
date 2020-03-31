@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+/**
+ * 箭头函数比较特殊，也比较固执。
+ * 他没有自身的this，默认指向定义它时this指向的对象(即上层作用域this指向的对象),而不是执行时的对象
+ * 他比较执拗，call和apply也没法改变他的this指向
+ * 
+*/
+
+// 块作用域不会挂载到window上，下面将返回两个undefined
+// let a = 10  
+let a = 10  
+const obj = {
+    a: 1,
+    say: () => {
+        console.log(this.a)
+    }
+}
+obj.say()  // 10
+obj.say.call({a: 5})  // 10
+
+
+
+var b = 10
+function Factory(){
+    this.a = '1'
+    this.b = '2'
+    this.getVal = {
+        say: () => {
+            console.log(this.b)
+        }
+    } 
+}
+// 箭头函数定义时候this指向的是Factory的实例对象，所以输出的是实例的属性b
+new Factory().getVal.say()  //'2'
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+*{
+    margin: 0;
+    padding: 0;
+}
+.box{
+    width: 200px;
+    height: 200px;
+    background: #000;
+}
+</style>
+<body>
+<button>点击一下</button>
+<div class="box" onclick="setVal(this)"></div>
+<script>
+let btn = document.querySelector('button')
+// 事件监听的方式this指向问题
+// btn.addEventListener('click', () => {
+//     console.log(this)  // 指向window
+// })
+btn.addEventListener('click', function() {
+    console.log(this)  // 指向btn
+})
+
+function setVal(val){
+    console.log(val)
+}
+
+</script>
+</body>
+</html>
