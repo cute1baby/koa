@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+function a() {
+	var num = 1
+	function b() {
+		console.log(++num)
+	}
+	return b
+}
+var c1 = a()
+c1() // '2'
+c1() // '3'
+
+var c2 = a()
+c2() // '2'
+c2() // '3'
+
+/**
+ * 解析整个函数执行的过程
+ *  1、运行函数a
+        1、创建函数a的变量对象VO，包括变量num和函数b
+        2、定义函数b的时候，会保存a的变量对象VO和全局变量对象到[[scope]]中
+        3、返回函数b，赋值到c1
+    2、运行c1
+        1、创建c1的作用域链，该作用域链保存了a的变量对象VO和全局变量
+        2、创建c1的变量对象VO
+        3、运行c1，这时发现需要访问变量num，在当前VO中不存在，于是通过作用域链进行访问，找到了保存在a的变量对象VO中的num，对它进行操作，num的值被设置成2
+    3、再次运行c1，重复第二步的操作，num的值设置成3
+ *
+*/
+</script>
+</body>
+</html>

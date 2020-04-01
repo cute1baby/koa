@@ -20,8 +20,8 @@
 
 
 /**
- * 结论：变量提升 > 函数声明提升
- * 如下面同一个变量c，var c= undefined会在第一行，然后function c(){}会放在第二行
+ * 结论：函数声明提升 > 变量提升
+ * 
 */
 function test (a,c) {
   console.log(a, b, c, d) // 5 undefined [Function: c] undefined
@@ -42,8 +42,18 @@ test(5,6)
 function test1 (a,c) {
     var b
     var d
+    // 这一步是函数声明的提升
     var c
-    function c () {}
+    c = function () {}
+
+    // 这一步是变量的提升，因为之前已经声明过getName,所以再次声明var会被忽略。我换个基本数据类型试试
+    /**
+     *  var c
+        c = 222
+        var c
+        输出：222
+    */
+    var c
 
     console.log(a, b, c, d) // 5 undefined [Function: c] undefined
     b = 3;

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+function foo() {
+    function bar() {
+        console.log(111)
+    }
+}
+foo()
+
+
+/**
+ * 函数在运行时，会先复制[[scope]]属性创建作用域链，然后创建变量对象VO，然后将其加入到作用域链。
+ * 如果在当前作用域下没有找到对应的变量，会在作用域链上去找对应的变量，即[[scope]]
+ * 
+ * 
+ *  foo.[[scope]] = [
+        globalContext.VO
+    ];
+
+    bar.[[scope]] = [
+        fooContext.AO,
+        globalContext.VO
+    ];
+ */
+
+
+</script>
+</body>
+</html>

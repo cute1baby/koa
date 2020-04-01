@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+var scope = "global scope";
+function checkscope(a){
+    var scope2 = 'local scope';
+}
+checkscope(5);  
+
+/**
+ * 执行上下文的过程
+ * 
+ * （1）创建全局上下文执行栈
+        创建全局变量globalContext.VO.
+ * （2）创建checkscope函数作用域链
+        将全局变量VO保存为作用域链，设置到函数的内部属性[[scope]]
+    ```
+    checkscope.[[scope]] = [
+        globalContext.VO
+    ];
+    ```
+ * （3）执行checkscope函数
+        创建函数执行上下文，将checkscope函数执行上下文压入执行上下文栈栈顶
+    ```
+    ECStack = [
+        checkscopeContext,
+        globalContext
+    ];
+    ```
+ * （4）函数执行上下文创建阶段
+        [1] 复制[[scope]]，创建作用域链
+        ```
+        checkscopeContext = {
+            Scope: checkscope.[[scope]],
+        }
+        ```
+
+ *      [2] 创建活动对象AO
+        ```
+        checkscopeContext = {
+            AO: {
+                arguments: {
+                    0: 5
+                    length: 1
+                },
+                a: 5
+                scope2: undefined
+            }，
+            Scope: checkscope.[[scope]],
+        }
+        ```
+
+ *      [3]将活动对象AO放入作用域链顶端
+        ```
+        checkscopeContext = {
+            AO: {
+                arguments: {
+                    0: 5
+                    length: 1
+                },
+                a: 5
+                scope2: undefined
+            }，
+            Scope:  [AO, checkscope.[[scope]]],
+        }
+        ```
+
+ *      [4]求出this，上下文创建阶段结束
+ * 
+ * 
+ * 进入函数执行阶段：随着函数执行，修改AO的值
+ * ```
+ *   AO: {
+        arguments: {
+            0: 5
+            length: 1
+        },
+        a: 5
+        scope2: 'local scope'
+        }
+ * ```
+ * 
+ * 函数执行完毕: 函数上下文从执行上下文栈弹出
+ * ```
+ *  ECStack = [
+        globalContext
+    ];
+ * ```
+ * 
+*/
+</script>
+</body>
+</html>

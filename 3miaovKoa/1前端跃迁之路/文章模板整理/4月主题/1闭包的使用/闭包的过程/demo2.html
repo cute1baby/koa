@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+function a() {
+	var x = {num: 1}
+	function b() {
+		return x
+	}
+	return b
+}
+var c1 = a()
+var c2 = a()
+// 存储地址不是同一个
+console.log(c1() === c2())
+
+
+var c = {name: 1}
+var d = c;
+// 此时存储的地址是相同的
+console.log(d === c)
+
+</script>
+</body>
+</html>
