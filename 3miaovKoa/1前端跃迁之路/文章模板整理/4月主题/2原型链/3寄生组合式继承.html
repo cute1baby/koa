@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// function createObj (o) {
+//   const obj = Object.create(o);  // 创建一个原型值为o的空对象
+//   obj.getName = function () {
+//     console.log(obj.name);
+//   }
+//   return obj;
+// }
+// const person = {
+//   name: '小魔王'
+// }
+// const child = createObj(person);
+// child.getName(); // 小魔王
+
+
+// 寄生组合式继承[解决父类构造函数被调用两次的问题]
+function createObj(Father, Child){
+    var prototype = Object.create(Father.prototype) // 复制父级的原型
+    Child.prototype = prototype  // 修改Child的prototype
+    prototype.constructor = Child //把constructor指向Child
+}
+
+function Father(name){
+    this.name = name
+}
+Father.prototype.getName = function(){
+    console.log(this.name)
+}
+function Child(name, age){
+    Father.call(this, name)
+    this.age = age
+}
+createObj(Father, Child)
+const c = new Child('李钟', 24)
+console.log(c)
+c.getName()
+
+
+
+</script>
+</body>
+</html>

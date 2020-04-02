@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+function fn1() {
+  this.num = 111;
+  console.log(this);  // 直接传入一个数字基本类型，会自动转换成Number类型的对象
+  console.log(test)  // 传入的那个值不会发生变化
+  this.sayHey = function() {
+    console.log("say hey.");
+  }
+}
+function fn2() {
+  console.log(2);
+  this.num = 222;
+  this.sayHello = function() {
+    console.log("say hello.");
+  }
+}
+
+var test = 5;
+/**
+ * 这样让fn1上的this指向fn2，所以存在这样一种关系：
+ * fn2.num = 111
+ * fn2.sayHey = function() { console.log("say hey.");}
+ * 
+ * window.num = 222; 
+ * window.sayHello = function() {console.log("say hello.");}
+*/
+// fn1.call(fn2); // 1
+fn1.call(test); // Number{5, num: 111, ...}
+
+fn1(); // 1
+console.log(fn1.num); // undefined
+console.log(fn1.sayHey); // undefined
+
+fn2(); // 2
+console.log(fn2.num); // 111
+console.log(fn2.sayHello); // undefined
+
+console.log(fn2.sayHey); // say hey.的函数
+console.log(fn1.sayHello);  //undefined
+
+
+
+
+
+var obj = {
+  birth: 1995,
+  getAge: function() {
+    var b = this.birth; // 1995
+    var fn = function() {
+      return this.birth; 
+    };
+    // return fn.call(this); // 通过 call()，将 obj 的 this 指向了 fn 中，这里和下面的写法效果一样
+    return fn.call(obj); // 通过 call()，将 obj 的 this 指向了 fn 中
+  }
+}
+
+console.log(obj.getAge()); // 1995
+
+</script>
+</body>
+</html>

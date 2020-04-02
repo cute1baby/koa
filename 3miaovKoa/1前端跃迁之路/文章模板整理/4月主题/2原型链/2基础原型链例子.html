@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// 组合继承的方式
+function Father(name, age){
+    this.name = name;
+    this.age = age;
+}
+Father.prototype = {
+    getName: function(){console.log(111)}
+}
+// 借用构造函数
+function Son(name, age){
+    // 这一步this指向Son的实例对象上
+    Father.call(this, name, age)
+}
+
+// 这一步只能继承父级的原型方法
+Son.prototype = new Father()
+const son = new Son('李钟', 24)
+// son.__prototype = Father.prototype 也能达到效果
+
+
+console.log(son)
+son.getName()
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+function Father(name){
+    this.name = name
+    this.animals = ['小鸡', '小鸭']
+}
+function Child(name, age){
+    Father.call(this, name)
+    this.age = age
+}
+Child.prototype = new Father()
+const child = new Child('李钟', 10)
+child.animals.push('数字标榜')
+const child1 = new Child('李钟', 10)
+child1.animals.push('文字艺术')
+console.log(child.animals, child1.animals)  //实例的属性是独有的，不会被共用
+</script>
+</body>
+</html>
