@@ -7,20 +7,48 @@
 </head>
 <body>
 <script>
+/**
+ * 原型链的方法缺点
+ *  - 不能对父类超类型传参
+ *  - 原型链中包含引用类型的值时，该值会被所有实例共享。
+ *      - 原因是：此时继承的仍然是父类的属性，所以所有实例对应的是同一个地址，因此所有的实例共享该属性。
+ *      而使用call /apply之后，可以通过传参的方式让this指向子类的实例对象，所以在实例化的时候这些属性都是不一样的，不会相互影响。
+ * 
+ * 借用构造函数
+ *  - 解决了原型链继承的不能给超类型传参的问题；解决了原型链上属性是引用类型被所有实例复用的问题
+ *  - 缺点是：不能继承构造函数原型方法
+ * 
+ * 组合式继承
+ *  - 结合了上面原型链和借用构造函数的优点。缺点是父类的构造函数会执行两遍
+ *  
+ * 
+ * 寄生组合式继承
+ *  解决了父类构造函数执行两遍的问题，是继承中的最优解
+ * 
+ * 
+*/
+
 function Father(name){
     this.name = name
     this.animals = ['小鸡', '小鸭']
 }
-function Child(name, age){
-    Father.call(this, name)
-    this.age = age
-}
+// prototype指向同一个内存空间，所有方法会被实例共用
+Father.prototype.getList = ['猴子', '猿人', '人类']
+function Child(){}
+// function Child(name, age){
+//     Father.call(this, name)
+//     this.age = age
+// }
 Child.prototype = new Father()
 const child = new Child('李钟', 10)
 child.animals.push('数字标榜')
+child.getList.push('超人类')
+
 const child1 = new Child('李钟', 10)
 child1.animals.push('文字艺术')
+child1.getList.push('三级人类')
 console.log(child.animals, child1.animals)  //实例的属性是独有的，不会被共用
+console.log(child.getList, child1.getList) // 所以这里prototype属性下的内容，使用组合式继承也会共用
 </script>
 </body>
 </html>

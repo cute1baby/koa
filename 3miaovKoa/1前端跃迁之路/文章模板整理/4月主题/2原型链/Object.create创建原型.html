@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+/*创建一个鸟对象*/
+var bird = {
+    name: 'bird',
+    fly: function(name){
+        console.log('我叫做'+name+'，现在可以飞起来了')
+    }
+}
+
+/**现在创建一个鹰对象，继承鸟对象的方法*/
+var eagle = (bird)
+eagle.fly('老鹰');
+console.log(eagle);
+</script>
+</body>
+</html>
