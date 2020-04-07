@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// function P(name){
+//     this.name = name
+// }
+// P.prototype.getName = function(){
+//     return '我拿到的名字是：' + this.name
+// }
+
+// function C(age){
+//     this.age = age
+// }
+// // 这步解决：原型方法继承给子类的原型上。
+// // 为什么不在这一步赋值丽丽？作为父类自己的属性确实可以通过原型链找到，但是只能针对父类的属性，子类独有的属性没办法通过这里传参挂到this上。
+// // 有一个办法就是把相同属性的在这里传参，不同的属性在下面子类实例化的时候传参，但是这样太过于麻烦。
+// C.prototype = new P('丽丽')
+
+// var p = new P('小红')
+// var c = new C(10)
+// console.log(p)
+// console.log(c)
+
+
+
+
+
+function P(name){
+    this.name = name
+}
+P.prototype.getName = function(){
+    return '我拿到的名字是：' + this.name
+}
+
+function C(name, age){
+    // 这一步调用父类构造函数，并将子类的实例指向构造函数的this。
+    P.call(this, name)
+    this.age = age
+}
+// 这步解决：原型方法继承给子类的原型上。
+C.prototype = new P
+
+var p = new P('小红')
+var c = new C('丽丽', 10)
+console.log(p)
+console.log(c)
+
+</script>
+</body>
+</html>

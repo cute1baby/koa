@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+function P(name){
+    this.name = name
+}
+P.prototype.getName = function(){
+    return this.name
+}
+
+function C(name, age){
+    P.call(this, name)
+    this.age = age
+}
+
+// 由原来的原型继承改成现在这种寄生继承，即通过Object.create(obj)生成一个原型链上有P.prototype值的一个空对象。
+// C.prototype = Object.create(P.prototype)
+// C.prototype.constructor = C
+var proto = Object.create(P.prototype)
+proto.constructor = C
+C.prototype = proto
+
+
+var p = new P('小红')
+var c = new C('丽丽', 10)
+console.log(p)
+console.log(c)
+</script>
+</body>
+</html>
