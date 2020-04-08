@@ -23,7 +23,7 @@ function C(name, age){
 // C.prototype = Object.create(P.prototype)
 // C.prototype.constructor = C
 var proto = Object.create(P.prototype)
-proto.constructor = C
+C.prototype.constructor = C
 C.prototype = proto
 
 
