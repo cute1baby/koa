@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+class Parent{
+    constructor(name){
+        this.name = name
+    }
+    getName(){
+        return this.name
+    }
+}
+
+class Son extends Parent{
+    constructor(name, age){ // 相当于类的构造函数
+        super(name)  // 作为函数使用时，继承父类的this，并且将this当前类的实例
+        this.age = age
+        console.log(new.target)
+    }
+    introduce(){
+        return `我叫做${this.name}，今年${this.age}岁了`
+    }
+    getNeWWay(){
+        return `我叫${this.name}，看下是否使用了new方法：${new.target}`
+    }
+}
+const s = new Son("李钟", 8)
+console.log(s.introduce())
+console.log(s.getName())
+console.log(s.getNeWWay())
+</script>
+</body>
+</html>
