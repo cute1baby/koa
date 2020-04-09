@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+*{
+    margin: 0;
+    padding: 0;
+}
+.box{
+    width: 500px;
+    height: 300px;
+    margin: 50px auto;
+    display: flex;
+    border: 1px dashed green;
+}
+span{
+    width: 150px;
+    height: 200px;
+}
+span:nth-child(1){
+    background:gray;
+}
+span:nth-child(2){
+    background:pink;
+}
+.box1{
+    justify-content: center;
+}
+.box2{
+    align-items: center;
+}
+/* 子元素换行设置的对齐方式 */
+.box3{
+    align-content: center;  
+    flex-wrap: wrap;
+}
+</style>
+<body>
+<div class="box1 box">
+    <span>111</span>
+    <span>222</span>
+</div>
+<div class="box2 box">
+    <span>111</span>
+    <span>222</span>
+</div>
+<div class="box3 box">
+    <span>111</span>
+    <span>222</span>
+    <span>222</span>
+    <span>222</span>
+</div>
+
+</body>
+</html>
