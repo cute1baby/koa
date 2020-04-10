@@ -19,3 +19,16 @@ npm run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+### 安装sass的步骤
+- npm install sass-loader@7.3.1 --save-dev（注意：我安装sass-loader版本大于8.0后就报错，后面降成了7.3.1运行正常）
+- npm install --save-dev node-sass
+- 在build文件夹下的webpack.base.conf.js的rules里面添加配置
+```
+// 在main.js中引入import './assets/css/index.scss'时候报错，注释下面这段代码成功跑起来了。说是重复设置导致了错误
+{
+  test: /\.sass$/,
+  loaders: ['style', 'css', 'sass']
+}
+```
+- style标签中加上`style lang="scss" scoped`
