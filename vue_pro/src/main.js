@@ -3,7 +3,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 import axios from "axios"
-import { Tabbar, TabItem, Search, InfiniteScroll, Header, Button } from 'mint-ui'
+import { Tabbar, TabItem, Search, InfiniteScroll, Header, Button, Field, Radio } from 'mint-ui'
 import './assets/css/index.scss'
 
 
@@ -26,6 +26,8 @@ Vue.component(Search.name, Search);
 Vue.use(InfiniteScroll);
 Vue.component(Header.name, Header);
 Vue.component(Button.name, Button);
+Vue.component(Field.name, Field);
+Vue.component(Radio.name, Radio);
 
 /* eslint-disable no-new */
 new Vue({

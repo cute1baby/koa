@@ -60,11 +60,11 @@ export default {
   name: 'TopicList',
   data () {
     return {
-      pageIndex: 1,
+      pageIndex: 0,
       pageLimit: 15,
       loadText: '正在加载...',
       topicList: [],
-      isLoading: true,
+      isLoading: false,
       currentTab: '',
       tabs: {
         list: ['', 'ask', 'share', 'job'],
@@ -144,14 +144,13 @@ export default {
     },
     async getData () {
         try{
-            this.isLoading = true
-            const { data } = await this.getTopics()
-            this.topicList = [...this.topicList, ...data.data]
-            // 模拟延迟加载的效果
-            setTimeout(() => {
-                this.pageIndex++
-                this.isLoading = false
-            }, 500)
+          this.pageIndex++
+          const { data } = await this.getTopics()
+          this.topicList = [...this.topicList, ...data.data]
+          // 模拟延迟加载的效果
+          // setTimeout(() => {
+          //     this.isLoading = false
+          // }, 500)
         } catch (err){
             console.log(err)
         }
@@ -159,7 +158,7 @@ export default {
 
     changeTab(t){
         // 初始化状态
-        this.pageIndex = 1
+        this.pageIndex = 0
         this.topicList = []
         this.currentTab = t
         this.getData()
@@ -202,7 +201,7 @@ export default {
         position: relative;
         padding: 10px;
         font-size: 14px;
-        border-top: 1px solid #f0f0f0;
+        // border-top: 1px solid #f0f0f0;
         .user_avatar {
           width: 30px;
           height: 30px;
@@ -246,9 +245,19 @@ export default {
           font-size: 10px;
           color: #777;
         }
-        & :nth-child(1) {
-          border-top: 0;
+        &:after{
+          content:"";
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          height: 1px;
+          background: #f0f0f0;
+          transform: scaleY(0.5);
         }
+        // & :nth-child(1) {
+        //   border-top: 0;
+        // }
       }
 
       .loading {

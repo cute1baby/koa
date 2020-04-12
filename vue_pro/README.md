@@ -32,3 +32,11 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 }
 ```
 - style标签中加上`style lang="scss" scoped`
+
+
+
+### 使用InfiniteScroll出现问题
+- 应该让ul外层的容器设置一个高度和overflow-y: auto，让整个ul滚动。
+- infinite-scroll-disabled="isLoading"这里的isLoading状态应该一直设置为false,其状态的变化会导致v-infinite-scroll="getData"这里的getData方法持续触发。
+-
+
