@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+function Person(name){
+    this.name = name;
+}
+Person.prototype.getName = function(){
+    console.log(this.name)
+}
+
+function newFn(Fn, ...args) {
+    // 新建一个普通对象
+    let obj = {}
+    // 将构造函数的原型指向对象的__proto__
+    obj.__proto__ = Fn.prototype;
+    // 执行Fn函数，并且将this指向obj
+    Fn.call(obj, ...args);
+    // 返回有原型方法和this上属性值的对象
+    return obj;
+}
+
+const p = newFn(Person, 'Lucy');
+p.getName()
+
+
+const a = (...args) => {
+    console.log(args)
+}
+a(1, 2, 3, 4)
+</script>
+</body>
+</html>

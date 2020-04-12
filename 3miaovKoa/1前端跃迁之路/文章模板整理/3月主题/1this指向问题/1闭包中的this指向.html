@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+var b = {
+    name: "Lee",
+    getName: function(){
+        console.log("此时this指向对象b", this.name);
+        return function(){
+            console.log("此时this指向window", this.name)
+        }
+    }
+}
+const setFunc = b.getName();
+setFunc();
+</script>
+</body>
+</html>

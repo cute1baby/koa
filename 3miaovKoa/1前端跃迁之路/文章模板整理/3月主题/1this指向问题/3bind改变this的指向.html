@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+var name = 'myName';
+var obj1 = {
+    name: 'Lucy',
+}
+var obj2 = {
+    name: 'Bob',
+}
+function getName(){
+    console.log(this.name)
+}
+getName.call(obj1); //动态的让this指向obj1，生效
+getName.call(obj2) //动态的让this指向obj2，生效
+
+const bFunc = getName.bind(obj1)
+bFunc();  //动态的让this指向obj1，生效
+bFunc.call(obj2);  //动态的让this指向obj2，但是不生效，指向的还是obj1
+</script>
+</body>
+</html>

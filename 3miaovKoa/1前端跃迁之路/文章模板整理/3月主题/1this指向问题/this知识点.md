@@ -72,7 +72,7 @@ obj.getName();
 ### 显式绑定
 #### 通过bind,call,apply的方式动态的传入this指向的对象
 call,apply是通过传入指定的对象，让执行方法的this指向传入的对象。
-- call和apply的使用在于传参的不同，将对象指向了this后函数会立即执行。并且这两个方法绑定的对象可以是动态变化的。如果第一个参数为null，undefined或是不传，则指向全局变量。
+- call和apply的使用在于传参的不同，将对象指向了this后函数会立即执行。并且这两个方法绑定的对象可以是动态变化的。
     - call传参方式是参数逐个传过去的，
     - apply是将参数放到一个数组里面传过去的。
 - bind方法在将对象指向this后并不会立即执行，而是会返回一个函数，但是这个函数绑定了该对象之后就不能再动态改变了。
@@ -159,31 +159,11 @@ p.getName();
 - 箭头函数不能作为构造函数使用
 - 箭头函数没有arguments
 ```
-// say方法上层作用域中的this指向的是window，call也无法修改它的指向
-let a = 10
-const obj = {
-    a: 1,
-    say: () => {
-        console.log(this.a)
-    }
+// 箭头函数中的参数表示方式
+const a = (...args) => {
+    console.log(args);
 }
-obj.say()  // 10
-obj.say.call({a: 5})  // 10
-
-
-// say方法上层作用域中的this指向的是Factory实例，所以输出的是实例的属性b
-var b = 10
-function Factory(){
-    this.a = '1'
-    this.b = '2'
-    this.getVal = {
-        say: () => {
-            console.log(this.b)
-        }
-    }
-}
-
-new Factory().getVal.say()  //'2'
+a(1,2,3,4);
 ```
 
 ### 总结

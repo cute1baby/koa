@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+class A {
+    static say() {
+        console.log('说话')
+    }
+}
+
+class B extends A {
+    constructor() {
+        super();
+    }
+    static action(){
+        super.say()
+    }
+}
+
+B.action()  // 说话
+</script>
+</body>
+</html>

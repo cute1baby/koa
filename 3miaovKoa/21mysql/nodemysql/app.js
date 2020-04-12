@@ -45,7 +45,6 @@
         const pages = Math.ceil(allTodos.length / limit)// 一共有多少页
         const sql = `SELECT id,name,isFinish FROM todos ${where} ORDER BY id DESC LIMIT ${limit} OFFSET ${(page-1)*limit}`
         const [list] = await connection.query(sql)
-        console.log(pages)
 
         // 定义后端返回的数据格式。code => 0数据返回正常，非0则是失败数据
         const resData = {
@@ -81,6 +80,49 @@
             }
         }
 
+    })
+
+    // 删除指定id的item
+    router.post('/deleteItem', async (ctx,next) => {
+        const id = Number(ctx.request.body.id) || 0;
+        console.log('>>>>>', id)
+        // 使用占位符的方式修改[??表示字段名，?表示值]
+        let sql = "DELETE FROM todos WHERE ??=?";
+        const [res] = await connection.query(sql, ['id', id])
+        // res.affectedRows是成功修改的条数
+        if (res.affectedRows > 0) {
+            ctx.body = {
+                code: 0,
+                msg: '数据删除成功'
+            }
+        } else {
+            ctx.body = {
+                code: 1,
+                data: '数据删除失败'
+            }
+        }
+    })
+
+    // 修改item的状态
+    router.post('/changeStatus', async (ctx, next) => {
+        const id = Number(ctx.request.body.id) || 0,
+            status = Number(ctx.request.body.status) || 0;
+
+        // 使用占位符的方式修改[??表示字段名，?表示值]
+        let sql = "UPDATE todos SET ??=? WHERE ??=?";
+        const [res] = await connection.query(sql, ['isFinish', status, 'id', id])
+        // res.affectedRows是成功修改的条数
+        if (res.affectedRows > 0) {
+            ctx.body = {
+                code: 0,
+                msg: '数据修改成功'
+            }
+        } else {
+            ctx.body = {
+                code: 1,
+                data: '数据修改失败'
+            }
+        }
     })
 
     app.use(router.routes())

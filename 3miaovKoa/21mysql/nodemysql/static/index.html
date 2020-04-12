@@ -18,7 +18,7 @@
     <ul v-if="todos.length > 0">
         <li v-for="(todo, index) in todos" :key="todo.id" :class="todo.isFinish? 'finished':''">
             [{{todo.id}}]-
-            <input type="checkbox" @click.prevent="toggle(todo.id)" :checked="todo.isFinish">
+            <input type="checkbox" @click.prevent="toggle(todo.id, !todo.isFinish)" :checked="todo.isFinish">
             {{todo.name}}
             <button @click="deleteItem(todo.id)">删除</button>
         </li>
@@ -84,33 +84,36 @@ new Vue({
 
 
         },
-        toggle(id){
+        /**
+         * id: 要修改的数据的id
+         * 修改后的状态
+        */
+        toggle(id, status){
             const that = this;
-            axios.get('/changeStatus', {
-                params: {
-                    id
-                }
+            axios.post('/changeStatus', {
+                id,
+                status: Number(status)
             })
             .then(res => {
                 const data = res.data;
                 if(!data.code){
-                    that.todos = data.list;
+                    that.getList();
                 }else{
                     console.log(data)
                 }
             })
         },
+
+        // 删除对应id的item
         deleteItem(id){
             const that = this;
-            axios.get('/deleteItem', {
-                params: {
-                    id
-                }
+            axios.post('/deleteItem', {
+                id
             })
             .then(res => {
                 const data = res.data;
                 if (!data.code) {
-                    that.todos = that.todos.filter(todo => String(todo.id) != String(id));
+                   this.getList()
                 } else {
                     console.log(data)
                 }
