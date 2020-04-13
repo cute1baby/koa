@@ -17,7 +17,7 @@
     <div class="list df1"
          v-if="topicList.length > 0">
       <div v-infinite-scroll="getData"
-           infinite-scroll-disabled="isLoading"
+           infinite-scroll-disabled="false"
            infinite-scroll-distance="10"
            class="topic_list">
         <div class="cell df dfc"
@@ -44,11 +44,12 @@
           </div>
 
         </div>
-        <div class="loading"
-             v-if="isLoading">
-          <span id="load-text">{{loadText}}</span>
-        </div>
+
       </div>
+    </div>
+    <div class="loading"
+            v-if="isLoading">
+        <span id="load-text">正在加载...</span>
     </div>
     <div class="seat"></div>
   </div>
@@ -62,9 +63,8 @@ export default {
     return {
       pageIndex: 0,
       pageLimit: 15,
-      loadText: '正在加载...',
       topicList: [],
-      isLoading: false,
+      isLoading: true,
       currentTab: '',
       tabs: {
         list: ['', 'ask', 'share', 'job'],
@@ -145,12 +145,11 @@ export default {
     async getData () {
         try{
           this.pageIndex++
+          this.isLoading = true
           const { data } = await this.getTopics()
           this.topicList = [...this.topicList, ...data.data]
           // 模拟延迟加载的效果
-          // setTimeout(() => {
-          //     this.isLoading = false
-          // }, 500)
+          this.isLoading = false
         } catch (err){
             console.log(err)
         }
@@ -260,12 +259,12 @@ export default {
         // }
       }
 
-      .loading {
-        text-align: center;
-        padding: 10px 0 20px;
-        color: #666;
-      }
     }
+  }
+  .loading {
+    text-align: center;
+    padding: 10px 0 20px;
+    color: #666;
   }
   .seat {
     height: 64px;

@@ -40,3 +40,9 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - infinite-scroll-disabled="isLoading"这里的isLoading状态应该一直设置为false,其状态的变化会导致v-infinite-scroll="getData"这里的getData方法持续触发。
 -
 
+### favicon的引入
+```
+<link rel="icon" href="./static/favicon.ico" type="image/x-icon" />
+```
+
+

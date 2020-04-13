@@ -52,5 +52,12 @@ html,body{
     "WenQuanYi Micro Hei", sans-serif;
   background: #f6f6f6;
   height: 100%;
+
+}
+.mint-tab-item{
+    color: #666;
+}
+#app .mint-tab-item.is-selected{
+    color: #369219;
 }
 </style>

@@ -119,9 +119,11 @@
   height: 100%;
   padding: 0 6px;
   .header{
+    margin-left: 10px;
     height: 40px;
     line-height: 40px;
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: 600;
     position: relative;
     a{
       color: #369219;
@@ -144,15 +146,18 @@
   .container{
     >>> .mint-cell-wrapper{
       background-image: none;
+      .mint-cell-title{
+          width: 46px;
+      }
+      .mint-radio-input:checked + .mint-radio-core{
+        background-color: rgba(54,146,25, 0.8);
+        border-color: rgba(54,146,25, 0.8);
+      }
     }
-    .radios{
 
-    }
-    .content{
-
-    }
     .button{
       width: 80%;
+      background: rgba(54,146,25, 0.8);
       margin: 20px auto;
       display: block;
     }

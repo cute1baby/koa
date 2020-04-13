@@ -128,7 +128,7 @@ export default {
   padding:40px 0 64px;
   box-sizing: border-box;
   .header{
-      background: #369219;
+      background: rgba(54,146,25, 0.8);
   }
   .top{
     margin: 6px;
