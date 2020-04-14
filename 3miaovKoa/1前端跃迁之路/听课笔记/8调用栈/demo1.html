@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// 尾递归
+// function runStack (n){
+//     if(n === 0) {
+//         return 100
+//     }
+//     console.log(n)
+//     return runStack(n-10)
+// }
+// runStack(1000)
+
+// 循环的方式
+// function runStack (n){
+//     while(n > 0) {
+//         runStack(n-10)
+//     }
+//     console.log(n)
+//     if(n === 0){
+//         return 100
+//     }
+// }
+// runStack(1000)
+
+
+// 事件循环
+// function runStack (n){
+//     if(n === 0) {
+//         return 100
+//     }
+//     console.log(n)
+//     setTimeout(runStack, 0, n-10)
+// }
+// runStack(1000)
+
+function jiaChengLast(n, total=1) {
+  if (n === 0) {
+    return total;
+  }
+  return jiaChengLast(n - 1, total * n)
+}
+jiaChengLast(10)
+</script>
+</body>
+</html>
