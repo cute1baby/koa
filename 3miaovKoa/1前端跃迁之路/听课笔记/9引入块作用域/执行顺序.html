@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+
+	<body>
+		<script>
+			// function foo() {
+			//     var a = 1
+			//     let b = 2 
+            //     {
+            //         let b = 3  // 当断点在这里的时候Scope有b=undefined,d=undefined，刚进入块作用域时词法环境中会创建b,d变量
+            //         
+            //         var c = 4
+            //         let d = 5 
+            //         console.log(a) 
+            //         console.log(b)
+            //     }
+			//     console.log(b) 
+            //     console.log(c) 
+            //      console.log(d)
+			// }
+
+            function foo() {
+			    var a = 1
+			    let b = 2 
+                {
+                    let b = 3  // 当断点在这里的时候Scope只有b=undefined，推测是因为下面的console.log(d)出现了暂时性死区，没有在词法环境中创建d
+                    console.log(d)
+                    var c = 4
+                    let d = 5 
+                    console.log(a) 
+                    console.log(b)
+                }
+			    console.log(b) 
+                console.log(c) 
+                
+			}
+			foo()
+		</script>
+	</body>
+</html>

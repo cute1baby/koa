@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// 在块作用域中声明函数
+// function foo(){
+//     console.log(g);
+//     if(true){  
+//         function g(){ return true; }
+//     }
+// }
+foo()
+
+
+function foo(){
+    console.log(g);
+    if(true){  
+        var g = function g(){ return true;}
+    }
+}
+</script>
+
+</body>
+</html>
