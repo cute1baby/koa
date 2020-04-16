@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+/*
+* 1、箭头函数
+* 2、用变量self保存this状态
+* 3、bind方法
+* 4、call/apply方法
+* 5、用函数自执行传入this状态，思路跟2类似
+*/
+
+
+// 
+
+// bind方法
+// let userInfo = {
+//     name:"jack.ma",
+//     age:13,
+//     sex:'male',
+//     updateInfo:function(){
+//         //模拟xmlhttprequest请求延时
+//         setTimeout(function(){
+//             this.name = "pony.ma"
+//             this.age = 39
+//             this.sex = 'female'
+//         }.bind(this),100)
+//     }
+// }
+    
+// 使用call方式
+// let userInfo = {
+//     name:"jack.ma",
+//     age:13,
+//     sex:'male',
+//     updateInfo:function(){
+//         //模拟xmlhttprequest请求延时
+//         function setProp(){
+//             this.name = "pony.ma"
+//             this.age = 39
+//             this.sex = 'female'
+//         }
+//         setTimeout(function(){
+//             setProp.call(userInfo)
+//         },100)
+//     }
+// }
+
+
+// 函数自执行方法
+let userInfo = {
+    name:"jack.ma",
+    age:13,
+    sex:'male',
+    updateInfo:function(){
+        (function(_this){
+            setTimeout(function(){
+                _this.name = "pony.ma"
+                _this.age = 39
+                _this.sex = 'female'
+            },100)
+        })(this)
+    }
+}
+
+userInfo.updateInfo()
+</script>
+</body>
+</html>

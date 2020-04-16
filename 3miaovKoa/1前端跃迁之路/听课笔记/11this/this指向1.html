@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// var name = 'lee'
+// var obj = {
+//     name: 'lizhong',
+//     getName:function(){
+//         console.log(this.name)  // this指向window
+//     }
+// }
+// function run(){
+//     return obj.getName
+// }
+// var r = run()
+// r()
+
+var bar = {
+    myName:"time.geekbang.com",
+    printName: function () {
+        console.log(this.myName)  // this指向window
+    }
+}
+function foo() {
+    let myName = "极客时间" 
+    return bar.printName
+}
+var myName = "极客邦"
+let _printName = foo()
+_printName()
+</script>
+</body>
+</html>

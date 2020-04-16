@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script type="text/javascript">
+// 外层有大括号和没有大括号的解析是不一样的；暂时性死区和不存在打印出值情况初始化值是不一样额
+{
+    let myname = "outer name";
+    {
+        let myage = 10;
+        let myclazz = "1(4)班";
+        // console.log(myname);
+        let myname = 'inner name';
+    }
+}
+    </script>
+</body>
+</html>
