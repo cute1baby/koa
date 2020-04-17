@@ -1,5 +1,6 @@
 <template>
-  <div class="mine df dfc">
+  <div class="mine df dfc dfdir">
+      <img src="../assets/imgs/user.jpg" alt="">
       当前功能暂未开放
   </div>
 </template>
@@ -28,9 +29,14 @@ export default {
 
 <style lang="scss" scoped>
 .mine{
-    font-size: 16px;
+    font-size: 1.666667rem;
     color: #666;
     text-align: center;
     height: 100%;
+    img{
+        max-width: 50%;
+        vertical-align: middle;
+        margin-bottom: 1.333333rem;
+    }
 }
 </style>

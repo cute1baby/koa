@@ -175,15 +175,16 @@ export default {
 .topicList {
   height: 100%;
   .tablist {
-    padding: 10px;
+    padding: .833333rem;
     background-color: #f6f6f6;
     border-radius: 3px 3px 0 0;
     li {
-      margin: 0 10px;
+      font-size: 1.166667rem;
+      margin: 0 .833333rem;
       background-color: #f6f6f6;
       color: #369219;
-      padding: 4px 6px;
-      border-radius: 3px;
+      padding: .333333rem .5rem;
+      border-radius: .25rem;
     }
     .active {
       background-color: #369219;
@@ -191,33 +192,33 @@ export default {
     }
   }
   .list {
-    padding: 0 6px;
+    padding: 0 .5rem;
     overflow-y: auto;
     .topic_list {
       background: #fff;
       .cell {
         overflow: hidden;
         position: relative;
-        padding: 10px;
-        font-size: 14px;
+        padding: .833333rem;
+        font-size: 1.166667rem;
         // border-top: 1px solid #f0f0f0;
         .user_avatar {
-          width: 30px;
-          height: 30px;
+          width: 2.5rem;
+          height: 2.5rem;
           background: #ccc;
-          border-radius: 3px;
+          border-radius: .25rem;
           vertical-align: middle;
-          margin-right: 10px;
+          margin-right: .833333rem;
         }
         .left {
           max-width: 70%;
           .put_top {
             background-color: #e5e5e5;
             color: #999;
-            margin-right: 6px;
+            margin-right: .5rem;
             padding: 2px 4px;
-            border-radius: 3px;
-            font-size: 12px;
+            border-radius: .25rem;
+            font-size: 1rem;
           }
           .isgreen {
             background: #369219;
@@ -226,12 +227,12 @@ export default {
           .topic_title {
             // color: #888;
             color: #333;
-            font-size: 14px;
+            font-size: 1.166667rem;
             line-height: 1.2;
           }
           .count {
             line-height: 1.8;
-            font-size: 10px;
+            font-size: .833333rem;
             .count_of_replies {
               color: #9e78c0;
             }
@@ -241,7 +242,7 @@ export default {
           }
         }
         .last_active_time {
-          font-size: 10px;
+          font-size: .833333rem;
           color: #777;
         }
         &:after{
@@ -263,11 +264,11 @@ export default {
   }
   .loading {
     text-align: center;
-    padding: 10px 0 20px;
+    padding: .833333rem 0 1.666667rem;
     color: #666;
   }
   .seat {
-    height: 64px;
+    height: 5.333333rem;
   }
 }
 </style>

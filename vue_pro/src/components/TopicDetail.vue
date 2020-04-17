@@ -125,33 +125,43 @@ export default {
   height: 100%;
   background: #f6f6f6;
   overflow: auto;
-  padding:40px 0 64px;
+  padding:3.333333rem 0 5.333333rem;
   box-sizing: border-box;
   .header{
-      background: rgba(54,146,25, 0.8);
+      background: rgba(54,146,25, 1);
+      font-size: 1.24rem;
+      >>> button{
+          span{
+            line-height: 0.8;
+          }
+          .mint-button-text{
+            font-size: 1rem;
+        }
+      }
   }
   .top{
-    margin: 6px;
-    padding: 10px;
+    margin: .5rem;
+    padding: .833333rem;
     background: #fff;
     .title{
-        font-size: 22px;
+        font-size: 1.833333rem;
         font-weight: 700;
-        margin: 8px 0;
+        margin: .666667rem 0;
         vertical-align: bottom;
         line-height: 1.2;
     }
     .supply{
-        font-size: 12px;
+        font-size: 1rem;
         line-height: 1.6;
+        overflow: hidden;
         >>> h4{
-            margin: 16px 0;
-            font-size: 14px;
+            margin: 1.333333rem 0;
+            font-size: 1.166667rem;
             color: #333;
             font-weight: 700;
         }
         >>> p{
-            margin: 12px 0;
+            margin: 1rem 0;
         }
         >>> img{
             max-width: 100%;
@@ -160,51 +170,58 @@ export default {
             list-style: decimal;
             margin-left: 2em;
         }
+        >>> pre{
+            overflow: auto;
+        }
     }
   }
   .replyCon{
-      margin: 0 6px;
-      padding: 10px;
+      margin: 0 .5rem;
+      padding: .833333rem;
       background: #fff;
       border: 1px solid #f6f6f6;
       .slide{
           .userinfo{
-              margin-bottom: 4px;
+              margin-bottom: .333333rem;
               img{
-                  width: 24px;
-                  height: 24px;
+                  width: 2rem;
+                  height: 2rem;
                   border-radius: 50%;
                   background: #ccc;
                   vertical-align: middle;
-                  margin-right: 6px;
+                  margin-right: .5rem;
               }
               .name{
-                  font-size: 14px;
+                  font-size: 1.166667rem;
                   color: #005580;
               }
           }
           .date{
-            font-size: 10px;
-            margin: 10px 0;
+            font-size: .833333rem;
+            margin: .833333rem 0;
             color: #3c3c3c;
           }
           .content{
-            font-size: 14px;
+            font-size: 1.166667rem;
             line-height: 1.6;
             color: #3c3c3c;
+            >>> img{
+                max-width: 100%;
+                vertical-align: middle;
+            }
           }
       }
       .thumbs{
-          flex-basis: 60px;
-          padding-left: 6px;
+          flex-basis: 5rem;
+          padding-left: .5rem;
           .num{
-            font-size: 14px;
-            color: #666;
-            margin-left: 4px;
+            font-size: 1.166667rem;
+            color: #369219;
+            margin-left: .333333rem;
           }
           .iconfont{
-              font-size: 20px;
-              color: #666;
+              font-size: 1.666667rem;
+              color: #369219;
           }
           .isCollect{
               animation: mymove 2s 1;

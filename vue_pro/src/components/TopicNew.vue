@@ -117,17 +117,17 @@
 .topicDetail{
   background: #fff;
   height: 100%;
-  padding: 0 6px;
+  padding: 0 .5rem;
   .header{
-    margin-left: 10px;
-    height: 40px;
-    line-height: 40px;
-    font-size: 16px;
+    margin-left: .833333rem;
+    height: 3.333333rem;
+    line-height: 3.333333rem;
+    font-size: 1.333333rem;
     font-weight: 600;
     position: relative;
     a{
       color: #369219;
-      margin-right: 6px;
+      margin-right: .5rem;
     }
     span{
       margin-left: 6px;
@@ -147,7 +147,7 @@
     >>> .mint-cell-wrapper{
       background-image: none;
       .mint-cell-title{
-          width: 46px;
+          width: 3.833333rem;
       }
       .mint-radio-input:checked + .mint-radio-core{
         background-color: rgba(54,146,25, 0.8);
@@ -158,7 +158,7 @@
     .button{
       width: 80%;
       background: rgba(54,146,25, 0.8);
-      margin: 20px auto;
+      margin: 1.666667rem auto;
       display: block;
     }
   }

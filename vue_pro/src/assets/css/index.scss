@@ -3,3 +3,7 @@
 @import './iconfont.css';
 @import 'mint-ui/lib/style.css';
 
+// 设置根目录大小
+:root {
+    font-size: calc(100vmin / 375 * 12);
+  }
