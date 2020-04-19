@@ -145,10 +145,78 @@
     // })
 
     // 统计所有姓名叫做李钟的年龄的总和
-    const rs = await UserModel.sum('age', {
-        where: {
-            username: '李钟'
+    // const rs = await UserModel.sum('age', {
+    //     where: {
+    //         username: '李钟'
+    //     }
+    // })
+    // console.log(rs)
+
+
+    // 关联查询
+    const MessageModel = sequelize.define('message', {
+        id: {
+            type: Sequelize.INTEGER(10),  // 数字类型
+            allowNull: false,  // 允许为空
+            primaryKey: true,  // 唯一key
+            autoIncrement: true  // 自增
+        },
+        uid: {  // 其他表的字段，把当前字段定义为外键
+            type: Sequelize.INTEGER(10),
+            defaultValue: 0,
+            references:{  // 映射关系
+                model: UserModel,  // 对应其他的哪个表
+                key: 'id' // 对应哪个表中的哪个字段
+            }
+        },
+        content: {
+            type: Sequelize.STRING(255),
+            allowNull: true,  //是否允许为空
+            defaultValue: ''
         }
+    }, {
+        // 用来设置字段以外的其他信息
+        timestamps: false,
+        freezeTableName: true, // 是否禁用修改表名，默认会给模型名称加复数
+        tableName: 'message' // 手动设置表的实际名称，和freezeTableName目的是一样
     })
-    console.log(rs)
+
+    // 获取某条留言的所有数据：留言信息和用户信息
+    // let data= {}
+    // // 获取message中的信息
+    // let message = await MessageModel.findOne({where: {id: 1}})
+
+    // // 获取user中的信息（对应message表中的uid）
+    // let user = await UserModel.findOne({ where: { id: message.get('uid')}})
+    // // 获取到当前信息的数据和对应的用户数据
+    // Object.assign(data, {
+    //     uid: message.get('uid'),
+    //     id: message.get('id'),
+    //     content: message.get('content'),
+
+    //     username: user.get('username'),
+    //     age: user.get('age'),
+    //     gender: user.get('gender')
+    // })
+
+
+
+
+    // 上面这段关联关系的表相当于
+
+    // 查询一个用户对应多条信息
+    UserModel.hasMany(MessageModel, {
+        foreignKey: 'uid'
+    })
+    let data2 = await UserModel.findOne({ where: { id: 3 }, include: [MessageModel]})
+    console.log('获取用户+消息数据：', data2.username, data2.messages.map(msg => msg.content))
+
+
+    // 查询一条信息对应的用户
+    MessageModel.belongsTo(UserModel, {
+        foreignKey: 'uid'
+    })
+    // 使用findOne时，要把include和where在同一级
+    let data3 = await MessageModel.findOne({ where: { id: 3 }, include: [UserModel] })
+    console.log('获取信息+用户的数据：', data3.content, data3.User.username, data3.User.gender)
 })()

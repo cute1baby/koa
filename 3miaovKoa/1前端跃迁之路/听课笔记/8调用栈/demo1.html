@@ -7,6 +7,17 @@
 </head>
 <body>
 <script>
+// 初始函数
+  // function runStack(n) {
+  //   if (n === 0) {
+  //     return 100
+  //   }
+  //   console.log(n)
+  //   runStack(n - 10)
+  // }
+  // runStack(1000)
+
+
 // 尾递归
 // function runStack (n){
 //     if(n === 0) {
@@ -31,22 +42,15 @@
 
 
 // 事件循环
-// function runStack (n){
-//     if(n === 0) {
-//         return 100
-//     }
-//     console.log(n)
-//     setTimeout(runStack, 0, n-10)
-// }
-// runStack(1000)
-
-function jiaChengLast(n, total=1) {
-  if (n === 0) {
-    return total;
-  }
-  return jiaChengLast(n - 1, total * n)
+function runStack (n){
+    if(n === 0) {
+        return 100
+    }
+    console.log(n)
+    setTimeout(runStack, 0, n-10)
 }
-jiaChengLast(10)
+runStack(1000)
+
 </script>
 </body>
 </html>
