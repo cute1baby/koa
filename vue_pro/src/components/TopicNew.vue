@@ -68,7 +68,7 @@
           });
           return status
         }
-        if(!title.length < 10){
+        if(title.length < 10){
           status = false
           Toast({
             message: '标题字数至少为10'
@@ -93,7 +93,7 @@
           tab,
           content
         }).then(res => {
-          const {data} = res.data
+          const data = res.data
           if(data.success){
             Toast({
               message: '新建主题成功',
