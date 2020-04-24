@@ -1,14 +1,15 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-import TopicList from '@/components/TopicList'
-import TopicDetail from '@/components/TopicDetail'
-import TopicNew from '@/components/TopicNew'
-import Mine from '@/components/Mine'
+import VueRouter from 'vue-router'
+const TopicList = resolve => require(['@/components/TopicList'], resolve)
+const TopicDetail = resolve => require(['@/components/TopicDetail'], resolve)
+const TopicNew = resolve => require(['@/components/TopicNew'], resolve)
+const Mine = resolve => require(['@/components/Mine'], resolve)
 
-Vue.use(Router)
+if (process.env.NODE_ENV === 'development') {
+    Vue.use(VueRouter)
+}
 
-export default new Router({
-  mode: 'history',
+export default new VueRouter({
   routes: [
     {
       path: '/',
