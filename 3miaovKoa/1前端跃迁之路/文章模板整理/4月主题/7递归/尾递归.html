@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+/**
+ * 这种方式虽然在执行栈中不再重复调用f函数了，但是要达到递归的目的会重复调用g函数，
+ * 一样会把函数g创建的执行上下文推入栈内，那这样做的目的是什么呢
+*/
+function g(n){
+    if(n===1) return 1;
+    return n * g(n-1)
+}
+// 尾递归
+function f(x){
+    return g(x);
+}
+console.log(f(10))
+</script>
+</body>
+</html>
