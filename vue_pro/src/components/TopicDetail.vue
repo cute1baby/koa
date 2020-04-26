@@ -1,8 +1,8 @@
 <template>
   <div class="topicDetail df dfdir">
       <mt-header fixed title="话题详情" class="header">
-        <router-link to="/" slot="left">
-            <mt-button icon="back">返回</mt-button>
+        <router-link to="" slot="left">
+            <mt-button icon="back" @click="$router.back(-1)">返回</mt-button>
         </router-link>
       </mt-header>
       <div class="top">

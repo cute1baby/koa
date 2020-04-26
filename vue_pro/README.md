@@ -85,7 +85,7 @@ if (process.env.NODE_ENV === 'development') {
     require('mint-ui/lib/style.css')
 }
 
-6、在router/index.js中做如下修改: 按需加载
+6、在router/index.js中做如下修改: 异步引入
 const TopicList = resolve => require(['@/components/TopicList'], resolve)
 const TopicDetail = resolve => require(['@/components/TopicDetail'], resolve)
 const TopicNew = resolve => require(['@/components/TopicNew'], resolve)
@@ -99,4 +99,36 @@ if (process.env.NODE_ENV === 'development') {
     Vue.use(Vuex)
 }
 
+```
+
+
+### 进一步优化，引入webpack DllPlugin，让第三方的js只打包一次
+```
+webpack提供了一个DllPlugin的插件。
+
+1、在src目录下新建 vendor.js 来import 第三方的js
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Vuex from 'vuex'
+import axios from "axios"
+
+import MINT from 'mint-ui' 
+
+2、在build目录下新建 webpack.dll.conf.js 配置文件
+
+3、在 package.json 里面加上 script ：build:dll
+
+4、webpack提供了DllReferencePlugin。修改 build/webpack.base.conf.js
+
+5、修改 build/webpack.prod.js。删除上一篇文章中配置的externals配置项和去掉CommonsChunkPlugin
+
+6、将 index.dev.html 和 index.prod.html 合并成一个文件 index.html，去掉CDN资源，引入 vendor.dll.js
+
+7、修改 webpack.dev.conf.js 和 webpack.prod.conf.js 里面的模板文件的配置
+
+8、修改 src 里面 vuex、vue-router 的使用
+
+9、接下来运行npm run dev，npm run build
+
+详情参照链接：https://juejin.im/post/5a3251ee6fb9a0450f21f6ac
 ```

@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-if (process.env.NODE_ENV === 'development') {
-    Vue.use(Vuex)
-}
+Vue.use(Vuex)
+
 const state = {
     userInfo:{
         accesstoken: '0fc7673e-4510-4069-8961-623f2ee38dfa',

@@ -1,4 +1,5 @@
 'use strict'
+const webpack = require('webpack')
 const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
@@ -22,7 +23,16 @@ module.exports = {
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
   },
-  
+  plugins: [
+    new webpack.DllReferencePlugin({
+      // name参数和dllplugin里面name一致，可以不传
+      name: 'vendor',
+      // dllplugin 打包输出的manifest.json
+      manifest: require('../vendor.manifest.json'),
+      // 和dllplugin里面的context一致
+      context: path.join(__dirname, '..')
+    })
+  ],
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {  // 别名配置

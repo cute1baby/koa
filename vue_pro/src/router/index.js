@@ -5,9 +5,7 @@ const TopicDetail = resolve => require(['@/components/TopicDetail'], resolve)
 const TopicNew = resolve => require(['@/components/TopicNew'], resolve)
 const Mine = resolve => require(['@/components/Mine'], resolve)
 
-if (process.env.NODE_ENV === 'development') {
-    Vue.use(VueRouter)
-}
+Vue.use(VueRouter)
 
 export default new VueRouter({
   routes: [
