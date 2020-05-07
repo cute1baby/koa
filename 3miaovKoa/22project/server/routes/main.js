@@ -152,6 +152,7 @@ router.post('/like', async ctx => {
         where: {id: contentId}
     });
     console.log("content====", content, contentId);
+    // 防止恶意伪造数据
     if (!content) {
         return ctx.body = {
             code: 2,
@@ -159,7 +160,7 @@ router.post('/like', async ctx => {
         }
     }
 
-    // 查询当前用户是否对该内容已经点过赞了
+    // 查询当前用户是否对该内容已经点过赞了(防止点赞刷单)
     // SELECT * FROM likes WHERE content_id=1 and user_id=1
     let like = await Models.Likes.findOne({
         where: {
@@ -192,5 +193,7 @@ router.post('/like', async ctx => {
         data: content
     }
 })
+
+
 
 module.exports = router

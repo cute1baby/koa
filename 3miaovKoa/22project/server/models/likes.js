@@ -32,7 +32,8 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.DATE
     }
   }, {
-    tableName: 'likes'
+    tableName: 'likes',
+    timestamps: true
   });
   Likes.associate = function(models) {
     // associations can be defined here

@@ -12,7 +12,7 @@
                 <footer class="text-right">
                     <small style="cursor: pointer;" @click="like(content.id)">赞（{{content.like_count}}）</small>
                     <small>回复（{{content.comment_count}}）</small>
-                    <a href="">我要回复</a>
+                    <a href="javascript:;">我要回复</a>
                 </footer>
             </div>
 

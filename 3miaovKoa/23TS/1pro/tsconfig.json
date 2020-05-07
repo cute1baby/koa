@@ -1,0 +1,7 @@
+{
+    "compilerOptions": {
+        "module": "system",
+        "outDir": "./dist",
+        "outFile": "./bundle.js"
+    }
+}

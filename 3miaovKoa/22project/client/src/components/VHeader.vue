@@ -74,7 +74,7 @@
             <template slot="footer">
                 <button type="button" class="btn btn-primary" @click="registerSubmit">注册</button>
                 <button type="button" class="btn btn-secondary">取消</button>
-                <a href="">我有账号，立即登录</a>
+                <a href="javascript:;">我有账号，立即登录</a>
             </template>
         </modal>
 
@@ -137,20 +137,19 @@ export default {
         // 从cookie中获取用户信息
         console.log('cookie===', document.cookie);
 
+        if(document.cookie){
+            let arr1 = document.cookie.split('; ');
+            arr1 = arr1.map( item => {
+                let arr2 = item.split('='); //['uid', 1]
+                return {
+                    [arr2[0]]: arr2[1]
+                }
+            });
+            let cookie = Object.assign({}, ...arr1);
+            console.log(cookie)
 
-        let arr1 = document.cookie.split('; ');
-        arr1 = arr1.map( item => {
-            let arr2 = item.split('='); //['uid', 1]
-            return {
-                [arr2[0]]: arr2[1]
-            }
-        } );
-        let cookie = Object.assign({}, ...arr1);
-        console.log(cookie)
-
-        this.userInfo.username = decodeURIComponent(cookie.username);
-
-        // console.log(this.userInfo);
+            this.userInfo.username = decodeURIComponent(cookie.username);
+        }
 
     },
 
