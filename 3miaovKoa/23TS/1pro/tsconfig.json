@@ -2,9 +2,11 @@
     "compilerOptions": {
         "module": "commonjs",
         "target": "es2017",
-        "outDir": "./dist"
+        "outDir": "./dist",
+        "strictNullChecks": true,
+        "noImplicitThis": true
     },
     "include": [
-        "./src/"
+        "./src/**/*"
     ]
 }
