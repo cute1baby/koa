@@ -36,5 +36,6 @@ let obj1 = {
 }
 
 document.onclick = obj1.f
+// document.body.onclick = obj1.f
 
 

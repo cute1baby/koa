@@ -50,8 +50,8 @@ fn5(3)
 
 
 // 现在有一种情况：参数既要是数字类型，也可以是字符串类型的，怎么去定义呢？函数重载
-function fn6(x: number, y: number): number;
-function fn6(x: string, y: string): string;
+// function fn6(x: number, y: number): number;
+// function fn6(x: string, y: string): string;
 
 function fn6(x: any, y: any): any{
     return x + y
