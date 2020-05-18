@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "md5": "^2.2.1",
+    "moment": "^2.25.3",
     "mysql2": "^2.1.0",
     "sequelize": "^5.21.9"
   },

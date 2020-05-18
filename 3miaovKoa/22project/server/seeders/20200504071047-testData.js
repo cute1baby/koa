@@ -1,5 +1,5 @@
 'use strict';
-
+// 数据库中可以直接使用md5，nodejs中不能直接使用md5，而是要用crypto模块代替
 const md5 = require('md5');
 
 module.exports = {
