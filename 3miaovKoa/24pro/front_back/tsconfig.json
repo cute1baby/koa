@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2017",
+        "outDir": "./dist",
+        "noImplicitAny": true,
+        "removeComments": true,
+        // "preserveConstEnums": true,
+        "sourceMap": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+
+        "typeRoots": [
+            "node_modules/@types"
+        ]
+    },
+    "compileOnSave": true,
+    "include": [
+        "app/**/*"
+    ],
+    "exclude":[
+        "node_modules",
+        "dist",
+        "migrations",
+        "models",
+        "seeders"
+    ]
+}
