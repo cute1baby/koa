@@ -65,7 +65,6 @@ export default {
     },
     methods: {
         getData(p) {
-
             if (p == this.page) return;
 
             this.page = p || this.page;
