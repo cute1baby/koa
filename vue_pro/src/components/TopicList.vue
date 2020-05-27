@@ -57,6 +57,7 @@
 
 <script>
 import moment from 'moment'
+// moment.locale('zh-cn')
 export default {
   name: 'TopicList',
   data () {
@@ -98,7 +99,6 @@ export default {
         if (date1.includes(item.key))        {
           num = date1.split(item.key)[0].includes('a') ? '1' : date1.split(item.key)[0].trim()
           return `${num}${item.value}前`
-          break;
         }
       }
     },

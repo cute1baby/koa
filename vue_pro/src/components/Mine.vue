@@ -7,7 +7,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import moment from 'moment'
 import { Toast } from 'mint-ui';
 export default {
   name: 'Mine',

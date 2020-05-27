@@ -132,3 +132,43 @@ import MINT from 'mint-ui'
 
 详情参照链接：https://juejin.im/post/5a3251ee6fb9a0450f21f6ac
 ```
+
+
+
+### 项目优化进阶
+- 第一步：
+参考链接：https://juejin.im/post/5b1e303b6fb9a01e605fd0b3#heading-0
+（1）安装下面两个插件，可查看当前项目的打包后占的体积
+```
+npm install --save-dev webpack-bundle-analyzer
+npm install cross-env –save -dev //解决 'NODE_ENV' 不是内部或外部命令，也不是可运行的程序或批处理文件 的报错
+```
+（2）在webpack.base.conf.js文件中进行如下配置：
+```
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+module.exports = {
+    plugins: [
+        new BundleAnalyzerPlugin({
+            analyzerMode: "server",
+            analyzerHost: "127.0.0.1",
+            analyzerPort: 8889, // 运行后的端口号
+            reportFilename: "report.html",
+            defaultSizes: "parsed",
+            openAnalyzer: true,
+            generateStatsFile: false,
+            statsFilename: "stats.json",
+            statsOptions: null,
+            logLevel: "info"
+        })
+    ]
+}
+```
+（3）在package.json中配置进入可视化页面的命令：
+```
+"scripts": {
+    "analyz": "cross-env NODE_ENV=production npm_config_report=true npm run build"
+  },
+```
+输入命令`npm run analyz`后，在浏览器中输入`localhost:8889`即可看到可视化页面
+
+
