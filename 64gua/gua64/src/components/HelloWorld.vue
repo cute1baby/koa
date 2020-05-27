@@ -1,59 +1,78 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
-    <cube-button @click="showToast">show toast</cube-button>
+    <Header class="header">
+      <cube-input
+        class="search"
+        v-model="value"
+        :clearable="clearable"
+        placeholder="请输入关键词"
+        @keyup.enter.native="handleKeyup"
+      ></cube-input>
+    </Header>
+    <div class="container df">
+      <Mode />
+      <Mode />
+      <Mode />
+      <Mode />
+      <Mode />
+      <Mode />
+      <Mode />
+      <Mode />
+      <Mode />
+      <Mode />
+      <Mode />
+      <Mode />
+    </div>
+
+    <div style="height: 50px;"></div>
   </div>
+
 </template>
 
 <script>
+import Mode from './mode'
 export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
-      toastTxt: 'cube toast content'
+      value: '乾为天',
+      clearable: {
+        visible: true,
+        blurHidden: true
+      },
     }
   },
   methods: {
+    handleKeyup() {
+      console.log(1111)
+    },
     showToast () {
       this.$createToast({
         txt: this.toastTxt
       }).show()
     }
+  },
+  components: {
+    Mode
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
+<style scoped lang="scss">
+.header{
+  width: 100%;
+  padding: 1rem 0.8rem .4rem;
+  box-sizing: border-box;
+  background: #fff;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: block;
+  box-shadow: 1px 3px 4rem rgba(0,0,0,0.1);
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.container{
+  margin-top: 3.8rem;
+  flex-wrap: wrap;
+  padding: .8rem .4rem;
 }
 </style>

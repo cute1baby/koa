@@ -1,0 +1,33 @@
+.df{
+    display: flex;
+}
+
+.df1{
+    flex: 1;
+}
+
+.dfc{
+    justify-content: center;
+    align-items: center;
+}
+
+/* 水平居中 */
+.dfh{
+    justify-content: center;
+}
+
+/* 垂直居中 */
+.dfr{
+    align-items: center;
+}
+
+/* 两端对齐 */
+.dfbw{
+    justify-content: space-between;
+}
+
+/*竖直方向 */
+.dfrow{
+    flex-direction: row;
+}
+
