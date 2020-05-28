@@ -1,32 +1,32 @@
 <template>
-<div class="mode">
-  <h4 class="title">乾卦</h4>
+<div class="mode" v-if="item.name">
+  <h4 class="title">{{item.name}}</h4>
   <ul class="box">
-    <li v-for="v in items" class="pic">
+    <li v-for="v in item.contentList.split(',')" class="pic">
       <span v-if="String(v)==='1'" class="f"></span>
       <p v-if="String(v)==='2'" class="t df">
         <span v-for="s in 2" class="df1"></span>
       </p>
     </li>
   </ul>
-  <p class="name">乾为坤</p>
+  <p class="name">{{item.desc}}</p>
 </div>
 </template>
 
 <script>
 export default {
   name: 'Mode',
-  data () {
-    return {
-      items: [1,1,2,1,2,1]
+  props: {
+    item: {
+      type: Object,
+      default: () => {}
     }
   },
+  data () {
+    return {}
+  },
   methods: {
-    showToast () {
-      this.$createToast({
-        txt: this.toastTxt
-      }).show()
-    }
+
   }
 }
 </script>
@@ -34,24 +34,24 @@ export default {
 <style lang="scss" scoped>
 .mode{
   width: 50%;
-  padding: 1.2rem .6rem 0.6rem;
+  padding: 2.4rem .6rem 1.2rem;
   box-sizing: border-box;
 
   .title{
-    font-size: 0.5rem;
+    font-size: 1.333333rem;
     text-align: center;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.8rem;
     color: #281668;
   }
   .box{
     background: #fff;
-    box-shadow: .083333rem .25rem .5rem rgba(0, 0, 0, 0.05);
-    padding: 0.4rem;
-    border-radius: 0.24rem;
+    box-shadow: .083333rem .4rem .5rem rgba(0, 0, 0, 0.06);
+    padding: 0.6rem;
+    border-radius: 0.4rem;
     .pic{
       width: 100%;
-      height: .5rem;
-      margin: 0.4rem 0;
+      height: 1rem;
+      margin: 0.8rem 0;
 
       .f{
         display: block;
@@ -80,9 +80,9 @@ export default {
   }
 
   .name{
-    font-size: 0.5rem;
+    font-size: 1.333333rem;
     text-align: center;
-    margin-top: 0.6rem;
+    margin-top: 0.8rem;
     color: #281668;
   }
 }

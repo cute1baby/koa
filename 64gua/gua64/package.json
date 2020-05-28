@@ -23,6 +23,7 @@
     }
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "cube-ui": "~1.12.15",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
