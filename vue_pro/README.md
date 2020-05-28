@@ -66,6 +66,7 @@ new HtmlWebpackPlugin({
 })
 
 4、在webpack.prod.conf.js中配置如下
+// 配置在output后面
 externals:{
     'vue': 'Vue',
     'vuex': 'Vuex',
@@ -98,6 +99,22 @@ if (process.env.NODE_ENV === 'development') {
 if (process.env.NODE_ENV === 'development') {
     Vue.use(Vuex)
 }
+
+
+这里需要注意的几个问题：
+（1）比如这里涉及到了一些类似moment、lodash、echarts的插件都要从组件中去掉，这样在打包的时候才不会被加入到vendor.dll.js中。
+（2）如果在文件.babelrc中有下面的数据，一定要将`"libraryName": "element-ui"`清除，否则element-ui也会被算进打包的文件里。
+  "plugins": [
+    "transform-vue-jsx",
+    "transform-runtime"
+    // [
+    //   "component",
+    //   {
+    //     "libraryName": "element-ui",
+    //     "styleLibraryName": "theme-chalk"
+    //   }
+    // ]
+  ]
 
 ```
 
