@@ -588,7 +588,7 @@ module.exports = {
             "createdAt": new Date(),
             "updatedAt": new Date(),
             "contentId": 64
-        }        
+        }
     ], {});
   },
 

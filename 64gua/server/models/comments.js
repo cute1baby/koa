@@ -34,7 +34,7 @@ module.exports = (sequelize, Sequelize) => {
     // associations can be defined here
     Comments.belongsTo(models.Contents, {
         foreignKey: 'commentId'
-      });
+    });
   };
   return Comments;
 };

@@ -1,5 +1,5 @@
 <template>
-	<div class="hello">
+	<div class="vessel">
 		<Header class="header">
 			<cube-input
 				class="search"
@@ -10,16 +10,24 @@
 			></cube-input>
 		</Header>
 		<div class="container">
-            <p class="count" v-if="count > 0">
-                查询到<span>{{count}}</span>条记录
-            </p>
-            <p class="count" v-else>抱歉，没有匹配到记录</p>
-            <div class="df fwrap" v-if="contentList.length > 0">
-			    <Mode v-for="m in contentList" :key="m.id" :item="m"/>
-            </div>
+			<div v-if="!isLoading">
+				<p class="count" v-if="count > 0">
+					查询到<span>{{count}}</span>条记录
+				</p>
+				<p class="count" v-else>抱歉，没有匹配到记录</p>
+				<div class="df fwrap" v-if="contentList.length > 0">
+					<Mode
+						v-for="m in contentList"
+						:key="m.id"
+						:item="m"
+						@click.native="handleToDetail(m.contentId)"
+					/>
+				</div>
+			</div>
+			<cube-loading :size="28" v-if="isLoading" class="df dfc"></cube-loading>
 		</div>
 
-		<div style="height: 50px;"></div>
+		<div style="height: 4rem;"></div>
 	</div>
 
 </template>
@@ -31,6 +39,7 @@ export default {
 	name: 'Vessel',
 	data () {
 		return {
+			isLoading: true,
 			searchName: '',
 			clearable: {
 				visible: true,
@@ -46,6 +55,7 @@ export default {
 	methods: {
 		// 获取数据
 		getData() {
+			this.isLoading = true
 			axios({
 				method: 'get',
 				url: '/api/findContent',
@@ -56,12 +66,19 @@ export default {
 			if (!rs.code) {
 					this.count = rs.data.count;
 					this.contentList = rs.data.data;
+					this.isLoading = false
 				}
 			});
 		},
 		handleKeyup() {
-			console.log(1111)
 			this.getData()
+		},
+		handleToDetail(contentId) {
+			console.log(222)
+			this.$router.push({
+				path: '/detail',
+				query: { contentId }
+			})
 		}
 	},
 	components: {
@@ -85,5 +102,18 @@ export default {
 .container{
 	margin-top: 6rem;
 	padding: .8rem .4rem;
+	.count{
+		font-size: 1.333333rem;
+		text-align: center;
+		color: #281668;
+		span{
+			font-size: 2rem;
+			color: #CF2B22;
+			margin: 0 .416667rem;
+		}
+	}
+	.loading{
+		text-align: center;
+	}
 }
 </style>

@@ -42,34 +42,31 @@ router.get('/findContent', async ctx => {
 
 // 查询内容详情
 router.get('/findDetails', async ctx => {
-    let { count, rows } = await Models.Contents.findAndCountAll({
+    const contentId = ctx.query.contentId || 0
+    let item = await Models.Contents.findOne({
         where: {
-            contentId: {
-                [Op.like]: '%坤%'
-            }
+            contentId
         },
         include: { model: Models.Comments }
     })
-    console.log(count, rows)
+    // console.log(item)
     ctx.body = {
         code: 0,
-        count: count,
-        data: rows.map(item => {
-            return {
-                id: item.id,
-                name: item.name,
-                contentList: item.contentList,
-                desc: item.desc,
-                likeCount: item.likeCount,
-                comments: item.Comments.map(c => {
-                    return {
-                        id: c.id,
-                        commentId: c.commentId,
-                        content: c.content
-                    }
-                })
-            }
-        })
+        data: {
+            id: item.id,
+            contentId: item.contentId,
+            name: item.name,
+            contentList: item.contentList,
+            desc: item.desc,
+            likeCount: item.likeCount,
+            comments: item.Comments.map(c => {
+                return {
+                    id: c.id,
+                    commentId: c.commentId,
+                    content: c.content
+                }
+            })
+        }
     }
 })
 
