@@ -31,3 +31,7 @@
     flex-direction: row;
 }
 
+/*强制换行*/
+.fwrap{
+    flex-wrap: wrap;
+}

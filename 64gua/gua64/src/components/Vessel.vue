@@ -9,8 +9,14 @@
 				@keyup.enter.native="handleKeyup"
 			></cube-input>
 		</Header>
-		<div class="container df">
-			<Mode v-for="m in contentList" :key="m.id" :item="m"/>
+		<div class="container">
+            <p class="count" v-if="count > 0">
+                查询到<span>{{count}}</span>条记录
+            </p>
+            <p class="count" v-else>抱歉，没有匹配到记录</p>
+            <div class="df fwrap" v-if="contentList.length > 0">
+			    <Mode v-for="m in contentList" :key="m.id" :item="m"/>
+            </div>
 		</div>
 
 		<div style="height: 50px;"></div>
@@ -44,7 +50,7 @@ export default {
 				method: 'get',
 				url: '/api/findContent',
 				params: {
-					name: this.searchName
+					searchName: this.searchName
 				}
 			}).then( rs => {
 			if (!rs.code) {
@@ -77,8 +83,7 @@ export default {
 	box-shadow: 1px 3px 4rem rgba(0,0,0,0.1);
 }
 .container{
-	margin-top: 4.6rem;
-	flex-wrap: wrap;
+	margin-top: 6rem;
 	padding: .8rem .4rem;
 }
 </style>

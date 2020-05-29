@@ -20,8 +20,14 @@ module.exports = {
             updatedAt: new Date()
         },
         {
-            commentId: 2,
+            commentId: 1,
             content: '学习传统文化',
+            createdAt: new Date(),
+            updatedAt: new Date()
+        },
+        {
+            commentId: 2,
+            content: '体会人生价值',
             createdAt: new Date(),
             updatedAt: new Date()
         },
