@@ -78,7 +78,7 @@ export default {
             this.collectStatus = false;
         }, 2000);
 
-        this.$axios.post(`/v2/api/v1/reply/${reply_id}/ups`, {
+        this.$axios.post(`/vueHost/api/v1/reply/${reply_id}/ups`, {
             accesstoken
         }).then(res => {
             const data = res.data
@@ -106,7 +106,7 @@ export default {
      */
     getTopics () {
       const { id } = this.$route.params
-      return this.$axios.get(`/v2/api/v1/topic/${id}`)
+      return this.$axios.get(`/vueHost/api/v1/topic/${id}`)
     },
     async getData () {
       try{

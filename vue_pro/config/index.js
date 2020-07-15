@@ -11,11 +11,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/v2': {
+      '/vueHost': {
         target: 'https://www.vue-js.com', //网址
         changeOrigin: true, // 是否跨域
         pathRewrite: {
-          '^/v2': ''  // 这里设置为空才生效
+          '^/vueHost': ''  // 这里设置为空才生效
         }
       }
     },
@@ -51,7 +51,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: '/vue_pro/',
 
     /**
      * Source Maps

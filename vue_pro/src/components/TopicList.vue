@@ -134,7 +134,7 @@ export default {
      */
     getTopics () {
       const { pageIndex, pageLimit, currentTab } = this
-      return this.$axios.get('/v2/api/v1/topics', {
+      return this.$axios.get('/vueHost/api/v1/topics', {
         params: {
           page: pageIndex,
           tab: currentTab,

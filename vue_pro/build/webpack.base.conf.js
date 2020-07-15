@@ -24,14 +24,14 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   plugins: [
-    new webpack.DllReferencePlugin({
-      // name参数和dllplugin里面name一致，可以不传
-      name: 'vendor',
-      // dllplugin 打包输出的manifest.json
-      manifest: require('../vendor.manifest.json'),
-      // 和dllplugin里面的context一致
-      context: path.join(__dirname, '..')
-    })
+    // new webpack.DllReferencePlugin({
+    //   // name参数和dllplugin里面name一致，可以不传
+    //   name: 'vendor',
+    //   // dllplugin 打包输出的manifest.json
+    //   manifest: require('../vendor.manifest.json'),
+    //   // 和dllplugin里面的context一致
+    //   context: path.join(__dirname, '..')
+    // })
   ],
   resolve: {
     extensions: ['.js', '.vue', '.json'],

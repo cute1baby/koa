@@ -8,6 +8,7 @@ const Mine = resolve => require(['@/components/Mine'], resolve)
 Vue.use(VueRouter)
 
 export default new VueRouter({
+  base: 'vue_pro',
   mode: 'history',
   routes: [
     {

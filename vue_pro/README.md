@@ -149,6 +149,8 @@ import MINT from 'mint-ui'
 
 详情参照链接：https://juejin.im/post/5a3251ee6fb9a0450f21f6ac
 ```
+暂时删除这种展示方式
+
 
 
 

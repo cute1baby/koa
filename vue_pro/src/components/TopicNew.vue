@@ -87,7 +87,7 @@
         }
 
         // 提交数据
-        this.$axios.post('/v2/api/v1/topics', {
+        this.$axios.post('/vueHost/api/v1/topics', {
           accesstoken,
           title,
           tab,
