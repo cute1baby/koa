@@ -65,3 +65,40 @@ nginx -s reload
 （4）`locaion / {}`内配置`try_files $uri $uri/ /index.html;`
 
 
+### 同一个域名二级目录多个项目的配置
+另外vue项目的优化可参考项目vue_pro.
+参考文章：https://www.jianshu.com/p/7169a2eb015b
+```
+# 一个域名下多个Vue.js项目的nginx配置
+server {
+    listen      8001;
+    server_name  localhost;
+    
+    # 项目一
+    location / {
+        root C:/adanhuan/cy-project/cycxvux/cy;
+        try_files $uri $uri/ @router;
+        index  index.html  index.htm;
+    }
+    
+    location @router {
+        rewrite ^.*$  /index.html last;
+    }
+    
+    # 项目二
+    location /jx {
+        alias C:/adanhuan/cy-project/cycxvux/jx; 
+        try_files $uri $uri/ @router_jx;
+        index  index.html  index.htm;   
+    }
+    
+    location @router_jx {
+        rewrite ^.*$  /jx/index.html last;
+    }
+    
+    # 接口请求代理,解决跨域
+    location /api { 
+        proxy_pass http://h5cs.cycxvip.com;
+    }
+}
+```
