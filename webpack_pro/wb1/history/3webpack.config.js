@@ -4,7 +4,6 @@ let HtmlWebpackPlugin = require('html-webpack-plugin')
 let MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCss = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const Webpack = require('webpack');
 // console.log(path.resolve(__dirname + '/dist'));
 module.exports = {
     devServer: { //服务器的配置
@@ -37,69 +36,19 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html',  // 模板入口文件地址
             filename: 'index.html',  // 模板出口文件地址
-            // minify: {
-            //     removeAttributeQuotes: true,  //去除引号
-            //     collapseWhitespace: true,  //清除空格和换行
+            minify: {
+                removeAttributeQuotes: true,  //去除引号
+                collapseWhitespace: true,  //清除空格和换行
 
-            // },
-            minify: false,
+            },
             hash: true,  // 增加引入文件的hash戳
         }),
         new MiniCssExtractPlugin({
-            filename: 'css/main.css'  //抽离出来的css名字叫main.css
-        }),
-        new Webpack.ProvidePlugin({  // 在每个模块中都注入$
-            $: 'jquery'
+            filename: 'main.css'  //抽离出来的css名字叫main.css
         })
     ],
     module: {  // 模块
         rules: [ // 规则
-            {
-                test: /\.(htm|html)$/i,
-                use: 'html-withimg-loader'
-            },
-            {
-                test: /\.(png|jpg|gif)$/,
-                use: {
-                    loader: 'url-loader',
-                    options: {
-                        limit: 1 * 1024,
-                        esModule: false,
-                        outputPath: '/img/',
-                        // publicPath: 'localhost'
-                    }
-                }
-            },
-            {
-                test: require.resolve("jquery"),
-                use: "expose-loader?$"
-            },
-            // {
-            //     test: /\.js$/,
-            //     use: {
-            //         loader: 'eslint-loader',
-            //         options: {
-            //             enforce: 'pre'  //设置这个属性即表示把这个loader的执行顺序提前
-            //         }
-            //     }
-            // },
-            {
-                test: /\.js$/,
-                use: {
-                    loader: 'babel-loader',
-                    options: { // 用babel-loader，需要把es6转成es5
-                        presets: [  // 预设
-                            '@babel/preset-env'
-                        ],
-                        plugins: [
-                            '@babel/plugin-proposal-class-properties',
-                            '@babel/plugin-transform-runtime'
-                        ]
-                    }
-                },
-                include: path.resolve(__dirname, 'src'),
-                exclude: /node_modules/
-            },
             { test: /\.css$/, use:
                 [
                     MiniCssExtractPlugin.loader,  //这个代替style-loader的配置

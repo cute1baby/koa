@@ -37,16 +37,15 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html',  // 模板入口文件地址
             filename: 'index.html',  // 模板出口文件地址
-            // minify: {
-            //     removeAttributeQuotes: true,  //去除引号
-            //     collapseWhitespace: true,  //清除空格和换行
+            minify: {
+                removeAttributeQuotes: true,  //去除引号
+                collapseWhitespace: true,  //清除空格和换行
 
-            // },
-            minify: false,
+            },
             hash: true,  // 增加引入文件的hash戳
         }),
         new MiniCssExtractPlugin({
-            filename: 'css/main.css'  //抽离出来的css名字叫main.css
+            filename: 'main.css'  //抽离出来的css名字叫main.css
         }),
         new Webpack.ProvidePlugin({  // 在每个模块中都注入$
             $: 'jquery'
@@ -54,22 +53,6 @@ module.exports = {
     ],
     module: {  // 模块
         rules: [ // 规则
-            {
-                test: /\.(htm|html)$/i,
-                use: 'html-withimg-loader'
-            },
-            {
-                test: /\.(png|jpg|gif)$/,
-                use: {
-                    loader: 'url-loader',
-                    options: {
-                        limit: 1 * 1024,
-                        esModule: false,
-                        outputPath: '/img/',
-                        // publicPath: 'localhost'
-                    }
-                }
-            },
             {
                 test: require.resolve("jquery"),
                 use: "expose-loader?$"

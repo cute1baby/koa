@@ -1,0 +1,8 @@
+@import './a.css';
+body{
+    background: red;
+}
+.bg_img{
+    width: 400px;
+    display: block;
+}
