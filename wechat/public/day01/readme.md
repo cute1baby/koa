@@ -4,3 +4,5 @@
 - 03 获取access_token(安装两个库)
     - request
     - request-promise-native
+- 04 获取access_token(优化成async的方式)
+- 05 微信公众号自动回复的功能
