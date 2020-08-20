@@ -93,12 +93,14 @@ module.exports = () => {
                     content = '因为爱情，我们还是年轻的模样'
                 }
             }
-            let replyMessage = `<xml><ToUserName><![CDATA[${message.FromUserName}]]></ToUserName>
+            let replyMessage = `<xml>
+                <ToUserName><![CDATA[${message.FromUserName}]]></ToUserName>
                 <FromUserName><![CDATA[[${message.ToUserName}]]></FromUserName>
                 <CreateTime>${Date.now()}</CreateTime>
                 <MsgType><![CDATA[text]]></MsgType>
                 <Content><![CDATA[${content}]]></Content>
-                <MsgId>22875768774087569/MsgId></xml>`
+                <MsgId>22875768774087569</MsgId>
+            </xml>`
             console.log(replyMessage)
             res.send(replyMessage)
             // res.end('')
