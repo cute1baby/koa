@@ -76,7 +76,7 @@ module.exports = () => {
 
 
             /**
-             * 简单地自动回复
+             * 简单地自动回复（消息管理 > 被动回复用户消息）
              * 一旦遇到以下情况，微信都会在公众号会话中，向用户下发系统提示‘该公众号暂时无法提供服务，清稍后再试’
              *  1、开发者在5秒内未回复任何内容
              *  2、开发者回复了异常数据，比如JSON数据、字符串、xml数据中多余的空格等等。
@@ -86,20 +86,23 @@ module.exports = () => {
             if(message.MsgType === 'text'){
                 // 判断用户发送的内容具体是什么
                 if(message.Content === '1'){ //全局匹配
-                    content = '翻拍翻到我了吗，好的哟'
+                    content = '小新，我爱你'
                 }else if(message.Content === '2'){
-                    content = '傻人有傻福'
+                    content = '小新，我要娶你'
                 }else if(message.Content.match('爱')){
-                    content = '因为爱情，我们还是年轻的模样'
+                    content = '做吧，再不疯狂我们就老了'
                 }
             }
+            /**
+             * 前面失败的原因是选错了返回的模板接口，正确的方式路径是：
+             * 【消息管理】> 【被动回复用户消息】
+             */
             let replyMessage = `<xml>
                 <ToUserName><![CDATA[${message.FromUserName}]]></ToUserName>
-                <FromUserName><![CDATA[[${message.ToUserName}]]></FromUserName>
+                <FromUserName><![CDATA[${message.ToUserName}]]></FromUserName>
                 <CreateTime>${Date.now()}</CreateTime>
                 <MsgType><![CDATA[text]]></MsgType>
                 <Content><![CDATA[${content}]]></Content>
-                <MsgId>22875768774087569</MsgId>
             </xml>`
             console.log(replyMessage)
             res.send(replyMessage)
