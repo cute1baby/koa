@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>search</title>
+</head>
+<style>
+.df{display: flex;}
+.dfr{flex-direction: column;}
+img{
+    width: 100%;
+}
+</style>
+<body>
+<h3>这是一个录音页面</h3> 
+<hr>
+<button class="search">点击开始录音</button>
+<span id="transWord"></span><br><br>
+<button class="playVoice">播放原音</button>
+<hr>
+<div class="list">
+
+</div>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/zepto/1.0.0/zepto.min.js"></script>
+<script>
+/**
+ * 使用步骤
+ * 步骤一：绑定域名
+ *      - 在网站https://mp.weixin.qq.com/debug/cgi-bin/sandboxinfo?action=showinfo&t=sandbox/index
+ *        【JS接口安全域名】配置我的测试域名92e1e6923137.ngrok.io。
+ * 步骤二：引入JS文件
+ *      - 引入的文件地址：http://res.wx.qq.com/open/js/jweixin-1.6.0.js
+ * 步骤三：通过config接口注入权限验证配置
+ *      - 配置如下
+ * 步骤四：通过ready接口处理成功验证
+ * 步骤五：通过error接口处理失败验证
+ **/
+const baseUrl = 'http://92e1e6923137.ngrok.io'
+wx.config({
+    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+    appId: 'wxd9f5805ea8e18784', // 必填，公众号的唯一标识
+    timestamp: '<%= timestamp %>', // 必填，生成签名的时间戳
+    nonceStr: '<%= noncestr %>', // 必填，生成签名的随机串
+    signature: '<%= signature %>',// 必填，签名
+    jsApiList: [
+        'updateAppMessageShareData',  // 分享给朋友、qq
+        'updateTimelineShareData',  // 分享到朋友圈、qq空间
+        'startRecord', // 开始录音
+        'stopRecord',  // 结束录音
+        'translateVoice',  // 转换录音
+        'playVoice'   //播放录音
+    ] // 必填，需要使用的JS接口列表,参照：https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/JS-SDK.html#63
+});
+
+// 微信sdk验证成功。使用sdk的函数放到这里
+wx.ready(function(){
+  // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，
+  // config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。
+  // 对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+    console.log('信息验证成功')
+    wx.checkJsApi({
+        jsApiList: ['chooseImage','updateAppMessageShareData', 'updateTimelineShareData'], 
+        success: function(res) {
+            console.log('接口验证成功=====', res)
+        }
+    });
+
+    let isRecord = false
+    let localId = ''
+    // 语音识别功能
+    $('.search').click(function(){
+        if(!isRecord){
+            $(this).html('点击结束录音')
+            // 开始录音 
+            wx.startRecord();
+            isRecord = true
+            console.log(1111)
+        }else{
+            // 结束录音
+            wx.stopRecord({
+                success: function (res) {
+                    // 结束录音后，会自动上传录音到微信服务器中。微信服务器会返回一个id给开发者使用
+                    localId = res.localId;
+                    console.log(2222)
+                    // 录音转化为文字
+                    wx.translateVoice({
+                        localId, // 需要识别的音频的本地Id，由录音相关接口获得
+                        isShowProgressTips: 1, // 默认为1，显示进度提示
+                        success: function (res) {
+                            console.log(3333)
+                            // alert(res.translateResult); // 语音识别的结果
+                            $('#transWord').html(res.translateResult)
+                            $('.search').html('点击开始录音')
+
+                            // 将语音输出变成输入，调用豆瓣接口，用来查电影
+                            // 去豆瓣请求相应的接口
+                            // $.get(`${baseUrl}/moviesSearch?q=${res.translateResult}`, function(data){
+                            $.get(`${baseUrl}/moviesSearch?q=西游记`, function(data){
+                                console.log(data)
+                                const subjects = data.subjects
+                                let html = ''
+                                subjects.forEach(item => {
+                                    let caststr = ''
+                                    let genrestr = ''
+                                    const casts = item.casts
+                                    const genres = item.genres
+                                    casts.forEach(c => {
+                                        caststr+= `<span>${c.name}</span>`
+                                    })
+                                    genres.forEach(g => {
+                                        genrestr+= `<span>${g}</span>`
+                                    })
+                                    html +=  `<div class="df dfr">
+                                        <img src="${item.images.large}" alt="电影">
+                                        <p>名称：${item.title}</p>
+                                        <div>
+                                            导演：${caststr}
+                                        </div>
+                                        <div>
+                                            标签：${genrestr}
+                                        </div>
+                                        <p>拍摄时间：${item.year}</p>
+                                    </div>`
+                                })
+                                $('.list').html(html)
+                            });
+
+                        }
+                    })
+                    isRecord = false
+
+                }
+            });
+        }
+    })
+
+    // 播放原音
+    $('.playVoice').click(function(){
+        wx.playVoice({
+            localId // 需要播放的音频的本地ID，由stopRecord接口获得
+        });
+    })
+});
+// 微信sdk验证失败
+wx.error(function(res){
+  // config信息验证失败会执行error函数，如签名过期导致验证失败，
+  // 具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+  console.log('信息验证失败')
+});
+</script>
+</body>
+</html>
