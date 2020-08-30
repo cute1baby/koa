@@ -38,7 +38,7 @@ router.use('/search', async(req,res, next) => {
     next()
 })
 // 返回详情页面
-router.use('/detail/:id', async (req, res) => {
+router.use('/detail/:id', async (req, res, next) => {
     const {id} = req.params
     // 判断id是否存在
     if(!id){
@@ -49,5 +49,16 @@ router.use('/detail/:id', async (req, res) => {
         createTime: 0
     })
     res.render('detail', {data})
+    next()
 })
+
+// 返回微信网页授权页面
+router.use('/test', async (req, res, next) => {
+    const data = {
+        title: '测试网页授权'
+    }
+    res.render('test', data)
+    // next()
+})
+
 module.exports = router

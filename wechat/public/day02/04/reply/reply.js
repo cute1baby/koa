@@ -27,6 +27,7 @@ module.exports = async message => {
                 summary: 1,
                 image: 1,
                 doubanId: 1,
+                posterKey: 1,
                 _id: 0
             })
             console.log('返回值热门=====>>>>>>', data)
@@ -36,10 +37,11 @@ module.exports = async message => {
             options.MsgType = 'news'
             for (let index = 0; index < data.length; index++) {
                 const element = data[index]
+                console.log('链接==========', `http://img.familyli.cn/${element.posterKey}`)
                 content.push({
                     title: element.title,
                     description: element.summary,
-                    picUrl: element.image,
+                    picUrl: `http://img.familyli.cn/${element.posterKey}`,
                     url: `${url}/detail/${element.doubanId}`
                 })
             }

@@ -20,6 +20,8 @@
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
-    "puppeteer": "^2.0.0"
+    "nanoid": "^2.1.11",
+    "puppeteer": "^2.0.0",
+    "qiniu": "^7.3.2"
   }
 }
