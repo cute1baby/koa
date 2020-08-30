@@ -45,7 +45,7 @@ module.exports = () => {
             // 格式化js对象
             const message = formatMessage(jsData)
 
-            const options = reply(message)
+            const options = await reply(message)
             /**
              * 前面失败的原因是选错了返回的模板接口，正确的方式路径是：
              * 【消息管理】> 【被动回复用户消息】

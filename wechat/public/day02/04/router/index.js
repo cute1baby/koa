@@ -1,6 +1,8 @@
 const express = require('express')
 const sha1 = require('sha1')
 const {url} = require('../config/index')
+// 引入模型层文件
+const Theaters = require('../model/Theaters')
 const Wechat = require('../wechat/wechat')
 const wechatApi = new Wechat()
 
@@ -35,5 +37,17 @@ router.use('/search', async(req,res, next) => {
     })
     next()
 })
-
+// 返回详情页面
+router.use('/detail/:id', async (req, res) => {
+    const {id} = req.params
+    // 判断id是否存在
+    if(!id){
+        red.end('您访问的id不存在')
+    }
+    const data = await Theaters.findOne({doubanId: id}, {
+        _id: 0,
+        createTime: 0
+    })
+    res.render('detail', {data})
+})
 module.exports = router

@@ -4,10 +4,11 @@
  * 
  */
 module.exports = options => {
+    console.log('options====', options)
     let replyMessage = `<xml>
-    <ToUserName><![CDATA[toUser]]></ToUserName>
-    <FromUserName><![CDATA[fromUser]]></FromUserName>
-    <CreateTime>12345678</CreateTime>
+    <ToUserName><![CDATA[${options.toUserName}]]></ToUserName>
+    <FromUserName><![CDATA[${options.fromUserName}]]></FromUserName>
+    <CreateTime>${options.createTime}</CreateTime>
     <MsgType><![CDATA[${options.MsgType}]]></MsgType>`
     
     if(options.MsgType === 'text'){

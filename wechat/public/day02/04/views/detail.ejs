@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>search</title>
+</head>
+<style>
+.df{display: flex;}
+.dfr{flex-direction: column;}
+img{
+    width: 100%;
+}
+</style>
+<body>
+<header>
+    <a href="/movie" >硅谷电影</a>
+    <a href="/search" >搜索</a>
+</header>
+<div>
+    <h1 class="title"><%= data.title %></h1>
+    <section>
+        <div class="left">
+            <div class="rating">
+                <span>评分：</span>
+                <strong><%= data.rating %></strong>
+                <span class="ratingNum">4535人评价</span>
+            </div>
+            <p class="meta">
+                <%= data.releaseDate %>
+                <% data.tags.forEach(function(item){ %>
+                    <%= item %> /
+                <% }) %>
+                <%= data.directors %>
+                <%= data.casts %>
+            </p>
+        </div>
+        <div class="right">
+            <a href="javascript:;">
+                <img src="<%= data.image %>" alt="<%= data.title %>" />
+            </a>
+        </div>
+    </section>
+
+    <section>
+        <h2><%= data.title %>的剧情简介</h2>
+        <div class="bd">
+            <p><%= data.summary %></p>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

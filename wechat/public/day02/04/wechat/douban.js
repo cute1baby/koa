@@ -3,7 +3,7 @@ const baseUrl = 'http://t.yushu.im/'
 
 const moviesSearch = (searchName) => {
     searchName = encodeURI(searchName)
-    const url = `${baseUrl}v2/movie/search?q=${searchName}`
+    const url = `${baseUrl}v2/movie/search?q=${searchName}&count=8`
     return new Promise((resolve, reject) => {
         rp({
             method: 'GET',
