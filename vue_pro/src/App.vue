@@ -18,8 +18,6 @@
         我的
       </mt-tab-item>
     </mt-tabbar>
-    <!-- <Demo /> -->
-    <iframe src="http://www.familyli.cn" id="iframeDom" frameborder="0"></iframe>
   </div>
 </template>
 
@@ -33,12 +31,6 @@ export default {
       }
   },
   mounted() {
-    const iframeDom = document.getElementById('iframeDom')
-    setTimeout(function(){
-      console.log('kuakua1')
-      iframeDom.contentWindow.postMessage("主页面消息", "http://www.familyli.cn")
-    }, 3000)
-    
     
   },
   methods:{

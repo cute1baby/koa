@@ -4,6 +4,7 @@ const TopicList = resolve => require(['@/components/TopicList'], resolve)
 const TopicDetail = resolve => require(['@/components/TopicDetail'], resolve)
 const TopicNew = resolve => require(['@/components/TopicNew'], resolve)
 const Mine = resolve => require(['@/components/Mine'], resolve)
+const Hello = resolve => require(['@/components/Hello'], resolve)
 
 Vue.use(VueRouter)
 
@@ -30,6 +31,11 @@ export default new VueRouter({
       path: '/mine',
       name: 'Mine',
       component: Mine
+    },
+    {
+      path: '/hello',
+      name: 'Hello',
+      component: Hello
     }
   ]
 })
