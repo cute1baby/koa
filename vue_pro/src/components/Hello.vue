@@ -1,6 +1,6 @@
 <template>
     <div class="test">
-        <pre v-html='imgUrlStr' v-lazy-container='{ selector: "img" }'></pre>
+        <pre v-html='imgUrlStr' v-lazy-container='{ selector: "img",preLoad: 1.3 }'></pre>
     </div>
 </template>
 <script>
@@ -17,6 +17,24 @@ export default {
                 '<img src="https://avatars0.githubusercontent.com/u/48469369?v=4&s=120"/><span>11</span>',
                 '<img src="https://avatars2.githubusercontent.com/u/26917599?v=4&s=120"/>"/><span>22</span>',
                 '<img src="https://avatars2.githubusercontent.com/u/38983466?v=4&s=120"/>',
+                '<img src="//gravatar.com/avatar/e878ca28b8d577e9278e49723c06f5b0?size=48"/>',
+                '<img src="https://avatars2.githubusercontent.com/u/26423749?v=4&s=120"/>',
+                '<img src="https://avatars1.githubusercontent.com/u/31389080?v=4&s=120"/>',
+                '<img src="https://avatars2.githubusercontent.com/u/15188309?v=4&s=120"/>',
+                '<img src="//gravatar.com/avatar/e43c3648ba7049e521009b4b73126005?size=48"/>',
+                '<img src="https://avatars2.githubusercontent.com/u/31213919?v=4&s=120"/>',
+                '<img src="https://avatars0.githubusercontent.com/u/48469369?v=4&s=120"/><span>11</span>',
+                '<img src="https://avatars2.githubusercontent.com/u/26917599?v=4&s=120"/>"/><span>22</span>',
+                '<img src="https://avatars2.githubusercontent.com/u/38983466?v=4&s=120"/>',
+                '<img src="//gravatar.com/avatar/e878ca28b8d577e9278e49723c06f5b0?size=48"/>',
+                '<img src="https://avatars2.githubusercontent.com/u/26423749?v=4&s=120"/>',
+                '<img src="https://avatars1.githubusercontent.com/u/31389080?v=4&s=120"/>',
+                '<img src="https://avatars2.githubusercontent.com/u/15188309?v=4&s=120"/>',
+                '<img src="//gravatar.com/avatar/e43c3648ba7049e521009b4b73126005?size=48"/>',
+                '<img src="https://avatars2.githubusercontent.com/u/31213919?v=4&s=120"/>',
+                '<img src="https://avatars0.githubusercontent.com/u/48469369?v=4&s=120"/><span>11</span>',
+                '<img src="https://avatars2.githubusercontent.com/u/26917599?v=4&s=120"/>"/><span>22</span>',
+                '<img src="https://avatars2.githubusercontent.com/u/38983466?v=4&s=120"/>'
 
             ],
             imgUrlStr: ''
@@ -37,6 +55,7 @@ export default {
 
 <style lang="scss" scoped>
 .test{
+    background: #000;
     pre{
         overflow: hidden;
         >>> img{
