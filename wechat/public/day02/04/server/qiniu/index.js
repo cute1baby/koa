@@ -12,6 +12,7 @@ module.exports = async () => {
  * 2、上传到七牛
  * 3、保存key到数据库中
  */
+    // 查找posterKey为空或者不存在的值
     const movies = await Theaters.find({$or: [
             {posterKey: ''},
             {posterKey: null},

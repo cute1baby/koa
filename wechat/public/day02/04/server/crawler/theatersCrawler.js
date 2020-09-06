@@ -51,7 +51,7 @@ module.exports = async () => {
         // 将爬取的数据返回
         return list
     })
-
+    console.log('result111===', result)
     // 进入详情页爬取电影详情信息
     for(let i=0;i<result.length;i++){
         let iResult = result[i]

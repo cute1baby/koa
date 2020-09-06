@@ -1,10 +1,10 @@
 // 保存热门电影数据
-const Theaters = require('../../model/Theaters')
+const Trailers = require('../../model/Trailers')
 module.exports = async data => {
     for(let i=0;i<data.length;i++){
         let item = data[i]
-        console.log('item111===', item)
-        const result = await Theaters.create({
+        console.log('item===', item)
+        const result = await Trailers.create({
             title: item.title,
             rating: item.rating,
             duration: item.duration,
@@ -14,7 +14,8 @@ module.exports = async data => {
             doubanId: item.doubanId,
             tags: item.tags,
             summary: item.summary,
-            releaseDate: item.releaseDate
+            releaseDate: item.releaseDate,
+            link: item.link
         })
         console.log('result==', result)
         console.log('数据保存成功')
