@@ -31,46 +31,43 @@
             </div>
             <span class="w_article df dfaic">写文章</span>
             <!-- <i class="iconfont notice">&#xe704;</i> -->
-            <button class="login">登录</button>
+            <button 
+                class="login"
+                @click="isLogin=true"
+            >登录</button>
         </div>
     </div>
+    <Login 
+        :visible="isLogin"
+        @closeModal="closeModal"
+    />   
+
   </header>
 </template>
 <script>
+import Login from '@/components/Login'
 export default {
     data(){
         return {
+            isLogin: true,
             tabsList: [
                 {
                     id: 1,
                     name: '首页',
                     link: '/'
-                },
-                {
-                    id: 2,
-                    name: '沸点',
-                    link: '/'
-                },
-                {
-                    id: 3,
-                    name: '话题',
-                    link: '/'
-                },
-                {
-                    id: 4,
-                    name: '小册',
-                    link: '/'
-                },
-                {
-                    id: 5,
-                    name: '活动',
-                    link: '/'
-                } 
+                }
             ],
             currentTab: 1
         }
+    },
+    methods:{
+        closeModal(){
+            this.isLogin = false
+        }
+    },
+    components: {
+        Login
     }
-    
 }
 </script>
 <style lang="less" scoped>

@@ -4,6 +4,7 @@
  */
 
 module.exports = {
+    base: '/boke/',
     title: '摩根',
     description: '专业研究小事',
     themeConfig: {  //导航栏配置
