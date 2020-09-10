@@ -4,6 +4,7 @@
  */
 
 module.exports = {
+	base: '/boke/',
     title: 'Hello VuePress',
     description: 'Just playing around',
     themeConfig: {  //导航栏配置
