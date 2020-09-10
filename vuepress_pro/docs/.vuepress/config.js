@@ -4,10 +4,10 @@
  */
 
 module.exports = {
-    title: 'Hello VuePress',
-    description: 'Just playing around',
+    title: '摩根',
+    description: '专业研究小事',
     themeConfig: {  //导航栏配置
-        logo: '/assets/img/logo.png',
+        logo: 'http://img.familyli.cn/11.jpg',
         nav: [  // 头部超链接
           { text: '联系我', link: '/pages/concat/' },
           { text: '自我记录', link: '/pages/records/' },
