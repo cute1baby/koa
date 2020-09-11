@@ -29,7 +29,9 @@
                     <i class="iconfont">&#xe616;</i>
                 </span>
             </div>
-            <span class="w_article df dfaic">写文章</span>
+            <span 
+                class="w_article df dfaic"   
+            >写文章</span>
             <!-- <i class="iconfont notice">&#xe704;</i> -->
             <button 
                 class="login"

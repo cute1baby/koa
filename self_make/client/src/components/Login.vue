@@ -19,8 +19,9 @@
 
 </template>
 <script>
-import axios from 'axios'
+import axios from '@/utils/fetch'
 import Cookies from 'js-cookie'
+import { responseStatus } from '@/config'
 export default {
     props: ['visible'],
     data(){
@@ -52,7 +53,23 @@ export default {
                         username: this.username,
                         password: this.password
                     }
+
                     const res = await axios.post('/api/login', params)
+                    const resData = res.data;
+                    const {status, message, data} = resData
+                    if(status === responseStatus){
+                        this.$message({
+                            type: 'success',
+                            message: message
+                        })
+                        Cookies.set('token', data.token, { expires: 7 })
+                        this.$emit('closeModal')
+                    }else{
+                        this.$message({
+                            type: 'warning',
+                            message
+                        })
+                    }
                     console.log('res====', res)
                 } catch (error) {
                     console.log('登录接口出现错误：' + error)
