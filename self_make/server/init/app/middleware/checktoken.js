@@ -4,14 +4,14 @@ const { successRes, failRes } = require("../utils/response");
 module.exports = () => {
     return async function (ctx, next) {
         let url = ctx.request.url;
-        console.log('======中间件====')
         if (url === "/login") {
             await next();
         } else {
             try {
                 if (ctx.headers.authorization) {
-                    const tokenStr = ctx.headers.authorization.split(" ")[1];
+                    const tokenStr = ctx.headers.authorization;
                     let { token } = await jwt.verify(tokenStr, "token");
+                    console.log('token-=====', token)
                     if (token) {
                         await next();
                     } else {

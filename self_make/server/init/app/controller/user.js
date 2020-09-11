@@ -36,6 +36,7 @@ class UserController extends Controller {
                 }, 'token')
                 ctx.body = successRes({
                     token,
+                    userId: res.userId,
                     username: res.username,
                     avatar: res.avatar,
                     position: res.position,
@@ -58,6 +59,7 @@ class UserController extends Controller {
                     }, 'token')
                     ctx.body = successRes({
                         token,
+                        userId: fuser.userId,
                         username: fuser.username,
                         avatar: fuser.avatar,
                         position: fuser.position,
@@ -68,6 +70,21 @@ class UserController extends Controller {
             }
         }
         
+    }
+    async findUser(){
+        const { ctx, service } = this;
+        const tokenStr = ctx.query.token
+        let { token } = await jwt.verify(tokenStr, "token");
+        // 通过用户Id去查用户
+        const fuser = await service.user.getUserByUsername({userId: token})
+        ctx.body = successRes({
+            userId: fuser.userId,
+            username: fuser.username,
+            avatar: fuser.avatar,
+            position: fuser.position,
+            selfIntroduction: fuser.selfIntroduction,
+            homepage: fuser.homepage,
+        }, '数据查询成功')
     }
 }
 

@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store'
 import '@/assets/css/index.less'
 import {Dialog, Input, Button, Message}  from 'element-ui';
 
@@ -12,10 +13,13 @@ Vue.use(Dialog);
 Vue.use(Input);
 Vue.use(Button);
 Vue.prototype.$message = Message;
+
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

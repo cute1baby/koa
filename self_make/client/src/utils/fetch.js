@@ -4,9 +4,6 @@ import axios from 'axios'  //引入axios
 import qs from 'qs'
 import Cookies from 'js-cookie'
 import store from '@/store/index'  //引入store
-import router from '@/router'  //引入router
-
-const v = new Vue({router});
 
 // 创建一个axios实例
 let instance = axios.create({
@@ -44,9 +41,6 @@ instance.interceptors.response.use(
             switch (response.data.code) {
                 case 1001:
                 case 1002:
-                    // if(!isPath){
-                    //     router.replace({path: '/login'}).catch(err => { console.log(err)})
-                    // }
                     // 删除token和用户信息
                     break;
                 default:

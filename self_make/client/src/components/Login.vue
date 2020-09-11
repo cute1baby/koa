@@ -21,6 +21,7 @@
 <script>
 import axios from '@/utils/fetch'
 import Cookies from 'js-cookie'
+import {mapMutations} from 'vuex'
 import { responseStatus } from '@/config'
 export default {
     props: ['visible'],
@@ -31,6 +32,9 @@ export default {
         }
     },
     methods: {
+        ...mapMutations([
+            'setUserInfo'
+        ]),
         handleClose(){
             this.$emit('closeModal')
         },
@@ -58,11 +62,13 @@ export default {
                     const resData = res.data;
                     const {status, message, data} = resData
                     if(status === responseStatus){
+                        const {token, ...user} = data;
                         this.$message({
                             type: 'success',
                             message: message
                         })
-                        Cookies.set('token', data.token, { expires: 7 })
+                        this.setUserInfo(user)
+                        Cookies.set('token', token, { expires: 7 })
                         this.$emit('closeModal')
                     }else{
                         this.$message({

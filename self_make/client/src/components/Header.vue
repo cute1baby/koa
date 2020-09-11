@@ -33,7 +33,12 @@
                 class="w_article df dfaic"   
             >写文章</span>
             <!-- <i class="iconfont notice">&#xe704;</i> -->
+            <img v-if="userInfo.userId" 
+                class="avatar" 
+                :src="userInfo.avatar" 
+                alt="">
             <button 
+                v-else
                 class="login"
                 @click="isLogin=true"
             >登录</button>
@@ -47,11 +52,12 @@
   </header>
 </template>
 <script>
+import {mapState} from 'vuex'
 import Login from '@/components/Login'
 export default {
     data(){
         return {
-            isLogin: true,
+            isLogin: false,
             tabsList: [
                 {
                     id: 1,
@@ -61,6 +67,9 @@ export default {
             ],
             currentTab: 1
         }
+    },
+    computed: {
+        ...mapState(['userInfo'])
     },
     methods:{
         closeModal(){
@@ -146,6 +155,17 @@ export default {
             font-size: 1.167rem;
             color: #fff;
             cursor: pointer;
+        }
+        .avatar{
+            width: 2.5rem;
+            height: 2.5rem;
+            vertical-align: middle;
+            border-radius: 50%;
+            background: #999;
+            cursor: pointer;
+            &[src=''] {
+                opacity: 0;
+            }
         }
         .login{
             font-size: 1.333333rem;

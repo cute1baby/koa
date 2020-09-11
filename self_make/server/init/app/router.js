@@ -5,7 +5,8 @@
  */
 module.exports = app => {
   const { router, controller } = app;
-  router.get('/', controller.home.index);
-  
+  // 注册中间件
+  app.middleware.checkToken();
   router.post('/login', controller.user.login);
+  router.get('/findUser', controller.user.findUser);
 };
