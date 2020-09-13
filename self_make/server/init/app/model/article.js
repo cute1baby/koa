@@ -9,6 +9,7 @@ module.exports = app => {
         likeNums: { type: String },
         commentNums: {type: String},
         readNums: { type: String },
+        belongTagList: { type: Array },
         isDelete: { 
             type: Boolean, 
             default: false

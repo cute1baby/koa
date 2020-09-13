@@ -11,14 +11,5 @@
 .iconfont {
     font-family: iconfont !important;
     display: inline-block;
+    vertical-align: middle;
 }
-
-/* 收藏实心 */
-.iconfont.collectsolid::after {
-    content: "\e62d";
-  }
-
-/* 收藏空心 */
-.iconfont.collect::before {
-    content: "\e62e";
-  }

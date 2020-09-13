@@ -10,6 +10,7 @@
     - 点赞数  likeNums  ✔️
     - 评论数  commentNums  ✔️
     - 阅读数  readNums  ✔️
+    - 属于哪一个tag belongTagList  ✔️
     - 是否删除文章  isDelete  ✔️
     - 文章是否下架  isOnline  ✔️
     - 编辑时间  updateTime  ✔️
