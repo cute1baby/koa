@@ -1,8 +1,8 @@
 const Service = require('egg').Service;
 
-class MessageService extends Service {
-    // 通过用户名或密码查找用户
+class UserService extends Service {
     /**
+     * 通过用户名或密码查找用户
      * {username, password}
      * username
      * password
@@ -23,9 +23,11 @@ class MessageService extends Service {
             username: '',
             password: '',
             avatar: '',
+            company: '',
             position: '',
             selfIntroduction: '',
             homepage: '',
+            type: '1',
             ...params
         }
         const user = new this.ctx.model.User( p )
@@ -35,4 +37,4 @@ class MessageService extends Service {
 
 }
 
-module.exports = MessageService;
+module.exports = UserService;

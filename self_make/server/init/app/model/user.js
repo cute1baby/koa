@@ -7,9 +7,11 @@ module.exports = app => {
         username: { type: String },
         password: { type: String },
         avatar: { type: String },
+        company: {type: String},
         position: { type: String },
         selfIntroduction: { type: String },
         homepage: { type: String },
+        type: {type: String},
         createTime: {
             type: Date,
             default: Date.now()

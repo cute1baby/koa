@@ -33,6 +33,8 @@ class UserController extends Controller {
                 const token = jwt.sign({
                     token: res.userId,
                     exp: Math.floor(Date.now() / 1000) + (3600 * 24 * 7)
+                    // 5分钟过期，测试
+                    // exp: Math.floor(Date.now() / 1000) + (60 * 5)
                 }, 'token')
                 ctx.body = successRes({
                     token,
@@ -40,6 +42,7 @@ class UserController extends Controller {
                     username: res.username,
                     avatar: res.avatar,
                     position: res.position,
+                    company: fuser.company,
                     selfIntroduction: res.selfIntroduction,
                     homepage: res.homepage
                 }, '注册成功')
@@ -56,6 +59,8 @@ class UserController extends Controller {
                     const token = jwt.sign({
                         token: fuser.userId,
                         exp: Math.floor(Date.now() / 1000) + (3600 * 24 * 7)
+                        // 5分钟过期，测试
+                        // exp: Math.floor(Date.now() / 1000) + (60 * 5)
                     }, 'token')
                     ctx.body = successRes({
                         token,
@@ -63,6 +68,7 @@ class UserController extends Controller {
                         username: fuser.username,
                         avatar: fuser.avatar,
                         position: fuser.position,
+                        company: fuser.company,
                         selfIntroduction: fuser.selfIntroduction,
                         homepage: fuser.homepage,
                     }, '登录成功')
@@ -77,14 +83,21 @@ class UserController extends Controller {
         let { token } = await jwt.verify(tokenStr, "token");
         // 通过用户Id去查用户
         const fuser = await service.user.getUserByUsername({userId: token})
-        ctx.body = successRes({
-            userId: fuser.userId,
-            username: fuser.username,
-            avatar: fuser.avatar,
-            position: fuser.position,
-            selfIntroduction: fuser.selfIntroduction,
-            homepage: fuser.homepage,
-        }, '数据查询成功')
+        console.log('fuser====', fuser)
+        if(fuser){
+            ctx.body = successRes({
+                userId: fuser.userId,
+                username: fuser.username,
+                avatar: fuser.avatar,
+                position: fuser.position,
+                company: fuser.company,
+                selfIntroduction: fuser.selfIntroduction,
+                homepage: fuser.homepage,
+            }, '数据查询成功')
+        }else{
+            ctx.body = failRes('查不到对应的用户', 1012)
+        }
+        
     }
 }
 

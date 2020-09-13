@@ -5,6 +5,9 @@ import qs from 'qs'
 import Cookies from 'js-cookie'
 import store from '@/store/index'  //引入store
 
+const v = new Vue({
+    store
+})
 // 创建一个axios实例
 let instance = axios.create({
     headers: {
@@ -34,18 +37,20 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
     response => {
         //拦截响应，做统一处理 
-        if (response.data.code) {
+        if (response.data.status) {
             // 判断是否是登录或者首页
             // const isPath = v.$route.path.trim() === '/login' || v.$route.path.trim() === '/'
-            // 1002: token过期； 2003：非法请求
-            switch (response.data.code) {
+            // 1001: token过期； 1002：非法请求
+            switch (response.data.status) {
                 case 1001:
                 case 1002:
                     // 删除token和用户信息
+                    Cookies.remove('token')
+                    // store.commit('resetUserInfo', fdata)
                     break;
                 default:
                     v.$message({
-                        message: response.data.msg,
+                        message: response.data.message,
                         type: 'error'
                     });
             }
