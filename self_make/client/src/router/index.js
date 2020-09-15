@@ -7,6 +7,10 @@ import Cookies from 'js-cookie'
 import store from '@/store/index' 
 import {responseStatus} from '@/config' 
 
+const Home = () => import("@/views/Home")
+const TagManage = () => import("@/views/TagManage")
+
+
 Vue.use(Router)
 
 const router = new Router({
@@ -17,6 +21,12 @@ const router = new Router({
             meta: { requireAuth: false },
             name: 'Home',
             component: Home
+        },
+        {
+            path: '/tagManage',
+            meta: { requireAuth: false },
+            name: 'TagManage',
+            component: TagManage
         }
     ]
 })
