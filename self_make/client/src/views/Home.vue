@@ -11,7 +11,10 @@
                         <span>关注</span>    
                     </li>
                 </ul>
-                <span class="tagmanager">标签管理</span>
+                <span 
+                    class="tagmanager"
+                    @click="routerPath('/tagManage')"
+                >标签管理</span>
             </div>
         </div>
     </div>
@@ -59,6 +62,11 @@ export default {
       msg: "Welcome to Your Vue.js App",
     };
   },
+  methods:{
+      routerPath(path, query){
+          this.$router.push({path, query})
+      }
+  }
 };
 </script>
 

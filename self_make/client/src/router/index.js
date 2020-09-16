@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/views/Home'
 import axios from '@/utils/fetch'
 // import axios from 'axios'
 import Cookies from 'js-cookie'
