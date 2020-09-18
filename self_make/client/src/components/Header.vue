@@ -92,7 +92,6 @@ export default {
             if(e.target.className=== 'menulist' || e.target.parentNode.className=== 'menulist'){
                 return;
             }
-            console.log(e)
             if(this.isShowMenu && e.target.className!== 'avatar'){
                 this.isShowMenu = !this.isShowMenu
             }
@@ -117,12 +116,16 @@ export default {
         // 进入我的主页
         handleMyPage(){
             this.isShowMenu=false
+            this.routerPath('/my')
             console.log('进入我的主页')
         },
         // 登出
         signOut(){
             this.isShowMenu=false
             console.log('登出')
+        },
+        routerPath(path, query){
+            this.$router.push({path, query})
         }
     },
     components: {

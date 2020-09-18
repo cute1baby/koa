@@ -8,6 +8,7 @@ import {responseStatus} from '@/config'
 
 const Home = () => import("@/views/Home")
 const TagManage = () => import("@/views/TagManage")
+const My = () => import("@/views/My")
 
 
 Vue.use(Router)
@@ -26,6 +27,12 @@ const router = new Router({
             meta: { requireAuth: false },
             name: 'TagManage',
             component: TagManage
+        },
+        {
+            path: '/my',
+            meta: { requireAuth: true },
+            name: 'My',
+            component: My
         }
     ]
 })
@@ -34,6 +41,7 @@ const router = new Router({
 router.beforeEach(async (to, from, next) => {
     const isLogin = Cookies.get('token');
     const {userInfo} = store.state
+    // 获取用户信息
     if (isLogin && !userInfo.userId) {
         if(axios){
             const {data} = await axios.get('/api/findUser', {
