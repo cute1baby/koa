@@ -9,6 +9,7 @@ import {responseStatus} from '@/config'
 const Home = () => import("@/views/Home")
 const TagManage = () => import("@/views/TagManage")
 const My = () => import("@/views/My")
+const SelfSetting = () => import("@/views/SelfSetting")
 
 
 Vue.use(Router)
@@ -33,6 +34,12 @@ const router = new Router({
             meta: { requireAuth: true },
             name: 'My',
             component: My
+        },
+        {
+            path: '/self-setting',
+            meta: { requireAuth: true },
+            name: 'SelfSetting',
+            component: SelfSetting
         }
     ]
 })

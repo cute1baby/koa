@@ -89,7 +89,8 @@ export default {
     created() {
         document.addEventListener('click', (e) => {
             const user_avatar = this.$refs.user_avatar
-            if(e.target.className=== 'menulist' || e.target.parentNode.className=== 'menulist'){
+            const parentNode = e.target.parentNode ? e.target.parentNode.className=== 'menulist' : false
+            if(e.target.className=== 'menulist' || parentNode){
                 return;
             }
             if(this.isShowMenu && e.target.className!== 'avatar'){
