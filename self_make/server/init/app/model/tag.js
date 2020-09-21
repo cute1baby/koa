@@ -4,11 +4,13 @@ module.exports = app => {
 
     const TagSchema = new Schema({
         tagId: { type: String },
-        title: { type: String },
-        articleNums: { type: Number },
-        articleList: { type: Array },
-        attentionNums: { type: Number },
-        attentionList: { type: Array },
+        themeColor: {type: String},  // 主题颜色
+        tagIcon: {type: String},  // 标签图标
+        title: { type: String },  // 标题
+        articleNums: { type: Number },  // 文章数量
+        articleList: { type: Array },  //文章列表
+        attentionNums: { type: Number },  // 关注人数
+        attentionList: { type: Array },  //关注人列表
         isDelete: { 
             type: Boolean,
             default: false
