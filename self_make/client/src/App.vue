@@ -22,7 +22,7 @@ html,body{
     background: #ECF0F5;
 }
 #app {
-    min-height: 100%;
+    height: 100%;
     font-family: "PingFangSC-Regular", "PingFang SC", "Microsoft YaHei",
         "WenQuanYi Micro Hei", sans-serif;
     background: #ECF0F5;

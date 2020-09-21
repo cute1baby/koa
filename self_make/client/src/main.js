@@ -5,15 +5,17 @@ import App from './App'
 import router from './router'
 import store from './store'
 import '@/assets/css/index.less'
-import {Dialog, Input, Button, Message}  from 'element-ui';
+import {Dialog, Input, Button, Message, Loading}  from 'element-ui';
 
 
 Vue.config.productionTip = false
 Vue.use(Dialog);
 Vue.use(Input);
 Vue.use(Button);
-Vue.prototype.$message = Message;
+Vue.use(Loading.directive);
 
+Vue.prototype.$message = Message;
+Vue.prototype.$loading = Loading.service;
 
 /* eslint-disable no-new */
 new Vue({

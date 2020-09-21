@@ -41,12 +41,13 @@ class TagController extends Controller {
     // 搜索标签
     async searchTags(){
         const { ctx, service } = this;
-        const {searchName} = ctx.query
+        const {searchName, pageNum, pageSize} = ctx.query
         const res = await service.tag.searchTags({
-            searchName
+            searchName,
+            pageNum: Number(pageNum),
+            pageSize: Number(pageSize)
         })
         ctx.body = successRes(res, '标签查询成功')
-        console.log('查询到了数据=====>>>',res)
     }
 }
 

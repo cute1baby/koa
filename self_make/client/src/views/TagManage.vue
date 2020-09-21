@@ -22,7 +22,8 @@
             class="search-tag"
             v-model="searchTag" 
             placeholder="搜索标签"
-            @keyup.native.enter="handleSearchTags"
+            @keyup.native.enter="SearchTagsByName"
+            v-loading.fullscreen.lock="loading">
         ></el-input>
         <ul class="taglist">
             <li 
@@ -35,8 +36,8 @@
                         <span class="attention">{{tag.attentionNums}} 关注</span>
                         <span class="article">{{tag.articleNums}} 文章</span>
                     </p>
-                    <span class="is-watch" v-if="true">已关注</span>
-                    <span class="no-watch" v-if="false">关注</span>
+                    <span class="no-watch" v-if="true">关注</span>
+                    <span class="is-watch" v-else>已关注</span>
                 </div>
             </li>
         </ul>
@@ -51,7 +52,9 @@ export default {
     data(){
         return {
             currentTag: 2,
+            loading: false,
             searchTag: '',
+            isLock: false,
             tagList: [],
             pageNum: 1, // 当前页数
             pageSize: 20, // 每页显示条目个数
@@ -61,25 +64,60 @@ export default {
     created(){
         this.handleSearchTags()
     },
+    mounted() {
+        this.monitorScroll()
+    },
     methods:{
         handleTagChange(tag){
             this.currentTag = tag
         },
+        SearchTagsByName(){
+            this.pageNum = 1
+            this.tagList = []
+            this.isLock = false
+            this.handleSearchTags()
+        },
         async handleSearchTags(){
             try {
-                const {searchTag}  = this
+                const {searchTag, pageNum, pageSize}  = this
+                this.loading = true
                 const res = await axios.get('/api/searchTags', {
                     params:{
-                        searchName: searchTag
+                        searchName: searchTag,
+                        pageNum,
+                        pageSize
                     }
                 })
                 if(res.data.status === responseStatus){
-                    this.tagList = res.data.data
+                    this.loading = false
+                    if(!res.data.data.length){
+                        this.isLock = true
+                    }
+                    this.tagList = [...this.tagList, ...res.data.data]
                 }
             } catch (error) {
                 console.log('查询标签出现问题：' + error)
             }
             
+        },
+        monitorScroll(){
+            const bindScroll = () => {
+                //真实内容的高度
+                var pageHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight);
+                //视窗的高度
+                var viewportHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 0;
+                //隐藏的高度
+                var scrollHeight = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+                if(this.loading || this.isLock){
+                    return;
+                }
+                if(pageHeight - viewportHeight - scrollHeight < 10){
+                    this.pageNum++
+                    this.handleSearchTags()
+                }
+            }
+
+            document.addEventListener("scroll", bindScroll, false);    //绑定滚动事件
         }
     }
 };
@@ -89,6 +127,7 @@ export default {
 @active: #007fff;
 .outter{
     background: #fff;
+    min-height: 100%;
     .home {
         height: 3.833rem;
         margin-bottom: 2rem;
