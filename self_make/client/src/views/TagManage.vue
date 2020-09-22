@@ -115,8 +115,8 @@ export default {
         handleTagChange(tag){
             this.currentTag = tag
             if(tag===1){
-               this.findSelfAttention()
-               document.removeEventListener("scroll", this.bindScroll, false);    //取消绑定滚动事件
+                document.removeEventListener("scroll", this.bindScroll, false);    //取消绑定滚动事件
+                this.findSelfAttention()
             }else{
                 this.handleSearchTags()
                 this.$nextTick(() => {
@@ -361,6 +361,9 @@ export default {
 }
 
 @media screen and (max-width: 750px){
+    .outter .tag-container .search-tag{
+        display: none;
+    }
     .outter .tag-container .taglist li{
         width: 50%;
     }
