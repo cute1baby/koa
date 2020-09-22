@@ -6,18 +6,49 @@
             <ul class="navlist df dfaic df1">
                 <li 
                     :class="currentTag===1?'df dfaic active':'df dfaic'"
+                    v-loading.fullscreen.lock="loading"
                     @click="handleTagChange(1)"
                 >已关注标签</li>
                 <li 
                     :class="currentTag===2?'df dfaic active':'df dfaic'"
+                    v-loading.fullscreen.lock="loading"
                     @click="handleTagChange(2)"
                 >全部标签</li>
             </ul>
             </div>
         </div>
     </div>
-    <!-- 正文 -->
-    <div class="tag-container"> 
+
+    <!-- 个人关注 -->
+    <div class="tag-container" v-if="currentTag===1">
+        <ul class="taglist">
+            <li 
+                v-for="(tag, i) in selfAttentionList" :key="i"
+            >
+                <div class="tag df dfdir dfaic">
+                    <img :src="tag.tagIcon" alt="" class="tag-icon"/>
+                    <h4 class="title">{{tag.title}}</h4>
+                    <p class="all-data df dfc">
+                        <span class="attention">{{tag.attentionNums}} 关注</span>
+                        <span class="article">{{tag.articleNums}} 文章</span>
+                    </p>
+                    <span 
+                        class="is-watch" 
+                        v-if="tag.isFocus"
+                        @click="handleNoAttention(tag.tagId)"    
+                    >已关注</span>
+                    <span 
+                        class="no-watch" 
+                        v-else
+                        @click="handleAttention(tag.tagId)"
+                    >关注</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 所有标签 -->
+    <div class="tag-container" v-else> 
         <el-input 
             class="search-tag"
             v-model="searchTag" 
@@ -36,8 +67,16 @@
                         <span class="attention">{{tag.attentionNums}} 关注</span>
                         <span class="article">{{tag.articleNums}} 文章</span>
                     </p>
-                    <span class="no-watch" v-if="true">关注</span>
-                    <span class="is-watch" v-else>已关注</span>
+                    <span 
+                        class="is-watch" 
+                        v-if="tag.isFocus"
+                        @click="handleNoAttention(tag.tagId)"    
+                    >已关注</span>
+                    <span 
+                        class="no-watch" 
+                        v-else
+                        @click="handleAttention(tag.tagId)"
+                    >关注</span>
                 </div>
             </li>
         </ul>
@@ -48,13 +87,15 @@
 <script>
 import {responseStatus} from '@/config' 
 import axios from '@/utils/fetch'
+import { mapState } from 'vuex'
 export default {
     data(){
         return {
-            currentTag: 2,
-            loading: false,
+            currentTag: 1,
+            loading: true,
             searchTag: '',
             isLock: false,
+            selfAttentionList: [],
             tagList: [],
             pageNum: 1, // 当前页数
             pageSize: 20, // 每页显示条目个数
@@ -62,15 +103,45 @@ export default {
         }
     },
     created(){
-        this.handleSearchTags()
+        this.findSelfAttention() 
     },
-    mounted() {
-        this.monitorScroll()
+    beforeDestroy() {
+        document.removeEventListener("scroll", this.bindScroll, false);    //取消绑定滚动事件
+    },
+    computed: {
+        ...mapState(['userInfo'])
     },
     methods:{
         handleTagChange(tag){
             this.currentTag = tag
+            if(tag===1){
+               this.findSelfAttention()
+               document.removeEventListener("scroll", this.bindScroll, false);    //取消绑定滚动事件
+            }else{
+                this.handleSearchTags()
+                this.$nextTick(() => {
+                    document.addEventListener("scroll", this.bindScroll, false);    //绑定滚动事件
+                })
+            }
         },
+        // 查找个人关注
+        findSelfAttention(){
+            const {userId} = this.userInfo
+            this.loading = true
+            axios.post('/api/findSelfAttention', {
+                userId
+            }).then(res => {
+                const {status} = res.data
+                if(status === responseStatus){
+                    this.loading = false
+                    this.selfAttentionList = res.data.data
+                }
+            }).catch(err => {
+                console.log('查找个人关注接口出现问题：' + err)
+            })
+        },
+
+
         SearchTagsByName(){
             this.pageNum = 1
             this.tagList = []
@@ -80,13 +151,13 @@ export default {
         async handleSearchTags(){
             try {
                 const {searchTag, pageNum, pageSize}  = this
+                const {userId} = this.userInfo
                 this.loading = true
-                const res = await axios.get('/api/searchTags', {
-                    params:{
-                        searchName: searchTag,
-                        pageNum,
-                        pageSize
-                    }
+                const res = await axios.post('/api/searchTags', {
+                    userId,
+                    searchName: searchTag,
+                    pageNum,
+                    pageSize
                 })
                 if(res.data.status === responseStatus){
                     this.loading = false
@@ -97,27 +168,71 @@ export default {
                 }
             } catch (error) {
                 console.log('查询标签出现问题：' + error)
-            }
-            
+            } 
         },
-        monitorScroll(){
-            const bindScroll = () => {
-                //真实内容的高度
-                var pageHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight);
-                //视窗的高度
-                var viewportHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 0;
-                //隐藏的高度
-                var scrollHeight = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-                if(this.loading || this.isLock){
-                    return;
+        // 点击关注的函数
+        handleAttention(tagId){
+            const {userId} = this.userInfo
+            axios.post('/api/addAttention', {
+                userId,
+                tagId
+            }).then(res => {
+                const {status} = res.data
+                if(status === responseStatus){
+                    this.$message({
+                        type: 'success',
+                        message: '关注成功'
+                    })
+                    this.tagList = this.tagList.map(item => {
+                        if(item.tagId === tagId){
+                            return {...item, isFocus: true}
+                        }
+                        return item
+                    })
                 }
-                if(pageHeight - viewportHeight - scrollHeight < 10){
-                    this.pageNum++
-                    this.handleSearchTags()
+            }).catch(err => {
+                console.log('关注接口出现问题：' + err)
+            })
+        },
+        // 点击取消关注的函数
+        handleNoAttention(tagId){
+            const {userId} = this.userInfo
+            axios.post('/api/cancelAttention', {
+                userId,
+                tagId
+            }).then(res => {
+                const {status} = res.data
+                if(status === responseStatus){
+                    this.$message({
+                        type: 'success',
+                        message: '取消关注成功'
+                    })
+                    this.tagList = this.tagList.map(item => {
+                        if(item.tagId === tagId){
+                            return {...item, isFocus: false}
+                        }
+                        return item
+                    })
                 }
+                console.log(res)
+            }).catch(err => {
+                console.log('取消关注接口出现问题：' + err)
+            })
+        },
+        bindScroll(){
+            //真实内容的高度
+            var pageHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight);
+            //视窗的高度
+            var viewportHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 0;
+            //隐藏的高度
+            var scrollHeight = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+            if(this.loading || this.isLock){
+                return;
             }
-
-            document.addEventListener("scroll", bindScroll, false);    //绑定滚动事件
+            if(pageHeight - viewportHeight - scrollHeight < 10){
+                this.pageNum++
+                this.handleSearchTags()
+            }
         }
     }
 };
@@ -188,9 +303,9 @@ export default {
         box-sizing: border-box;
         .search-tag{
             width: 15rem;
+            margin-bottom: 2.5rem;
         }
         .taglist{
-            margin-top: 2.5rem;
             padding-bottom: 3rem;
             li{
                 width: 25%;

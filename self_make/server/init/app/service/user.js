@@ -8,7 +8,6 @@ class UserService extends Service {
      * password
      */
     getUserByUsername(params){
-        console.log('----params---', params)
         if(!params){
             return null
         }

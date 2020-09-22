@@ -3,9 +3,13 @@ module.exports = app => {
     const Schema = mongoose.Schema;
     // 用户附加字段表
     const UserTagRelateSchema = new Schema({
-        rId: { type: Number },
+        // rId: { type: Number },
         userId: { type: String },
         tagId: { type: String },
+        isFocus: {
+            type: Boolean,
+            default: false
+        },
         createTime: {
             type: Date,
             default: Date.now()

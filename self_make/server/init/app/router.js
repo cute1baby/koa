@@ -14,5 +14,10 @@ module.exports = app => {
   // tag请求部分
   router.get('/getAllTags', controller.tag.getAllTags);
   router.get('/saveAllTags', controller.tag.saveAllTags);
-  router.get('/searchTags', controller.tag.searchTags);
+  router.post('/searchTags', controller.tag.searchTags);
+
+  // 关注标签表部分
+  router.post('/addAttention', controller.userTagRelate.addAttention);
+  router.post('/cancelAttention', controller.userTagRelate.cancelAttention);
+  router.post('/findSelfAttention', controller.userTagRelate.findSelfAttention);
 };

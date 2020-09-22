@@ -41,13 +41,44 @@ class TagController extends Controller {
     // 搜索标签
     async searchTags(){
         const { ctx, service } = this;
-        const {searchName, pageNum, pageSize} = ctx.query
+        const {userId, searchName, pageNum, pageSize} = ctx.request.body
+        let list = []
         const res = await service.tag.searchTags({
             searchName,
             pageNum: Number(pageNum),
             pageSize: Number(pageSize)
         })
-        ctx.body = successRes(res, '标签查询成功')
+        for (let index = 0; index < res.length; index++) {
+            const {
+                tagId,
+                themeColor,
+                tagIcon,
+                title,
+                articleNums,
+                attentionNums
+            } = res[index];
+            const tOne = await service.userTagRelate.findTagValue({
+                userId,
+                tagId,
+                isFocus: true
+            })
+            console.log('tOne====', tOne)
+            const p = {
+                tagId,
+                themeColor,
+                tagIcon,
+                title,
+                articleNums,
+                attentionNums
+            }
+            if(tOne.length){
+                list.push({...p, isFocus: true})
+            }else{
+                list.push({...p, isFocus: false})
+            }
+        }
+        
+        ctx.body = successRes(list, '标签查询成功')
     }
 }
 

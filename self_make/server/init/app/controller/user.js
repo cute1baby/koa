@@ -83,7 +83,6 @@ class UserController extends Controller {
         let { token } = await jwt.verify(tokenStr, "token");
         // 通过用户Id去查用户
         const fuser = await service.user.getUserByUsername({userId: token})
-        console.log('fuser====', fuser)
         if(fuser){
             ctx.body = successRes({
                 userId: fuser.userId,

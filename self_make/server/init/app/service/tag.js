@@ -31,7 +31,6 @@ class TagService extends Service {
         //         {email : {$regex : reg}}
         //     ]
         // })
-        console.log('=====params', params)
         const data = this.ctx.model.Tag.find({
             title: {$regex : reg},
         },{
@@ -42,6 +41,22 @@ class TagService extends Service {
         .skip((params.pageNum - 1) * params.pageSize)
         .limit(params.pageSize || 20)
 
+        return data
+    }
+
+    // 通过tagId筛选tag表中的数据
+    findFilterData(tagIdList){
+        console.log('tagIdList======', tagIdList)
+        const data = this.ctx.model.Tag.find({
+            tagId: {
+                $in : tagIdList
+            }
+        },{
+            _id: 0,
+            articleList: 0,
+            attentionList: 0,
+            isDelete: 0
+        })
         return data
     }
 }
