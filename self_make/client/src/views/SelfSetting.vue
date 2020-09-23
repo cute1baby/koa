@@ -58,7 +58,10 @@
                             >
                             <div class="action-box">
                                 <div v-if="isEditIndex===1">
-                                   <span class="confirm-btn">保存</span> 
+                                   <span 
+                                        class="confirm-btn"
+                                        @click="saveUser('username', userInfo.username)"      
+                                    >保存</span> 
                                    <span class="cancel-btn" @click="isEditIndex=0">取消</span> 
                                 </div>
                                 <p 
@@ -76,6 +79,7 @@
                         <div class="input-box df1 df">
                             <input 
                                 type="text" 
+                                v-model="userInfo.position" 
                                 class="input df1" 
                                 placeholder="填写你的职位"
                                 @focus="isEditIndex=2"
@@ -83,7 +87,10 @@
                             >
                             <div class="action-box">
                                 <div v-if="isEditIndex===2">
-                                   <span class="confirm-btn">保存</span> 
+                                   <span 
+                                        class="confirm-btn"
+                                        @click="saveUser('position', userInfo.position)"     
+                                    >保存</span> 
                                    <span class="cancel-btn" @click="isEditIndex=0">取消</span> 
                                 </div>
                                 <p 
@@ -101,6 +108,7 @@
                         <div class="input-box df1 df">
                             <input 
                                 type="text" 
+                                v-model="userInfo.company" 
                                 class="input df1" 
                                 placeholder="填写你的公司"
                                 @focus="isEditIndex=3"
@@ -108,7 +116,10 @@
                             >
                             <div class="action-box">
                                 <div v-if="isEditIndex===3">
-                                   <span class="confirm-btn">保存</span> 
+                                   <span 
+                                        class="confirm-btn"
+                                        @click="saveUser('company', userInfo.company)"     
+                                    >保存</span> 
                                    <span class="cancel-btn" @click="isEditIndex=0">取消</span> 
                                 </div>
                                 <p 
@@ -126,6 +137,7 @@
                         <div class="input-box df1 df">
                             <input 
                                 type="text" 
+                                v-model="userInfo.selfIntroduction" 
                                 class="input df1" 
                                 placeholder="填写职业技能、擅长的事情、喜欢的事情等"
                                 @focus="isEditIndex=4"
@@ -133,7 +145,10 @@
                             >
                             <div class="action-box">
                                 <div v-if="isEditIndex===4">
-                                   <span class="confirm-btn">保存</span> 
+                                   <span 
+                                        class="confirm-btn"
+                                        @click="saveUser('selfIntroduction', userInfo.selfIntroduction)"     
+                                    >保存</span> 
                                    <span class="cancel-btn" @click="isEditIndex=0">取消</span> 
                                 </div>
                                 <p 
@@ -151,6 +166,7 @@
                         <div class="input-box df1 df">
                             <input 
                                 type="text" 
+                                v-model="userInfo.homepage" 
                                 class="input df1" 
                                 placeholder="填写你的个人主页"
                                 @focus="isEditIndex=5"
@@ -158,7 +174,10 @@
                             >
                             <div class="action-box">
                                 <div v-if="isEditIndex===5">
-                                   <span class="confirm-btn">保存</span> 
+                                   <span 
+                                        class="confirm-btn"
+                                        @click="saveUser('homepage', userInfo.homepage)"    
+                                    >保存</span> 
                                    <span class="cancel-btn" @click="isEditIndex=0">取消</span> 
                                 </div>
                                 <p 
@@ -182,6 +201,8 @@
 </template>
 <script>
 import {mapState} from 'vuex'
+import {responseStatus} from '@/config' 
+import axios from '@/utils/fetch'
 export default {
     data(){
         return {
@@ -202,6 +223,26 @@ export default {
         },
         avatarFileChange(file){
             console.log(file.target.files)
+        },
+        // 保存个人信息
+        saveUser(key, value){
+            const { userId } = this.userInfo
+            axios.post('/api/saveBaseUserInfo', {
+                userId,
+                label: key,
+                value
+            }).then(res => {
+                const {status} = res.data
+                if(status === responseStatus){
+                    this.$message({
+                        type: 'success',
+                        message: '修改成功'
+                    })
+                    
+                }
+            }).catch(err => {
+                console.log('修改个人信息接口出现问题：' + err)
+            })
         }
     }
 }
@@ -358,5 +399,18 @@ export default {
         flex-basis: 20rem;
         margin-left: 2rem;   
     }
+}
+
+.input-box .input::-webkit-input-placeholder {
+  color: #D4D4D4;
+}
+.input-box .input:-moz-placeholder {/* Firefox 18- */
+  color: #D4D4D4;
+}
+.input-box .input::-moz-placeholder{/* Firefox 19+ */
+ color: #D4D4D4;
+}
+.input-box .input:-ms-input-placeholder {
+  color: #D4D4D4;
 }
 </style>

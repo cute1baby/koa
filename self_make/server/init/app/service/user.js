@@ -14,7 +14,6 @@ class UserService extends Service {
         const u = this.ctx.model.User.findOne(params)
         return u
     }
-    // 
     // 创建用户
     createUser(params){
         const p = {
@@ -33,7 +32,7 @@ class UserService extends Service {
         user.save();
         return user
     }
-
+    // 保存修改
 }
 
 module.exports = UserService;

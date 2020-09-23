@@ -42,7 +42,7 @@ class UserController extends Controller {
                     username: res.username,
                     avatar: res.avatar,
                     position: res.position,
-                    company: fuser.company,
+                    company: res.company,
                     selfIntroduction: res.selfIntroduction,
                     homepage: res.homepage
                 }, '注册成功')
@@ -77,6 +77,7 @@ class UserController extends Controller {
         }
         
     }
+    // 查询用户信息
     async findUser(){
         const { ctx, service } = this;
         const tokenStr = ctx.query.token
@@ -97,6 +98,20 @@ class UserController extends Controller {
             ctx.body = failRes('查不到对应的用户', 1012)
         }
         
+    }
+    // 保存基本用户信息
+    async saveBaseUserInfo(){
+        const { ctx, service } = this;
+        const {
+            userId,
+            label,
+            value
+        } = ctx.request.body
+        const res = await service.user.saveBaseUserInfo({
+            userId, 
+            label,
+            value
+        })
     }
 }
 

@@ -62,7 +62,6 @@ class TagController extends Controller {
                 tagId,
                 isFocus: true
             })
-            console.log('tOne====', tOne)
             const p = {
                 tagId,
                 themeColor,

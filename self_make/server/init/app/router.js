@@ -10,6 +10,9 @@ module.exports = app => {
   // 登录部分
   router.post('/login', controller.user.login);
   router.get('/findUser', controller.user.findUser);
+  // 用户部分
+  router.get('/saveBaseUserInfo', controller.user.saveBaseUserInfo);
+
 
   // tag请求部分
   router.get('/getAllTags', controller.tag.getAllTags);

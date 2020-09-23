@@ -4,13 +4,13 @@
             <div class="user-info-block df">
                 <img class="avatar" :src="userInfo.avatar" alt="">
                 <div class="base-info df1 df dfdir">
-                    <h4 class="name">jp摩根</h4>
+                    <h4 class="name">{{userInfo.username}}</h4>
                     <ul class="desclist">
                         <li class="df dfaic">
-                            <i class="iconfont">&#xe639;</i>web前端工程师
+                            <i class="iconfont">&#xe639;</i>{{userInfo.position || '-'}}
                         </li>
                         <li class="df dfaic">
-                            <i class="iconfont">&#xe62c;</i>价格最终回归于价值
+                            <i class="iconfont">&#xe62c;</i>{{userInfo.selfIntroduction || '-'}}
                         </li>
                     </ul>
                 </div>
@@ -344,4 +344,6 @@ export default {
         
     }
 }
+
+
 </style>

@@ -242,7 +242,7 @@ export default {
 @active: #007fff;
 .outter{
     background: #fff;
-    min-height: 100%;
+    // min-height: 100%;
     .home {
         height: 3.833rem;
         margin-bottom: 2rem;
