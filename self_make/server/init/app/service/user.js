@@ -32,7 +32,18 @@ class UserService extends Service {
         user.save();
         return user
     }
-    // 保存修改
+    /**
+     * 保存修改
+     * userId, 
+        label,
+        value
+     */
+    async saveBaseUserInfo(obj){
+        const updt = await this.ctx.model.User.update({
+            userId: obj.userId
+        }, {$set: {[obj.label]: obj.value}})
+        return updt
+    }
 }
 
 module.exports = UserService;

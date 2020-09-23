@@ -84,6 +84,10 @@ class UserController extends Controller {
         let { token } = await jwt.verify(tokenStr, "token");
         // 通过用户Id去查用户
         const fuser = await service.user.getUserByUsername({userId: token})
+        const resList = await service.userTagRelate.findTagValue({
+            userId: token, 
+            isFocus: true
+        })
         if(fuser){
             ctx.body = successRes({
                 userId: fuser.userId,
@@ -93,6 +97,8 @@ class UserController extends Controller {
                 company: fuser.company,
                 selfIntroduction: fuser.selfIntroduction,
                 homepage: fuser.homepage,
+                attentionLabels: resList.length,
+                createTime: fuser.createTime
             }, '数据查询成功')
         }else{
             ctx.body = failRes('查不到对应的用户', 1012)
@@ -112,6 +118,7 @@ class UserController extends Controller {
             label,
             value
         })
+        ctx.body = successRes(res, '数据修改成功')
     }
 }
 

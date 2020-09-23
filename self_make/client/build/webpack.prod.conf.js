@@ -115,7 +115,9 @@ const webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    // 配置moment只要中文包
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn/)
   ]
 })
 

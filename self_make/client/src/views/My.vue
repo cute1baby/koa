@@ -97,13 +97,15 @@
                         <div class="item-title">收藏集</div>
                         <div class="item-count">18</div>
                     </div>
-                    <div class="more-item df dfjbw">
+                    <div class="more-item df dfjbw"
+                        @click="routerPath('/tagManage')"
+                    >
                         <div class="item-title">关注标签</div>
-                        <div class="item-count">5</div>
+                        <div class="item-count">{{userInfo.attentionLabels}}</div>
                     </div>
-                    <div class="more-item df dfjbw">
+                    <div class="more-item df dfjbw" style="cursor: default;">
                         <div class="item-title">加入于</div>
-                        <div class="item-count">2016-08-11</div>
+                        <div class="item-count">{{joinTime}}</div>
                     </div>
                 </div>
             </div>
@@ -111,6 +113,7 @@
     </div>
 </template>
 <script>
+import moment from 'moment'
 import {mapState} from 'vuex'
 export default {
     data(){
@@ -119,7 +122,11 @@ export default {
         }
     },
     computed:{
-        ...mapState(['userInfo'])
+        ...mapState(['userInfo']),
+        joinTime(){
+            const timer = this.userInfo.createTime
+            return moment(timer).format('YYYY-MM-DD')
+        }
     },
     methods:{
         // 路由跳转
@@ -199,7 +206,7 @@ export default {
                         font-size: 1.5rem;
                         color: #909090;
                         margin-left: 1rem;
-                        cursor: pointer;
+                        // cursor: pointer;
                     }
                 }
                 .edit-info{

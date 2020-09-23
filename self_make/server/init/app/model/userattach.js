@@ -10,7 +10,7 @@ module.exports = app => {
         followedUsesList: {type: Array},
         selfArticleList: { type: Array },
         articleCollectClumpList: { type: Array },
-        attentionLabelList: { type: Array },
+        attentionLabels: { type: Number },
         createTime: {
             type: Date,
             default: Date.now()

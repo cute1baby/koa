@@ -54,7 +54,6 @@
                                 class="input df1" 
                                 placeholder="填写你的用户名"
                                 @focus="isEditIndex=1"
-                                @blur="isEditIndex=0"
                             >
                             <div class="action-box">
                                 <div v-if="isEditIndex===1">
@@ -83,7 +82,6 @@
                                 class="input df1" 
                                 placeholder="填写你的职位"
                                 @focus="isEditIndex=2"
-                                @blur="isEditIndex=0"
                             >
                             <div class="action-box">
                                 <div v-if="isEditIndex===2">
@@ -112,7 +110,6 @@
                                 class="input df1" 
                                 placeholder="填写你的公司"
                                 @focus="isEditIndex=3"
-                                @blur="isEditIndex=0"
                             >
                             <div class="action-box">
                                 <div v-if="isEditIndex===3">
@@ -141,7 +138,6 @@
                                 class="input df1" 
                                 placeholder="填写职业技能、擅长的事情、喜欢的事情等"
                                 @focus="isEditIndex=4"
-                                @blur="isEditIndex=0"
                             >
                             <div class="action-box">
                                 <div v-if="isEditIndex===4">
@@ -170,7 +166,6 @@
                                 class="input df1" 
                                 placeholder="填写你的个人主页"
                                 @focus="isEditIndex=5"
-                                @blur="isEditIndex=0"
                             >
                             <div class="action-box">
                                 <div v-if="isEditIndex===5">
@@ -217,6 +212,10 @@ export default {
         routerPath(path, query){
             this.$router.push({path, query})
         },
+        // handleBlur(e){
+        //     console.log('e====', e)
+        //     this.isEditIndex = 0
+        // },
         uploadAvatar(){
             const avatarInputUp = document.getElementById('avatarInputUp')
             avatarInputUp.click()
@@ -227,6 +226,10 @@ export default {
         // 保存个人信息
         saveUser(key, value){
             const { userId } = this.userInfo
+            const val = this.userInfo[key]
+            if(val === value){
+                return
+            }
             axios.post('/api/saveBaseUserInfo', {
                 userId,
                 label: key,
