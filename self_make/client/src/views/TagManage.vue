@@ -21,7 +21,8 @@
 
     <!-- 个人关注 -->
     <div class="tag-container" v-if="currentTag===1">
-        <ul class="taglist">
+        <NullBox v-if="!selfAttentionList.length" />
+        <ul class="taglist" v-else>
             <li 
                 v-for="(tag, i) in selfAttentionList" :key="i"
             >
@@ -35,7 +36,7 @@
                     <span 
                         class="is-watch" 
                         v-if="tag.isFocus"
-                        @click="handleNoAttention(tag.tagId)"    
+                        @click="handleNoAttention(tag.tagId, 'selfAttentionList')"    
                     >已关注</span>
                     <span 
                         class="no-watch" 
@@ -70,7 +71,7 @@
                     <span 
                         class="is-watch" 
                         v-if="tag.isFocus"
-                        @click="handleNoAttention(tag.tagId)"    
+                        @click="handleNoAttention(tag.tagId, 'tagList')"    
                     >已关注</span>
                     <span 
                         class="no-watch" 
@@ -88,6 +89,7 @@
 import {responseStatus} from '@/config' 
 import axios from '@/utils/fetch'
 import { mapState } from 'vuex'
+import NullBox from '@/components/NullBox'
 export default {
     data(){
         return {
@@ -195,7 +197,7 @@ export default {
             })
         },
         // 点击取消关注的函数
-        handleNoAttention(tagId){
+        handleNoAttention(tagId, list){
             const {userId} = this.userInfo
             axios.post('/api/cancelAttention', {
                 userId,
@@ -207,7 +209,7 @@ export default {
                         type: 'success',
                         message: '取消关注成功'
                     })
-                    this.tagList = this.tagList.map(item => {
+                    this[list] = this[list].map(item => {
                         if(item.tagId === tagId){
                             return {...item, isFocus: false}
                         }
@@ -234,6 +236,9 @@ export default {
                 this.handleSearchTags()
             }
         }
+    },
+    components: {
+        NullBox
     }
 };
 </script>

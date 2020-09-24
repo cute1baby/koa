@@ -10,7 +10,7 @@ const Home = () => import("@/views/Home")
 const TagManage = () => import("@/views/TagManage")
 const My = () => import("@/views/My")
 const SelfSetting = () => import("@/views/SelfSetting")
-
+const WriteArticle = () => import("@/views/WriteArticle")
 
 Vue.use(Router)
 
@@ -28,6 +28,12 @@ const router = new Router({
             meta: { requireAuth: false },
             name: 'TagManage',
             component: TagManage
+        },
+        {
+            path: '/write',
+            meta: { requireAuth: false },
+            name: 'Write',
+            component: WriteArticle
         },
         {
             path: '/my',

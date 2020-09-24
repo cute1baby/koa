@@ -31,7 +31,8 @@
                     </span>
                 </div>
                 <span 
-                    class="w_article df dfaic"   
+                    class="w_article df dfaic"
+                    @click="handleArticle" 
                 >写文章</span>
                 <!-- <i class="iconfont notice">&#xe704;</i> -->
                 <img v-if="userInfo.userId"
@@ -112,6 +113,7 @@ export default {
         // 写文章
         handleArticle(){
             this.isShowMenu=false
+            this.routerPath('/write')
             console.log('跳转到写文章页面')
         },
         // 进入我的主页

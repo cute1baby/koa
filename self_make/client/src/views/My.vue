@@ -54,10 +54,11 @@
                 <div class="list-body">
 
                     <!-- 空状态 -->
-                    <div class="empty-box df dfdir dfaic">
+                    <NullBox />
+                    <!-- <div class="empty-box df dfdir dfaic">
                         <i class="iconfont">&#xe631;</i>
                         <p class="empty-text">这里什么都没有</p>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -115,6 +116,7 @@
 <script>
 import moment from 'moment'
 import {mapState} from 'vuex'
+import NullBox from '@/components/NullBox'
 export default {
     data(){
         return {
@@ -157,6 +159,9 @@ export default {
         handleAttention(tab){
             this.handleTab(tab)
         },
+    },
+    components: {
+        NullBox
     }
 }
 </script>
@@ -256,25 +261,7 @@ export default {
             }
 
             .list-body{
-                .empty-box{
-                    padding: 4rem 0;
-                    font-size: 1.167rem;
-                    font-weight: 500;
-                    color: #b2bac2;
-                    cursor: default;
-                    -webkit-user-select: none;
-                    -moz-user-select: none;
-                    -ms-user-select: none;
-                    user-select: none;
-                    background-color: #fff;
-                    .iconfont{
-                        font-size: 7rem;
-                        color: #b2bac2;
-                    }
-                    .empty-text{
-                        margin-top: 1.2rem;
-                    }
-                }
+                
             }
         }
     }
