@@ -1,72 +1,86 @@
 <template>
-    <div>
-        <quill-editor 
-            id="editor"
-            class="editor df dfdir"
-            ref="myTextEditor"
-            v-model="content"
-            :options="editorOption"
-            @blur="onEditorBlur($event)"
-            @focus="onEditorFocus($event)"
-            @ready="onEditorReady($event)"
-            @change="onEditorChange($event)" 
-        />
-        <div class="df dfaic dfjend up-bottom">
-            <p class="s-tag">选择标签：<span>前端</span></p>
-            <el-button>确定并发布</el-button>
+    <div class="df dfdir" style="min-height: 100%;">
+        <div class="top df">
+            <el-input 
+                class="title"
+                v-model="title" 
+                placeholder="请输入标题"
+            ></el-input>
+            <div class="df dfaic dfjend up-bottom">
+                <label for="">选择标签：</label>
+                <el-select 
+                    class="up-select"
+                    clearable
+                    filterable
+                    v-model="tagId" 
+                    placeholder="选择标签"
+                >
+                    <el-option
+                    v-for="item in tagList"
+                    :key="item.tagId"
+                    :label="item.title"
+                    :value="item.tagId">
+                    </el-option>
+                </el-select>
+                <el-button 
+                    class="up-submit"
+                    @click="submitData"
+                >确定并发布</el-button>
+            </div>
         </div>
+        <mavon-editor 
+            class="m-editor df1"
+            v-model="content"
+            :toolbars="toolbars" 
+        />
     </div>
 </template>
 
 <script>
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
-import { quillEditor } from 'vue-quill-editor'
-
+import {responseStatus} from '@/config' 
+import axios from '@/utils/fetch'
+import { mapState } from 'vuex'
 export default {
     data(){
         return {
-            content: null,
-            editorOption: {
-              modules: {
-                toolbar: [
-                  ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
-                  ["blockquote", "code-block"], // 引用  代码块
-                  [{ header: 1 }, { header: 2 }], // 1、2 级标题
-                  [{ list: "ordered" }, { list: "bullet" }], // 有序、无序列表
-                  [{ script: "sub" }, { script: "super" }], // 上标/下标
-                  [{ indent: "-1" }, { indent: "+1" }], // 缩进
-                  // [{'direction': 'rtl'}],                         // 文本方向
-                  [{ size: ["small", false, "large", "huge"] }], // 字体大小
-                  [{ header: [1, 2, 3, 4, 5, 6, false] }], // 标题
-                  [{ color: [] }, { background: [] }], // 字体颜色、字体背景颜色
-                  [{ font: [] }], // 字体种类
-                  [{ align: [] }], // 对齐方式
-                  ["clean"], // 清除文本格式
-                  ["link", "image", "video"] // 链接、图片、视频
-                ], //工具菜单栏配置
-              },
-              placeholder: '请在这里添加产品描述', //提示
-              readyOnly: false, //是否只读
-              theme: 'snow', //主题 snow/bubble
-              syntax: true, //语法检测
+            title: '',
+            content: '',
+            tagList: [],
+            tagId: '',
+            toolbars: {
+                bold: true, // 粗体
+                italic: true, // 斜体
+                header: true, // 标题
+                underline: true, // 下划线
+                mark: true, // 标记
+                superscript: true, // 上角标
+                quote: true, // 引用
+                ol: true, // 有序列表
+                link: true, // 链接
+                imagelink: true, // 图片链接
+                help: true, // 帮助
+                code: true, // code
+                subfield: true, // 是否需要分栏
+                fullscreen: true, // 全屏编辑
+                readmodel: true, // 沉浸式阅读
+                /* 1.3.5 */
+                undo: true, // 上一步
+                trash: true, // 清空
+                save: true, // 保存（触发events中的save事件）
+                /* 1.4.2 */
+                navigation: true // 导航目录
             }
         }
     },
     computed: {
-        editor() {
-            return this.$refs.myTextEditor.quillEditor;
-        }
+        ...mapState(['userInfo'])
     },
     created(){
         this.controlHead('.main-header', 'none')
+        this.handleSearchTags()
     },
     destroyed() {
         this.controlHead('.main-header', 'block')
-    },
-    mounted() {
-        // console.log('this is my editor',this.editor);
     },
     methods: {
         controlHead(oDiv, status){
@@ -75,219 +89,110 @@ export default {
                 oDivDom.style.display = status
             }
         },
-        // 失去焦点
-        onEditorBlur(editor) {},
-        // 获得焦点
-        onEditorFocus(editor) {},
-        // 开始
-        onEditorReady(editor) {},
-        // 值发生变化
-        onEditorChange(editor) {
-            this.content = editor.html;
-            console.log(editor);
+        // 获取标签
+        async handleSearchTags(){
+            try {
+                const {searchTag, pageNum, pageSize}  = this
+                const {userId} = this.userInfo
+                const res = await axios.post('/api/searchTags', {
+                    userId,
+                    searchName: '',
+                    pageNum: 1,
+                    pageSize: 60
+                })
+                if(res.data.status === responseStatus){
+                    this.tagList = res.data.data
+                }
+            } catch (error) {
+                console.log('查询标签出现问题：' + error)
+            } 
+        },
+        routerPath(path, query){
+            this.$router.push({path, query})
+        },
+        validate(){
+            const {tagId, title, content} = this
+            if(!title){
+                this.$message('请填写文章标题')
+                return false
+            }
+            if(!content){
+                this.$message('请填写文章内容')
+                return false
+            }
+            if(!tagId){
+                this.$message('请选择一个标签')
+                return false
+            }
+            return true
+        },
+        // 提交数据
+        async submitData(){
+            if(this.validate()){
+                try {
+                    const $dom = document.querySelector('.v-show-content')
+                    const w_content = $dom.innerHTML
+                    const {title, tagId}  = this
+                    const {userId} = this.userInfo
+                    console.log('内容：' + $dom.innerHTML)
+                    const res = await axios.post('/api/createAndSaveArticle', {
+                        userId,
+                        tagId,
+                        title,
+                        content: w_content
+                    })
+                    if(res.data.status === responseStatus){
+                        this.$message({
+                            type: 'success',
+                            message: '文件创建并发布成功'
+                        })
+                        setTimeout(() => {
+                            this.routerPath('/')
+                        }, 500)
+                        
+                    }
+                } catch (error) {
+                    console.log('文章保存接口出现问题：' + error)
+                } 
+
+
+            }
         }
-    },
-    components: {
-        quillEditor
     }
 }
 </script>
 
 <style lang="less" scoped>
-#editor {
-    line-height: normal !important;
-    height: 400px;
-    /deep/ .ql-snow{
-        &.ql-toolbar{
-            height: 42px;
-            flex-basis: 42px;
+.top{
+    height: 64px;
+    background: #fff;
+    .title{
+        /deep/ .el-input__inner{
+            font-size: 2rem;
+            color: #333;
+            height: 64px;
+            border: none;
         }
-        &.ql-container {
-            flex: 1;
+    }
+    .up-bottom{
+        margin: 30px;
+        label{
+            width: 126px;
+            font-size: 14px;
+            color: #2c3e50;
         }
-        [data-mode=link]{
-            &::before {
-                content: "请输入链接地址:";
-            }
+        .up-select{
+            margin-right: 30px;
         }
-        .ql-action{
-            &::after {
-                border-right: 0px;
-                content: '保存';
-                padding-right: 0px;
-            }
+        .up-submit{
+            border: 1px solid #007fff;
+            color: #007fff;
         }
-        [data-mode=video]{
-            &::before {
-                content: "请输入视频地址:";
-            }
-        }
-        .ql-size{
-            .ql-picker-label{
-                &::before{
-                    content: '14px';
-                }
-                &[data-value=small]{
-                    &::before{
-                        content: '10px';
-                    } 
-                }
-                &[data-value=large]{
-                    &::before{
-                        content: '18px';
-                    } 
-                }
-                &[data-value=huge]{
-                    &::before{
-                        content: '32px';
-                    } 
-                }
-            }
-
-            .ql-picker-item{
-                &::before{
-                    content: '14px';
-                } 
-                &[data-value=small]{
-                    &::before{
-                        content: '10px';
-                    } 
-                }
-                &[data-value=large]{
-                    &::before{
-                        content: '18px';
-                    } 
-                }
-                &[data-value=huge]{
-                    &::before{
-                        content: '32px';
-                    } 
-                }
-            }
-        }
-        
-        .ql-header{
-            .ql-picker-label{
-                &::before{
-                    content: '文本';
-                } 
-                &[data-value="1"]{
-                    &::before{
-                        content: '标题1';
-                    }
-                }
-                &[data-value="2"]{
-                    &::before{
-                        content: '标题2';
-                    }
-                }
-                &[data-value="3"]{
-                    &::before{
-                        content: '标题3';
-                    }
-                }
-                &[data-value="4"]{
-                    &::before{
-                        content: '标题4';
-                    }
-                }
-                &[data-value="5"]{
-                    &::before{
-                        content: '标题5';
-                    }
-                }
-                &[data-value="6"]{
-                    &::before{
-                        content: '标题6';
-                    }
-                }
-            }
-            
-            .ql-picker-item{
-                &::before{
-                    content: '文本';
-                } 
-                &[data-value="1"]{
-                    &::before{
-                        content: '标题1';
-                    }
-                }
-                &[data-value="2"]{
-                    &::before{
-                        content: '标题2';
-                    }
-                }
-                &[data-value="3"]{
-                    &::before{
-                        content: '标题3';
-                    }
-                }
-                &[data-value="4"]{
-                    &::before{
-                        content: '标题4';
-                    }
-                }
-                &[data-value="5"]{
-                    &::before{
-                        content: '标题5';
-                    }
-                }
-                &[data-value="6"]{
-                    &::before{
-                        content: '标题6';
-                    }
-                }
-            }
-        }
-
-        .ql-font{
-            .ql-picker-label{
-                &::before{
-                    content: '标准字体';
-                }
-                &[data-value=serif]{
-                    &::before{
-                        content: '衬线字体';
-                    } 
-                }
-                &[data-value=monospace]{
-                    &::before{
-                        content: '等宽字体';
-                    } 
-                }
-            }
-
-            .ql-picker-item{
-                &::before{
-                    content: '标准字体';
-                } 
-                &[data-value=serif]{
-                    &::before{
-                        content: '衬线字体';
-                    } 
-                }
-                &[data-value=monospace]{
-                    &::before{
-                        content: '等宽字体';
-                    } 
-                }
-            }
-        }
-
-        .ql-editor.ql-blank{
-            &::before{
-                font-style: normal;
-                font-size: 16px;
-            }
-        }
-        
     }
 
 }
-.up-bottom{
-    margin: 30px;
-    .s-tag{
-        margin-right: 20px;
-    }
+.m-editor{
+    min-height: 100%;
 }
+
 </style>

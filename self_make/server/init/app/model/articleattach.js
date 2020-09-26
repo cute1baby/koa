@@ -12,5 +12,5 @@ module.exports = app => {
     })
 
     // 创建模型对象
-    return mongoose.model('ArticleAttach', ArticleAttachSchema)
+    return mongoose.model('Articleattach', ArticleAttachSchema)
 }

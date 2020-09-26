@@ -44,6 +44,13 @@ class TagService extends Service {
         return data
     }
 
+    searchTagById(params){
+        const data = this.ctx.model.Tag.findOne({
+            tagId: params.tagId
+        })
+        return data
+    }
+
     // 通过tagId筛选tag表中的数据
     findFilterData(tagIdList){
         console.log('tagIdList======', tagIdList)

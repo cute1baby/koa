@@ -5,11 +5,11 @@ module.exports = app => {
     const ArticleSchema = new Schema({
         title: { type: String },
         articleId: { type: String },
+        tagId: { type: String },  // 该文章从属于哪个tag
         userId: { type: String },
-        likeNums: { type: String },
-        commentNums: {type: String},
-        readNums: { type: String },
-        belongTagList: { type: Array },
+        likeNums: { type: Number },
+        commentNums: {type: Number},
+        readNums: { type: Number },
         isDelete: { 
             type: Boolean, 
             default: false
@@ -19,7 +19,8 @@ module.exports = app => {
             default: true
         },
         updateTime: {
-            type: Date
+            type: Date,
+            default: Date.now()
         },
         createTime: {
             type: Date,
