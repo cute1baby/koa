@@ -53,9 +53,17 @@ class ArticleController extends Controller {
             const fuser = await service.user.getUserByUsername({
                 userId: item.userId
             })
-            list.push({...item._doc, tagTitle: tagInfo.title, username: fuser.username})
+            const flike = await service.like.findLikeByUser({
+                userId: item.userId,
+                articleId: item.articleId
+            })
+            const fnum = await service.like.findLikeByArticle({
+                articleId: item.articleId
+            })
+            const isLike = flike && flike.isLike ? true : false
+            const nums = fnum && fnum.length ? fnum.length : 0
+            list.push({...item._doc, tagTitle: tagInfo.title, username: fuser.username, isLike, likeNums: nums})
         }
-        console.log('>>>>list', list)
         if(list){
             ctx.body = successRes(list, '文章查询成功')
         }

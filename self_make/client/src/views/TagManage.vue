@@ -118,8 +118,10 @@ export default {
             this.currentTag = tag
             if(tag===1){
                 document.removeEventListener("scroll", this.bindScroll, false);    //取消绑定滚动事件
+                this.selfAttentionList = []
                 this.findSelfAttention()
             }else{
+                this.tagList = []
                 this.handleSearchTags()
                 this.$nextTick(() => {
                     document.addEventListener("scroll", this.bindScroll, false);    //绑定滚动事件

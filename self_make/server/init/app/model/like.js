@@ -3,9 +3,12 @@ module.exports = app => {
     const Schema = mongoose.Schema;
 
     const LikeSchema = new Schema({
-        likeId: { type: String },
         articleId: { type: String },
         userId: { type: String },
+        isLike: {
+            type: Boolean,
+            default: false
+        },
         createTime: {
             type: Date,
             default: Date.now()

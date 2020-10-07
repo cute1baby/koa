@@ -4,40 +4,40 @@ const Controller = require('egg').Controller;
 
 const {successRes, failRes} = require('../utils/response')
 
-class UserTagRelateController extends Controller {
+class LikeController extends Controller {
     // 添加关注
-    async addAttention(){
+    async addLike(){
         const { ctx, service } = this;
         const {
             userId,
-            tagId
+            articleId
         } = ctx.request.body
-        const res = await service.userTagRelate.addAttention({
+        const res = await service.like.addLike({
             userId, 
-            tagId
+            articleId
         })
-        console.log('res=====', res)
+        console.log('res=====', res.db)
         if(res){
-            ctx.body = successRes('', '标签关注成功')
+            ctx.body = successRes('', '文章点赞成功')
         }else{
-            ctx.body = failRes('标签已被关注，不能重复关注', 1013)
+            ctx.body = failRes('文章已被关注，不能重复关注', 1013)
         }
     }
 
     // 取消关注
-    async cancelAttention(){
+    async cancelLike(){
         const { ctx, service } = this;
         const {
             userId,
-            tagId
+            articleId
         } = ctx.request.body
-        const res = await service.userTagRelate.cancelAttention({
+        const res = await service.like.cancelLike({
             userId, 
-            tagId
+            articleId
         })
         console.log('res=====', res)
         if(res){
-            ctx.body = successRes('', '取消关注成功')
+            ctx.body = successRes('', '取消点赞成功')
         }else{
             ctx.body = failRes('取消失败', 1013)
         }
@@ -67,4 +67,4 @@ class UserTagRelateController extends Controller {
     }
 }
 
-module.exports = UserTagRelateController;
+module.exports = LikeController;

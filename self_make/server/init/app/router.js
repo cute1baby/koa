@@ -26,4 +26,8 @@ module.exports = app => {
   // 文章部分
   router.post('/createAndSaveArticle', controller.article.createAndSaveArticle);
   router.post('/findArticleList', controller.article.findArticleList);
+
+  // 文章点赞
+  router.post('/addLike', controller.like.addLike);
+  router.post('/cancelLike', controller.like.cancelLike);
 };

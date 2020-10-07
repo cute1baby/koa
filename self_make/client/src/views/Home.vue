@@ -39,7 +39,10 @@
             </p>
             <h4 class="title">{{article.title}}</h4>
             <div class="case df">
-              <p class="df dfc">
+              <p 
+                :class="article.isLike ? 'is-like df dfc':'df dfc'"
+                @click="handleLike(article)" 
+               >
                 <span class="iconfont">&#xe60c;</span>
                 <span class="nums">{{article.likeNums}}</span>
               </p>
@@ -84,9 +87,12 @@ export default {
   mounted() {
     document.addEventListener("scroll", this.bindScroll, false);    //绑定滚动事件
   },
+  computed: {
+      ...mapState(['userInfo'])
+  },
   methods: {
     formatTimer(timer){
-        return moment(timer).format('YYYY/MM/DD hh:mm')
+        return  moment(timer).format('YYYY/MM/DD hh:mm')
     },
     routerPath(path, query) {
       this.$router.push({ path, query });
@@ -124,7 +130,58 @@ export default {
         }).catch(err => {
             console.log('查找个人关注接口出现问题：' + err)
         })
-    }
+    },
+    // 点击关注的函数
+    handleLike(article){
+        const {userId} = this.userInfo
+        const {articleId} = article
+        if(!article.isLike){
+            axios.post('/api/addLike', {
+                userId,
+                articleId
+            }).then(res => {
+                const {status} = res.data
+                if(status === responseStatus){
+                    this.$message({
+                        type: 'success',
+                        message: '点赞成功'
+                    })
+                    this.articleList = this.articleList.map(item => {
+                        if(item.articleId === articleId){
+                            const likeNums = item.likeNums + 1
+                            return {...item, isLike: true, likeNums}
+                        }
+                        return item
+                    })
+                }
+            }).catch(err => {
+                console.log('点赞接口出现问题：' + err)
+            })
+        }else{
+            axios.post('/api/cancelLike', {
+                userId,
+                articleId
+            }).then(res => {
+                const {status} = res.data
+                if(status === responseStatus){
+                    this.$message({
+                        type: 'success',
+                        message: '取消点赞成功'
+                    })
+                    this.articleList = this.articleList.map(item => {
+                        if(item.articleId === articleId){
+                            const likeNums = item.likeNums - 1
+                            return {...item, isLike: false, likeNums}
+                        }
+                        return item
+                    })
+                }
+            }).catch(err => {
+                console.log('取消点赞接口出现问题：' + err)
+            })
+        }
+        
+    },
   },
 };
 </script>
@@ -243,6 +300,9 @@ export default {
               vertical-align: middle;
               line-height: 1;
               display: inline-block;
+            }
+            &.is-like{
+                color: #6cbd45;
             }
           }
         }
