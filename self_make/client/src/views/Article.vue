@@ -16,7 +16,7 @@
             </div>
             <h3 class="article-title">{{articleInfo.title}}</h3>
             <div v-if="articleInfo.content">
-                <pre v-html="articleInfo.content"></pre>
+                <pre class="art-content" v-html="articleInfo.content"></pre>
             </div>
             <!-- 更多标签 -->
             <div class="tag-list-title">
@@ -195,6 +195,16 @@ export default {
             font-size: 2.5rem;
             font-weight: 700;
             line-height: 1.5;
+        }
+        .art-content{
+            word-break: break-word;
+            line-height: 1.5;
+            font-weight: 400;
+            font-size: 15px;
+            /deep/ img{
+                max-width: 100%;
+                display: block;
+            }
         }
         .tag-list-title{
             margin: 3rem 0 2rem;
