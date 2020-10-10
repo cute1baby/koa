@@ -30,6 +30,15 @@ class ArticleService extends Service {
 
         return data
     }
+
+    // 通过条件查询文章详情
+    findArticleDetails(params){
+        const data = this.ctx.model.Article.find(params, {
+            _id: 0,
+            __v: 0
+        })
+        return data
+    }
 }
 
 module.exports = ArticleService;

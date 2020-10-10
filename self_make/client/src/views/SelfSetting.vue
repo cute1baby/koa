@@ -227,9 +227,9 @@ export default {
         saveUser(key, value){
             const { userId } = this.userInfo
             const val = this.userInfo[key]
-            if(val === value){
-                return
-            }
+            // if(val === value){
+            //     return
+            // }
             axios.post('/api/saveBaseUserInfo', {
                 userId,
                 label: key,

@@ -12,6 +12,14 @@ class ArticleAttachService extends Service {
         articleAttach.save();
         return '文章附加表保存成功'
     }
+    // 通过条件查询文章附加表数据
+    findDetailsById(params){
+        const data = this.ctx.model.Articleattach.findOne(params, {
+            _id: 0,
+            __v: 0
+        })
+        return data
+    }
 }
 
 module.exports = ArticleAttachService;

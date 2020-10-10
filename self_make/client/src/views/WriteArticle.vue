@@ -2,7 +2,7 @@
     <div class="df dfdir" style="min-height: 100%;">
         <div class="top df">
             <el-input 
-                class="title"
+                class="title df1"
                 v-model="title" 
                 placeholder="请输入标题"
             ></el-input>
@@ -175,13 +175,14 @@ export default {
         }
     }
     .up-bottom{
-        margin: 30px;
+        flex-basis: 350px;
+        margin-right: 30px;
         label{
-            width: 126px;
             font-size: 14px;
             color: #2c3e50;
         }
         .up-select{
+            flex-basis: 130px;
             margin-right: 30px;
         }
         .up-submit{

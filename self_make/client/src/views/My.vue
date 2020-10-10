@@ -168,7 +168,7 @@ export default {
 <style lang="less" scoped>
 .container{
     margin: 1.767rem auto;
-    height: 100%;
+    // height: 100%;
     max-width: 960px;
     // width: 960px;
     .left{

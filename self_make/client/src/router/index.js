@@ -11,8 +11,10 @@ const TagManage = () => import("@/views/TagManage")
 const My = () => import("@/views/My")
 const SelfSetting = () => import("@/views/SelfSetting")
 const WriteArticle = () => import("@/views/WriteArticle")
+const Article = () => import("@/views/Article")
 
 Vue.use(Router)
+const v = new Vue()
 
 const router = new Router({
     mode: 'history',
@@ -31,9 +33,15 @@ const router = new Router({
         },
         {
             path: '/write',
-            meta: { requireAuth: false },
+            meta: { requireAuth: true },
             name: 'Write',
             component: WriteArticle
+        },
+        {
+            path: '/article/:id',
+            meta: { requireAuth: false },
+            name: 'Article',
+            component: Article
         },
         {
             path: '/my',
@@ -69,13 +77,17 @@ router.beforeEach(async (to, from, next) => {
             }
         }
     }
-
+    
     // 判断路径是否有访问权限
     if (to.meta.requireAuth) {   
         //判断是否登录（通过登录token来判断）
         if (isLogin) {
             next();
         } else {
+            if(from.path === '/'){
+                return;
+            }
+            v.$message('请先登录')
             next('/');
         }
     } else {//不需要跳转，直接往下走

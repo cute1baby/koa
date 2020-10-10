@@ -31,7 +31,9 @@
           <div 
             class="article df dfdir" 
             v-for="article in articleList"
-            :key="article.articleId">
+            :key="article.articleId"
+            @click="routerPath(`/article/${article.articleId}`)"
+          >
             <p class="f_info">
               <span class="name">{{article.username}}</span>
               <span class="tag">{{article.tagTitle}}</span>
@@ -263,6 +265,7 @@ export default {
       .article {
         padding: 1.5rem 2rem;
         border-bottom: 1px solid rgba(178,186,194,.15);
+        cursor: pointer;
         .f_info {
           font-size: 1rem;
           color: #b2bac2;

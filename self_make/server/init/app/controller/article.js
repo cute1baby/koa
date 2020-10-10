@@ -33,7 +33,7 @@ class ArticleController extends Controller {
             ctx.body = successRes('', '文章保存成功')
         }
     }
-    // 查找文章
+    // 查找文章列表
     async findArticleList(){
         const { ctx, service } = this;
         const {
@@ -67,6 +67,52 @@ class ArticleController extends Controller {
         if(list){
             ctx.body = successRes(list, '文章查询成功')
         }
+    }
+
+    // 查找文章详情
+    async findArticleDetails(){
+        const { ctx, service } = this;
+        const {
+            articleId
+        } = ctx.request.body
+        const articleData = await service.article.findArticleDetails({
+            articleId
+        })  
+        const articleDetails = await service.articleattach.findDetailsById({
+            articleId
+        })
+        const {userId, tagId} = articleData[0]._doc
+        const {content} = articleDetails._doc
+        const tagInfo = await service.tag.searchTagById({
+            tagId
+        })
+        const fuser = await service.user.getUserByUsername({
+            userId
+        })
+        const articleList = await service.article.findArticleDetails({
+            userId
+        })  
+        const {username, avatar, company, position, selfIntroduction, homepage} = fuser._doc
+        const {tagIcon, title} = tagInfo._doc
+        const data = {
+            ...articleData[0]._doc,
+            content,
+            user: { 
+                username, 
+                avatar, 
+                company, 
+                position, 
+                selfIntroduction, 
+                homepage
+            },
+            tagInfo: {
+                tagIcon,
+                title
+            },
+            articleList
+        }
+        ctx.body = successRes(data, '文章数据查询成功')
+        console.log('=====>>>>>>>>>>>>>', articleDetails)
     }
 }
 
