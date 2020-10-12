@@ -28,32 +28,38 @@
           <li><span>热榜</span></li>
         </div>
         <div class="article_list">
-          <div 
-            class="article df dfdir" 
-            v-for="article in articleList"
-            :key="article.articleId"
-            @click="routerPath(`/article/${article.articleId}`)"
-          >
-            <p class="f_info">
-              <span class="name">{{article.username}}</span>
-              <span class="tag">{{article.tagTitle}}</span>
-              <span class="time">{{formatTimer(article.createTime)}}</span>
-            </p>
-            <h4 class="title">{{article.title}}</h4>
-            <div class="case df">
-              <p 
-                :class="article.isLike ? 'is-like df dfc':'df dfc'"
-                @click="handleLike(article)" 
-               >
-                <span class="iconfont">&#xe60c;</span>
-                <span class="nums">{{article.likeNums}}</span>
-              </p>
-              <p class="df dfc">
-                <span class="iconfont">&#xe6cb;</span>
-                <span class="nums">{{article.commentNums}}</span>
-              </p>
+            <div class="df dfjcc" v-if="!userInfo.userId">
+                <span class="is_login df dfc" @click="isLogin=true">请先登录</span>
             </div>
-          </div>
+            <div v-else>
+                <div 
+                    class="article df dfdir" 
+                    v-for="article in articleList"
+                    :key="article.articleId"
+                    @click="routerPath(`/article/${article.articleId}`)"
+                >
+                    <p class="f_info">
+                    <span class="name">{{article.username}}</span>
+                    <span class="tag">{{article.tagTitle}}</span>
+                    <span class="time">{{formatTimer(article.createTime)}}</span>
+                    </p>
+                    <h4 class="title">{{article.title}}</h4>
+                    <div class="case df">
+                    <p 
+                        :class="article.isLike ? 'is-like df dfc':'df dfc'"
+                        @click.stop="handleLike(article)" 
+                    >
+                        <span class="iconfont">&#xe60c;</span>
+                        <span class="nums">{{article.likeNums}}</span>
+                    </p>
+                    <p class="df dfc">
+                        <span class="iconfont">&#xe6cb;</span>
+                        <span class="nums">{{article.commentNums}}</span>
+                    </p>
+                    </div>
+                </div>
+            </div>
+          
         </div>
       </div>
       <div class="right">
@@ -61,6 +67,11 @@
         <div class="billing df dfc">广告位</div>
       </div>
     </div>
+
+    <Login 
+        :visible="isLogin"
+        @closeModal="closeModal"
+    />  
   </div>
 </template>
 <script>
@@ -68,11 +79,13 @@ import moment from 'moment'
 import {responseStatus} from '@/config' 
 import axios from '@/utils/fetch'
 import { mapState } from 'vuex'
+import Login from '@/components/Login'
 import NullBox from '@/components/NullBox'
 export default {
   name: "Home",
   data() {
     return {
+      isLogin: false,
       articleList: [],
       loading: false,
       isLock: false,
@@ -93,6 +106,9 @@ export default {
       ...mapState(['userInfo'])
   },
   methods: {
+    closeModal(){
+        this.isLogin = false
+    },
     formatTimer(timer){
         return  moment(timer).format('YYYY/MM/DD hh:mm')
     },
@@ -117,7 +133,7 @@ export default {
     findArticleList(){
         const {pageNum, pageSize} = this
         this.loading = true
-        axios.post('/api/findArticleList', {
+        axios.post('/juejin/findArticleList', {
             pageNum,
             pageSize
         }).then(res => {
@@ -138,7 +154,7 @@ export default {
         const {userId} = this.userInfo
         const {articleId} = article
         if(!article.isLike){
-            axios.post('/api/addLike', {
+            axios.post('/juejin/addLike', {
                 userId,
                 articleId
             }).then(res => {
@@ -160,7 +176,7 @@ export default {
                 console.log('点赞接口出现问题：' + err)
             })
         }else{
-            axios.post('/api/cancelLike', {
+            axios.post('/juejin/cancelLike', {
                 userId,
                 articleId
             }).then(res => {
@@ -185,6 +201,10 @@ export default {
         
     },
   },
+  components: {
+      Login,
+      NullBox
+  }
 };
 </script>
 
@@ -262,6 +282,16 @@ export default {
       }
     }
     .article_list {
+      .is_login{
+        margin: 60px auto 0;
+        height: 2.666667rem;
+        background-color: #007fff;
+        border-radius: 2.666667rem;
+        padding: 0 1.2rem;
+        font-size: 1.167rem;
+        color: #fff;
+        cursor: pointer;
+      }
       .article {
         padding: 1.5rem 2rem;
         border-bottom: 1px solid rgba(178,186,194,.15);

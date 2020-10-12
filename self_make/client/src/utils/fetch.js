@@ -4,7 +4,7 @@ import axios from 'axios'  //引入axios
 import qs from 'qs'
 import Cookies from 'js-cookie'
 import store from '@/store/index'  //引入store
-
+import router from '@/router'  //引入router
 const v = new Vue({
     store
 })
@@ -46,6 +46,7 @@ instance.interceptors.response.use(
                 case 1002:
                     // 删除token和用户信息
                     Cookies.remove('token')
+                    router.replace({path: '/'}).catch(err => { console.log(err)})
                     // store.commit('resetUserInfo', fdata)
                     break;
                 default:

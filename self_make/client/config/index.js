@@ -11,11 +11,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/api':{
+        '/juejin':{
             target: 'http://localhost:7001', //测试线
             changeOrigin: true, // 是否跨域
             pathRewrite: {
-              '^/api': ''
+              '^/juejin': ''
             }
           }
     },
@@ -51,6 +51,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
+    // assetsPublicPath: '/vue_juejin/',
     assetsPublicPath: '/',
 
     /**

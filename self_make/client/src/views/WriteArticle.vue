@@ -94,7 +94,7 @@ export default {
             try {
                 const {searchTag, pageNum, pageSize}  = this
                 const {userId} = this.userInfo
-                const res = await axios.post('/api/searchTags', {
+                const res = await axios.post('/juejin/searchTags', {
                     userId,
                     searchName: '',
                     pageNum: 1,
@@ -135,7 +135,7 @@ export default {
                     const {title, tagId}  = this
                     const {userId} = this.userInfo
                     console.log('内容：' + $dom.innerHTML)
-                    const res = await axios.post('/api/createAndSaveArticle', {
+                    const res = await axios.post('/juejin/createAndSaveArticle', {
                         userId,
                         tagId,
                         title,

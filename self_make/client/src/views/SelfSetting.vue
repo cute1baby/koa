@@ -230,7 +230,7 @@ export default {
             // if(val === value){
             //     return
             // }
-            axios.post('/api/saveBaseUserInfo', {
+            axios.post('/juejin/saveBaseUserInfo', {
                 userId,
                 label: key,
                 value

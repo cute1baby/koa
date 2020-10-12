@@ -58,7 +58,7 @@ export default {
                         password: this.password
                     }
 
-                    const res = await axios.post('/api/login', params)
+                    const res = await axios.post('/juejin/login', params)
                     const resData = res.data;
                     const {status, message, data} = resData
                     if(status === responseStatus){

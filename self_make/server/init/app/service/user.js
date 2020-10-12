@@ -20,7 +20,7 @@ class UserService extends Service {
             userId: '',
             username: '',
             password: '',
-            avatar: '',
+            avatar: 'http://img.familyli.cn/juejin_defdault.png',
             company: '',
             position: '',
             selfIntroduction: '',

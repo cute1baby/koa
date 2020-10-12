@@ -18,6 +18,7 @@ const v = new Vue()
 
 const router = new Router({
     mode: 'history',
+    // base: '/vue_juejin',
     routes: [
         {
             path: '/',
@@ -65,7 +66,7 @@ router.beforeEach(async (to, from, next) => {
     // 获取用户信息
     if (isLogin && !userInfo.userId) {
         if(axios){
-            const {data} = await axios.get('/api/findUser', {
+            const {data} = await axios.get('/juejin/findUser', {
                 params:{
                     token: isLogin
                 }

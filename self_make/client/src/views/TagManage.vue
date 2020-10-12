@@ -132,7 +132,7 @@ export default {
         findSelfAttention(){
             const {userId} = this.userInfo
             this.loading = true
-            axios.post('/api/findSelfAttention', {
+            axios.post('/juejin/findSelfAttention', {
                 userId
             }).then(res => {
                 const {status} = res.data
@@ -157,7 +157,7 @@ export default {
                 const {searchTag, pageNum, pageSize}  = this
                 const {userId} = this.userInfo
                 this.loading = true
-                const res = await axios.post('/api/searchTags', {
+                const res = await axios.post('/juejin/searchTags', {
                     userId,
                     searchName: searchTag,
                     pageNum,
@@ -177,7 +177,7 @@ export default {
         // 点击关注的函数
         handleAttention(tagId){
             const {userId} = this.userInfo
-            axios.post('/api/addAttention', {
+            axios.post('/juejin/addAttention', {
                 userId,
                 tagId
             }).then(res => {
@@ -201,7 +201,7 @@ export default {
         // 点击取消关注的函数
         handleNoAttention(tagId, list){
             const {userId} = this.userInfo
-            axios.post('/api/cancelAttention', {
+            axios.post('/juejin/cancelAttention', {
                 userId,
                 tagId
             }).then(res => {

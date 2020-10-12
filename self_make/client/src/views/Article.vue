@@ -21,7 +21,7 @@
             <!-- 更多标签 -->
             <div class="tag-list-title">
                 <p>关注下面的标签，发现更多相似文章</p>
-                <span class="v-tag df dfc" v-if="articleInfo.tagInfo">
+                <span class="v-tag" v-if="articleInfo.tagInfo">
                     <img :src="articleInfo.tagInfo.tagIcon" alt="" />
                     <span class="name">{{articleInfo.tagInfo.title}}</span>
                 </span>
@@ -99,7 +99,7 @@ export default {
         },
         findArticleList(){
             const {articleId} = this
-            axios.post('/api/findArticleDetails', {
+            axios.post('/juejin/findArticleDetails', {
                 articleId
             }).then(res => {
                 const {status} = res.data
@@ -217,9 +217,8 @@ export default {
                 border-left: 6px solid #ddd;
             }
             .v-tag{
-                width: 78px;
                 box-sizing: border-box;
-                padding: .167rem;
+                padding: .567rem;
                 background-color: #fff;
                 border: 1px solid #e3e3e3;
                 border-radius: 2px;
@@ -227,8 +226,11 @@ export default {
                     width: 1.75rem;
                     height: 1.75rem;
                     border-radius: 2px;
+                    vertical-align: middle;
                 }
                 .name{
+                    display: inline-block;
+                    vertical-align: middle;
                     padding: 0 .75rem;
                     font-size: 1rem;
                     line-height: 1.75rem;
