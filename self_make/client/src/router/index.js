@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import axios from '@/utils/fetch'
-// import axios from 'axios'
+// import axios from '@/utils/fetch'
+import axios from 'axios'
 import Cookies from 'js-cookie'
 import store from '@/store/index' 
 import {responseStatus} from '@/config' 
 
+const UnHome = () => import("@/views/UnHome")
 const Home = () => import("@/views/Home")
 const TagManage = () => import("@/views/TagManage")
 const My = () => import("@/views/My")
@@ -22,13 +23,23 @@ const router = new Router({
     routes: [
         {
             path: '/',
+            redirect: '/home'
+        },
+        {
+            path: '/unhome',
             meta: { requireAuth: false },
+            name: 'UnHome',
+            component: UnHome
+        },
+        {
+            path: '/home',
+            meta: { requireAuth: true },
             name: 'Home',
             component: Home
         },
         {
             path: '/tagManage',
-            meta: { requireAuth: false },
+            meta: { requireAuth: true },
             name: 'TagManage',
             component: TagManage
         },
@@ -63,6 +74,7 @@ const router = new Router({
 router.beforeEach(async (to, from, next) => {
     const isLogin = Cookies.get('token');
     const {userInfo} = store.state
+
     // 获取用户信息
     if (isLogin && !userInfo.userId) {
         if(axios){
@@ -78,23 +90,19 @@ router.beforeEach(async (to, from, next) => {
             }
         }
     }
-    
+  
     // 判断路径是否有访问权限
     if (to.meta.requireAuth) {   
         //判断是否登录（通过登录token来判断）
         if (isLogin) {
             next();
         } else {
-            if(from.path === '/'){
-                return;
-            }
-            v.$message('请先登录')
-            next('/');
+            v.$message('您当前没有访问权限');
         }
     } else {//不需要跳转，直接往下走
-        // if(isLogin && to.path === '/login'){
-        //     return next('/home');
-        // }
+        if(isLogin && to.path === '/unhome'){
+            return next('/home');
+        }
         next();
     }
 });

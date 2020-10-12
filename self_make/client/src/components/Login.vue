@@ -70,6 +70,8 @@ export default {
                         this.setUserInfo(user)
                         Cookies.set('token', token, { expires: 7 })
                         this.$emit('closeModal')
+                        this.$router.push('/home')
+                        // window.location.reload()
                     }else{
                         this.$message({
                             type: 'warning',

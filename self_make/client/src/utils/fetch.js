@@ -6,6 +6,7 @@ import Cookies from 'js-cookie'
 import store from '@/store/index'  //引入store
 import router from '@/router'  //引入router
 const v = new Vue({
+    router,
     store
 })
 // 创建一个axios实例
@@ -39,15 +40,18 @@ instance.interceptors.response.use(
         //拦截响应，做统一处理 
         if (response.data.status) {
             // 判断是否是登录或者首页
-            // const isPath = v.$route.path.trim() === '/login' || v.$route.path.trim() === '/'
+            const isPath = v.$route.path.trim() === '/unhome' || v.$route.path.trim() === '/'
             // 1001: token过期； 1002：非法请求
             switch (response.data.status) {
                 case 1001:
                 case 1002:
-                    // 删除token和用户信息
-                    Cookies.remove('token')
-                    router.replace({path: '/'}).catch(err => { console.log(err)})
-                    // store.commit('resetUserInfo', fdata)
+                    if(!isPath){
+                        // 删除token和用户信息
+                        Cookies.remove('token')
+                        router.replace({path: '/unhome'}).catch(err => { console.log(err)})
+                        // window.location.reload()
+                        store.commit('resetUserInfo', {})
+                    }
                     break;
                 default:
                     v.$message({

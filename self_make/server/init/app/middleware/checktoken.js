@@ -4,8 +4,14 @@ const { successRes, failRes } = require("../utils/response");
 module.exports = () => {
     return async function (ctx, next) {
         let url = ctx.request.url;
+        console.log('>>>>>>>>>>>>>>>url', url)
         // await next();
-        if (url === "/login") {
+        if (
+            url.includes("/login") || 
+            url.includes("/findUser") || 
+            url.includes("/findArticleList") || 
+            url.includes("/findArticleDetails")
+        ) {
             await next();
         } else {
             try {
