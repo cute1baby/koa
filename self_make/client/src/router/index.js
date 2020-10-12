@@ -97,7 +97,13 @@ router.beforeEach(async (to, from, next) => {
         if (isLogin) {
             next();
         } else {
-            v.$message('您当前没有访问权限');
+            
+            if(from.path === '/') {
+                next('/unhome')
+            }else{
+                v.$message('您当前没有访问权限');
+            }
+            
         }
     } else {//不需要跳转，直接往下走
         if(isLogin && to.path === '/unhome'){
