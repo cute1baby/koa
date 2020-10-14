@@ -154,6 +154,7 @@ export default {
         padding: 2rem;
         margin-bottom: 3rem;
         background: #fff;
+        box-sizing: border-box;
         .article-area{
             // margin-bottom: 1.5rem;
             .avatar{
@@ -197,6 +198,11 @@ export default {
             line-height: 1.5;
         }
         .art-content{
+            white-space: pre-wrap;           /* css-3 */
+            white-space: -moz-pre-wrap;      /* Mozilla, since 1999 */
+            white-space: -pre-wrap;          /* Opera 4-6 */
+            white-space: -o-pre-wrap;        /* Opera 7 */
+            word-wrap: break-word; 
             word-break: break-word;
             line-height: 1.5;
             font-weight: 400;
@@ -307,5 +313,11 @@ export default {
     }
 }
 
-
+@media screen and (max-width: 960px){
+    .container{
+        .right{
+            display: none;
+        }
+    }
+}
 </style>

@@ -18,18 +18,18 @@ module.exports = () => {
                 if (ctx.headers.authorization) {
                     const tokenStr = ctx.headers.authorization;
                     let {token, exp} = await jwt.verify(tokenStr, "token");
-                    console.log('token-=====', token, new Date(1000* exp))
+                    console.log('token-==111111111===', token, new Date(1000* exp))
                     if (token) {
                         await next();
                     } else {
                         ctx.body = failRes("接口的非法请求", 1002);
                     }
                 } else {
-                    ctx.body = failRes("toekn失效", 1001);
+                    ctx.body = failRes("token失效", 1001);
                 }
             } catch (error) {
                 console.log("token校验失败：" + error);
-                ctx.body = failRes("toekn失效", 1001);
+                ctx.body = failRes("不存在token", 1001);
             }
         }
     };

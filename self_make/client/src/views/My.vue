@@ -339,5 +339,23 @@ export default {
     }
 }
 
+@media screen and (max-width: 960px) {
+.container{
+    .left{
+        .user-info-block{
+            align-items: center;
+            flex-direction: column;
+            .attach-info{
+                margin-top: 1rem;
+                flex-basis: 6rem;
+                align-items: center;
+            }
+        }
+    }
+    .right{
+        display: none;
+    }
+}
 
+}
 </style>

@@ -16,7 +16,7 @@ class LikeController extends Controller {
             userId, 
             articleId
         })
-        console.log('res=====', res.db)
+        console.log('res=====', res)
         if(res){
             ctx.body = successRes('', '文章点赞成功')
         }else{

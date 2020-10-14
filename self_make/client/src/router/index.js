@@ -19,7 +19,7 @@ const v = new Vue()
 
 const router = new Router({
     mode: 'history',
-    // base: '/vue_juejin',
+    base: '/vue_juejin',
     routes: [
         {
             path: '/',

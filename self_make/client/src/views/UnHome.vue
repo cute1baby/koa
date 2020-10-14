@@ -28,33 +28,37 @@
           <li><span>热榜</span></li>
         </div>
         <div class="article_list">
-            <div 
-                class="article df dfdir" 
-                v-for="article in articleList"
-                :key="article.articleId"
-                @click="routerPath(`/article/${article.articleId}`)"
-            >
-                <p class="f_info">
-                <span class="name">{{article.username}}</span>
-                <span class="tag">{{article.tagTitle}}</span>
-                <span class="time">{{formatTimer(article.createTime)}}</span>
-                </p>
-                <h4 class="title">{{article.title}}</h4>
-                <div class="case df">
-                <p 
-                    :class="article.isLike ? 'is-like df dfc':'df dfc'"
-                    @click.stop="handleLike(article)" 
+            <div class="df dfjcc" v-if="!userInfo.userId">
+                <span class="is_login df dfc" @click="isLogin=true">请先登录</span>
+            </div>
+            <div v-else>
+                <div 
+                    class="article df dfdir" 
+                    v-for="article in articleList"
+                    :key="article.articleId"
+                    @click="routerPath(`/article/${article.articleId}`)"
                 >
-                    <span class="iconfont">&#xe60c;</span>
-                    <span class="nums">{{article.likeNums}}</span>
-                </p>
-                <p class="df dfc">
-                    <span class="iconfont">&#xe6cb;</span>
-                    <span class="nums">{{article.commentNums}}</span>
-                </p>
+                    <p class="f_info">
+                    <span class="name">{{article.username}}</span>
+                    <span class="tag">{{article.tagTitle}}</span>
+                    <span class="time">{{formatTimer(article.createTime)}}</span>
+                    </p>
+                    <h4 class="title">{{article.title}}</h4>
+                    <div class="case df">
+                    <p 
+                        :class="article.isLike ? 'is-like df dfc':'df dfc'"
+                        @click.stop="handleLike(article)" 
+                    >
+                        <span class="iconfont">&#xe60c;</span>
+                        <span class="nums">{{article.likeNums}}</span>
+                    </p>
+                    <p class="df dfc">
+                        <span class="iconfont">&#xe6cb;</span>
+                        <span class="nums">{{article.commentNums}}</span>
+                    </p>
+                    </div>
                 </div>
             </div>
-          
         </div>
       </div>
       <div class="right">
@@ -295,7 +299,7 @@ export default {
     }
     .article_list {
       .is_login{
-        margin: 60px auto 0;
+        margin: 60px auto;
         height: 2.666667rem;
         background-color: #007fff;
         border-radius: 2.666667rem;

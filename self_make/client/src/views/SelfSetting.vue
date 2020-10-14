@@ -416,4 +416,12 @@ export default {
 .input-box .input:-ms-input-placeholder {
   color: #D4D4D4;
 }
+
+@media screen and (max-width: 960px) {
+    .container{
+        .right{
+            display: none;
+        }
+    }
+}
 </style>

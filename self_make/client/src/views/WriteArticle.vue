@@ -40,6 +40,8 @@
 import {responseStatus} from '@/config' 
 import axios from '@/utils/fetch'
 import { mapState } from 'vuex'
+import {mavonEditor} from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 export default {
     data(){
         return {
@@ -158,6 +160,9 @@ export default {
 
             }
         }
+    },
+    components: {
+        mavonEditor
     }
 }
 </script>

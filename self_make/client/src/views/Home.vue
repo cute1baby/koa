@@ -132,10 +132,12 @@ export default {
     },
     findArticleList(){
         const {pageNum, pageSize} = this
+        const userId = this.userInfo.userId
         this.loading = true
         axios.post('/juejin/findArticleList', {
             pageNum,
-            pageSize
+            pageSize,
+            userId
         }).then(res => {
             const {status} = res.data
             if(status === responseStatus){

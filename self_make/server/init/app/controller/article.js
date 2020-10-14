@@ -38,7 +38,8 @@ class ArticleController extends Controller {
         const { ctx, service } = this;
         const {
             pageNum,
-            pageSize
+            pageSize,
+            userId
         } = ctx.request.body
         const res = await service.article.findArticleList({
             pageNum: Number(pageNum),
@@ -53,8 +54,9 @@ class ArticleController extends Controller {
             const fuser = await service.user.getUserByUsername({
                 userId: item.userId
             })
+            // item.userId是兼容未登录情况下使用的
             const flike = await service.like.findLikeByUser({
-                userId: item.userId,
+                userId: userId || item.userId,
                 articleId: item.articleId
             })
             const fnum = await service.like.findLikeByArticle({

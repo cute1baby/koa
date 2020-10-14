@@ -51,8 +51,8 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    // assetsPublicPath: '/vue_juejin/',
-    assetsPublicPath: '/',
+    assetsPublicPath: '/vue_juejin/',
+    // assetsPublicPath: '/',
 
     /**
      * Source Maps
