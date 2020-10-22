@@ -1,6 +1,6 @@
 /**
  * 获取access_token
- * 是什么？微信调用接口全局唯一凭据
+ * 是什么？微信调用接口全局唯一凭据，调用各接口时都需使用access_token。
  * 
  * 特点：
  * 1、唯一的
@@ -24,6 +24,11 @@
  *          - 没有过期，直接使用
  *      - 本地没有文件
  *          - 发送请求获取access_token(getAccessToken)，保存下来（保存成本地文件）saveAccessToken
+ * 
+ * 
+ * 获取ticket（暂时从个人角度来看用的比较少）
+ * 是什么？商户在调用授权页前需要先获取一个7200s过期的授权页ticket，
+ * 在获取授权页接口中，该ticket作为参数传入，加强安全性。
  */
 
 const rp = require('request-promise-native')

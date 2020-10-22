@@ -1,7 +1,7 @@
 /**
  * 工具包函数
  */
-// 将xml转化成js的一个包文件
+// 将xml转化成json的一个包文件
 const {parseString} = require('xml2js')
 module.exports = {
     getUserDataAsync(req){

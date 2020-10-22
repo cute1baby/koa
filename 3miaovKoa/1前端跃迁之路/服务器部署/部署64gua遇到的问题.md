@@ -102,6 +102,11 @@ pm2 list  // 查看是否连接成功
 exit  成功之后退出
 ```
 
+备注：pm2如何执行npm run dev
+```
+pm2 start  npm -- run dev
+```
+
 ### 客户端部署
 将客户端项目在本地跑起来，执行命令`npm run build`，生成了打包文件，并且把它传到服务器上。我当前传到的目录是`/home/64gua/client`。所以我再在下面配置一下nginx配置就可以了。
 

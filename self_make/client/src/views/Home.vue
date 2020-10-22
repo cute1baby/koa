@@ -110,7 +110,10 @@ export default {
         this.isLogin = false
     },
     formatTimer(timer){
-        return  moment(timer).format('YYYY/MM/DD hh:mm')
+        const t = moment(timer).format('YYYY/MM/DD hh:mm')
+        console.log(t)
+        // debugger
+        return t
     },
     routerPath(path, query) {
       this.$router.push({ path, query });

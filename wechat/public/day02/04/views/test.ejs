@@ -10,10 +10,79 @@
 项目测试
 <script>
 const appid = `wxd9f5805ea8e18784`
-const redirect_uri = `http://4d7eaaff2a9e.ngrok.io/test`
+const redirect_uri = `http://www.familyli.cn/test`
 const scope = `snsapi_userinfo`
 const url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=${scope}&state=123#wechat_redirect`
 window.location.href = url
+/*
+* 下面的这个例子演示授权的几个步骤
+* authorize1把第1步做了
+* getUserInfoByCode把2、3、4步骤做了
+*/
+/*
+/** 获取授权 */
+// async getAuthorize() {
+//     const that = this
+//     let CZUSER_FREE = localStorage.CZUSER_FREE
+//     if (query.code || CZUSER_FREE) {
+//         if (CZUSER_FREE) {
+//             let _params = decodeURIComponent(CZUSER_FREE)
+//             that.userInfo = JSON.parse(_params)
+//         }
+
+//         if (!CZUSER_FREE) {
+//             let { data } = await that.getUserInfoByCode({ code: query.code })
+//             // code 过期重新授权
+//             if (
+//                 _.get(data, 'data.errcode') === 41001 ||
+//                 !_.get(data, 'data.unionid')
+//             ) {
+//                 return authorize1({
+//                     url: window.location.href.split('&code=')[0]
+//                 })
+//             }
+//             that.userInfo = {
+//                 ...data.data,
+//                 employeeId: _.get(data, 'data.employee_id')
+//             }
+//             localStorage.setItem(
+//                 'CZUSER_FREE',
+//                 encodeURIComponent(JSON.stringify(that.userInfo))
+//             )
+//         }
+//         that._form = query._form || query.form || query.form1 || query._from || query.channel
+//         that.catalogId = query.catalogId
+//         // that.courseId = query.courseId
+//         that.getInfoByWX({
+//             catalogId: that.catalogId,
+//             unionId: that.userInfo.unionid
+//         })
+//     } else {
+//         // 拉起授权
+//         authorize1({
+//             url: window.location.href.split('#')[0]
+//         })
+//     }
+// }
+
+// 获取授权code
+// getUserInfoByCode (params) {
+//     return axios.get(host.hdk + '/Web/getUserInfoByCode', {
+//     params
+//     })
+// }
+
+// export const authorize1 = data => {
+//     let params = {
+//       appid: appid,
+//       redirect_uri: encodeURIComponent(data.url),
+//       response_type: 'code',
+//       scope: 'snsapi_userinfo',
+//       state: '123#wechat_redirect'
+//     }
+//     let url = 'https://open.weixin.qq.com/connect/oauth2/authorize' + setUrlParameter(params)
+//     window.location.href = url
+// }
 </script>
 </body>
 </html>

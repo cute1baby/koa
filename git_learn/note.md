@@ -72,6 +72,21 @@ git merge test  将test分支修改的记录迁移到master分支上
 git branch -d test  将test分支删除，只剩下master分支
 ```
 
+#### 本地已经有分支，如果在远端创建一个跟本地同名的分支
+- 假设本地有一个分支叫做pro，现在远端创建一个origin/pro分支，如何输入命令；
+```
+git push --set-upstream origin pro
+```
+
+- 假设远端有一个origin/pro分支，想在本地创建一个pro分支，如何输入命令：
+```
+git checkout --track origin/pro
+```
+- 删除远端的分支
+```
+git push origin --delete pro
+```
+
 
 ### 修改最近的一个commit内容描述
 git commit --amend
