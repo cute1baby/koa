@@ -16,13 +16,18 @@ module.exports = appInfo => {
   config.cluster = {
       listen: {
           port: 3005,
-          hostname: '127.0.0.1'
+          // hostname: '127.0.0.1'
       }
   }
 
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1603366258616_8309';
-
+  // 设置安全请求的方式
+  config.security = {
+    csrf: {
+        enable: false,
+    }
+  };
   // add your middleware config here
   // config.middleware = ['checkWechat'];
   config.middleware = [];

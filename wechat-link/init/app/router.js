@@ -8,5 +8,6 @@ module.exports = app => {
 //   // 注册中间件
 //   app.middleware.checkWechat();
     router.get('/', controller.home.index);
-    router.get('/hello', controller.home.hello);
+    router.get('/getAccessToken', controller.home.getAccessToken);
+    router.get('/getUserList', controller.home.getUserList);
 };

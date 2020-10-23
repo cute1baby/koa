@@ -29,7 +29,7 @@
 const rp = require('request-promise-native')
 const {appID, appsecret} = require('../config')
 const api = require('../utils/api')
-const {writeFileAsync, readFileAsync} = require('../utils/tool')
+const {writeFileSync, readFileSync} = require('../utils/tool')
 const menu = require('./menu')
 
 
@@ -64,14 +64,14 @@ class Wechat {
      * 保存access_token
      */
     saveAccessToken(accessToken){
-        return writeFileAsync(accessToken, 'accessToken.txt')
+        return writeFileSync(accessToken, 'accessToken.txt')
     }
 
     /**
      * 读取access_token
      */
     readAccessToken(){
-        return readFileAsync('accessToken.txt')
+        return readFileSync('accessToken.txt')
     }
 
     /**
@@ -117,14 +117,14 @@ class Wechat {
      * 保存jsapi_ticket
      */
     saveTicket(ticket){
-        return writeFileAsync(ticket, 'ticket.txt')
+        return writeFileSync(ticket, 'ticket.txt')
     }
 
     /**
      * 读取jsapi_ticket
      */
     readTicket(){
-        return readFileAsync('ticket.txt')
+        return readFileSync('ticket.txt')
     }
 
     /**

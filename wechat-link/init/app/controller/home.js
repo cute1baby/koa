@@ -1,12 +1,15 @@
 'use strict';
 // 引入配置文件
 const config = require('../config')
+const {Wechat} = require('../tool/accessToken')
 // 引入sha1模块
 const sha1 = require('sha1')
+const rp = require('request-promise-native')
 const { successRes, failRes } = require("../utils/response");
 const Controller = require('egg').Controller;
-
+const w = new Wechat()
 class HomeController extends Controller {
+  // 校验服务器配置的有效性
   async index() {
     const { ctx } = this;
     console.log('query====', ctx.query)
@@ -37,10 +40,24 @@ class HomeController extends Controller {
     }
 
   }
-  async hello(){
+  // 获取accessToken
+  async getAccessToken(){
     const { ctx } = this;
-    ctx.body = successRes('hello world', '测试接口调试')
-    // ctx.body = 'hello world'
+    const res = await w.fetchAccessToken()
+    ctx.body = successRes(res, '获取accessToken')
+  }
+  // 获取用户列表
+  async getUserList(){
+    const { ctx } = this;
+    const tokenRes = await w.fetchAccessToken()
+    const {access_token} = tokenRes
+    const url = `https://api.weixin.qq.com/cgi-bin/user/get?access_token=${access_token}`
+    const userList = await rp({
+        method: 'GET',
+        url,
+        json: true
+    })
+    ctx.body = successRes(userList, '获取accessToken')
   }
 }
 
