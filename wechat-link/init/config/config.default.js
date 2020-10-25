@@ -28,6 +28,11 @@ module.exports = appInfo => {
         enable: false,
     }
   };
+  // 设置允许跨域
+  config.cors = {
+    origin: '*',
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS'
+  };
   // add your middleware config here
   // config.middleware = ['checkWechat'];
   config.middleware = [];

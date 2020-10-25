@@ -2,12 +2,42 @@
 // 引入配置文件
 const config = require('../config')
 const {Wechat} = require('../tool/accessToken')
+const {getDataAsync, toJson, toXml} = require('../tool/xmlTool')
 // 引入sha1模块
 const sha1 = require('sha1')
+const nanoid = require('nanoid')
 const rp = require('request-promise-native')
+const axios = require('axios')
 const { successRes, failRes } = require("../utils/response");
 const Controller = require('egg').Controller;
 const w = new Wechat()
+
+// 自定义菜单目录
+const menuList = {
+    "button":[
+        {	
+            "type":"click",
+            "name":"书单测试",
+            "key": nanoid(12)
+        },
+        
+        {	
+            "name":"我的",
+            "sub_button": [
+                {	
+                    "type":"view",
+                    "name":"百度一下",
+                    "url":"http://www.baidu.com"
+                },
+                {	
+                    "type":"view",
+                    "name":"联系我",
+                    "url":"http://www.familyli.cn"
+                },
+            ]
+        },
+    ]
+}
 class HomeController extends Controller {
   // 校验服务器配置的有效性
   async index() {
@@ -57,7 +87,89 @@ class HomeController extends Controller {
         url,
         json: true
     })
-    ctx.body = successRes(userList, '获取accessToken')
+    if(userList){
+        ctx.body = successRes(userList, '获取用户列表成功')
+    }else{
+        ctx.body = failRes('获取用户列表失败')
+    }
+  }
+
+  // 设置自定义菜单列表
+  async setMenuList(){
+    const { ctx } = this;
+    const tokenRes = await w.fetchAccessToken()
+    const {access_token} = tokenRes
+    const url = ` https://api.weixin.qq.com/cgi-bin/menu/create?access_token=${access_token}`
+    const menuListRes = await axios({
+        method: 'POST',
+        url,
+        data: menuList
+    })
+    if(menuListRes){
+        ctx.body = successRes('自定义菜单创建成功')
+    }else{
+        ctx.body = failRes('自定义菜单创建失败')
+    }
+  }
+   // 获取自定义菜单列表
+   async getMenuList(){
+    const { ctx } = this;
+    const tokenRes = await w.fetchAccessToken()
+    const {access_token} = tokenRes
+    console.log('access_token===', access_token)
+    const url = `https://api.weixin.qq.com/cgi-bin/get_current_selfmenu_info?access_token=${access_token}`
+    const menuListRes = await rp({
+        method: 'GET',
+        url,
+        json: true
+    })
+    if(menuListRes){
+        ctx.body = successRes(menuListRes)
+    }else{
+        ctx.body = failRes('自定义菜单获取失败')
+    }
+  } 
+
+  // 自动回复
+  async getReplyContent(){
+    const { ctx } = this;
+    console.log(11111)
+    // 接收请求体中的数据,流式数据
+    const xmlData = await getUserDataAsync(ctx)
+    console.log(xmlData)
+  }
+
+  async getAuthorization(){
+    const { ctx } = this;
+    const {appID, appsecret} = config
+    const {code} = ctx.query
+    // 授权第二步,获取网页授权access_token
+    const url = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${appID}&secret=${appsecret}&code=${code}&grant_type=authorization_code`
+    const authRes = await rp({
+        method: 'GET',
+        url,
+        json: true
+    })
+    if(authRes){
+        const {
+            access_token,
+            openid
+        } = authRes;
+        // 授权第四步，获取用户信息
+        const authUrl = `https://api.weixin.qq.com/sns/userinfo?access_token=${access_token}&openid=${openid}&lang=zh_CN`
+        const userRes = await rp({
+            method: 'GET',
+            url: authUrl,
+            json: true
+        })
+        if(userRes){
+            ctx.body = successRes(userRes)
+        }else{
+            ctx.body = failRes('网页授权获取用户信息失败')
+        }
+    }else{
+        ctx.body = failRes('获取网页授权access_token失败')
+    }
   }
 }
 

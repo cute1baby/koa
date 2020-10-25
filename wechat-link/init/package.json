@@ -7,11 +7,14 @@
     "declarations": true
   },
   "dependencies": {
+    "axios": "^0.21.0",
     "egg": "^2.15.1",
+    "egg-cors": "^2.2.3",
     "egg-scripts": "^2.11.0",
     "request": "^2.88.2",
     "request-promise-native": "^1.0.9",
-    "sha1": "^1.1.1"
+    "sha1": "^1.1.1",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "autod": "^3.0.1",
