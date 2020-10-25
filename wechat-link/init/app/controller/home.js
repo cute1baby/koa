@@ -15,24 +15,28 @@ const w = new Wechat()
 // 自定义菜单目录
 const menuList = {
     "button":[
+        // {	
+        //     "type":"click",
+        //     "name":"书单测试",
+        //     "key": nanoid(12)
+        // },
         {	
-            "type":"click",
-            "name":"书单测试",
-            "key": nanoid(12)
+            "type":"view",
+            "name":"免费送书",
+            "url":"http://wechat.familyli.cn/activity.html"
         },
-        
         {	
-            "name":"我的",
+            "name":"授权",
             "sub_button": [
                 {	
                     "type":"view",
-                    "name":"百度一下",
-                    "url":"http://www.baidu.com"
+                    "name":"静默授权",
+                    "url":"http://wechat.familyli.cn/authBySilent.html"
                 },
                 {	
                     "type":"view",
-                    "name":"联系我",
-                    "url":"http://www.familyli.cn"
+                    "name":"用户主动授权",
+                    "url":"http://wechat.familyli.cn/authByUser.html"
                 },
             ]
         },
@@ -139,6 +143,8 @@ class HomeController extends Controller {
     console.log(xmlData)
   }
 
+
+  // 用户主动授权，获取用户信息
   async getAuthorization(){
     const { ctx } = this;
     const {appID, appsecret} = config
@@ -169,6 +175,68 @@ class HomeController extends Controller {
         }
     }else{
         ctx.body = failRes('获取网页授权access_token失败')
+    }
+  }
+  // 静默授权，获取openId
+  async getOpenId(){
+    const { ctx } = this;
+    const {appID, appsecret} = config
+    const {code} = ctx.query
+    // 授权第二步,获取网页授权access_token
+    const url = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${appID}&secret=${appsecret}&code=${code}&grant_type=authorization_code`
+    const authRes = await rp({
+        method: 'GET',
+        url,
+        json: true
+    })
+    if(authRes){
+        ctx.body = successRes(authRes)
+    }else{
+        ctx.body = failRes('获取网页授权access_token失败')
+    }
+  }
+
+  // 获取模板信息并发送
+  async getTemplateInfo(){
+    const { ctx } = this;
+    const {
+        openid,
+        user,
+        tel,
+        address
+    } = ctx.query
+    const tokenRes = await w.fetchAccessToken()
+    const {access_token} = tokenRes
+    const url = `https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=${access_token}`
+    const dataObj = {
+        'touser': openid,
+        'template_id': 'L47xpv5RWcz9lV1pg6mCD2e2rdNBe1_f3WE6tXXgsrs',
+        'data': {
+            'user': {
+                'value': user
+            },
+            'tel': {
+                'value': tel
+            },
+            'address': {
+                'value': address
+            },
+            'remark': {
+                'value': '若有问题请联系客服咨询，谢谢！'
+            }
+        }
+    }
+    console.log(JSON.stringify(dataObj))
+    const {data} = await axios({
+        method: 'POST',
+        url,
+        data: JSON.stringify(dataObj)
+    })
+    console.log('authRes>>>>>>', data)
+    if(data){
+        ctx.body = successRes(data)
+    }else{
+        ctx.body = failRes('获取模板信息失败')
     }
   }
 }

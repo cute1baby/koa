@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>静默授权测试</title>
+</head>
+<style>
+*{
+    margin: 0;
+    padding: 0;
+}
+.info{
+    display: none;
+}
+.avatar{
+    width: 3rem;
+    height: 3rem;
+    vertical-align: middle;
+    border-radius: 50%;
+}
+</style>
+<body>
+<br>
+<h3>用户信息</h3>
+<hr />
+<br>
+<div class="info">
+    <p>openid：<span class="openid"></span></p>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.12.0/axios.min.js"></script>
+<script>
+const appid = 'wxd9f5805ea8e18784'    
+// 获取链接参数
+function getUrlParameter(data) {
+  let query = {}
+  let url = data
+    ? data.substr(data.indexOf('?'))
+    : document.location.search.replace('?', '')
+  let urlParams = []
+  if (url) {
+    urlParams = url.split('&')
+    urlParams.forEach(item => {
+      let value = item.split('=')
+      query[value[0]] = value[1]
+    })
+  }
+  return query
+}
+// 设置链接参数
+function setUrlParameter(data){
+  let string = ''
+  for(let key in data){
+    string += '&' + key + '=' + data[key]
+  }
+  return '?' + string.replace('&', '')
+}
+
+// 微信授权    
+function authorize(data){
+  let params = {
+    appid: appid,
+    redirect_uri: encodeURIComponent(data.url),
+    response_type: 'code',
+    scope: 'snsapi_base',
+    state: '123#wechat_redirect'
+  }
+  let url = 'https://open.weixin.qq.com/connect/oauth2/authorize' + setUrlParameter(params)
+  window.location.replace(url);
+}
+
+const query = getUrlParameter();
+
+if (query.code) {
+    axios.get('http://server.familyli.cn/getOpenId', {
+        params: {
+            code: query.code 
+        }
+    }).then(res => {
+        const userInfo = res.data.data
+        console.log('获取用户信息：', userInfo)
+        // code 过期重新授权
+        if (userInfo.errcode === 40163) {
+            authorize({
+                url: window.location.href.split("&code=")[0]
+            });
+            return;
+        }
+
+        $('.info').show()
+        $('.openid').html(userInfo.openid)
+    }).catch(err => {
+        console.log('获取用户信息出错')
+    })
+    
+    
+    /* eslint-enable */
+} else {
+    // 拉起授权
+    authorize({
+        url: window.location.href.split("#")[0]
+    });
+}
+</script>
+</body>
+</html>
