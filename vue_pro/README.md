@@ -191,3 +191,82 @@ module.exports = {
 输入命令`npm run analyz`后，在浏览器中输入`localhost:8889`即可看到可视化页面
 
 
+
+
+##  gulp打包测试和上线
+- 1.安装相应的插件（备注：这里建议使用gulp@3.9.1 gulp-sftp@0.1.5搭配，gulp@4.0以上可能会报错）
+```
+$ npm install gulp@3.9.1 gulp-sftp@0.1.5 -D
+```
+
+- 2.在项目根目录下的project.config.js中添加配置：
+```
+var sftpConfig = {
+    host: '62.234.192.179',
+    port: 22,
+    user: 'root',
+    pass: '***',
+    remotePath: '/home/vue_pro'
+  }
+  
+  module.exports = {
+    sftpConfig: sftpConfig
+  }
+```
+
+- 3.在项目根目录下创建gulpfile.js
+```
+var gulp = require('gulp')
+var sftp = require('gulp-sftp')
+var sftpConfig = require('./project.config.js').sftpConfig
+
+gulp.task('upload', function() {
+  return gulp.src('dist/**')
+    .pipe(sftp(sftpConfig))
+})
+```
+
+- 4.在package.json中配置scripts：
+```
+  "scripts": {
+    ......
+    "build-only": "node build/build.js"
+    "build": "node build/build.js && gulp upload",
+    "upload": "gulp upload"
+  },
+```
+
+- 5.执行如下命令后,会先打包然后上传到服务器
+```
+npm run build
+```
+
+
+- 6、如果需要发布到正式环境要把dist文件夹发给运维人员，使用node-archiver插件把dist文件夹压缩成zip文件。
+
+则安装插件：archiver（建议3.1.0，与node版本匹配的关系），且增加文件：build/zip.js，添加以下代码
+```
+cnpm i archiver@3.1.0 -D
+
+var fs = require('fs')
+var archiver = require('archiver')
+var output = fs.createWriteStream(require('path').join(__dirname,'../') + '/haotaitai.zip')
+var archive = archiver('zip', {
+    zlib: { level: 9 } // Sets the compression level.
+})
+
+archive.pipe(output)
+
+archive.directory(require('path').join(__dirname,'../dist/'))
+
+archive.finalize()
+```
+
+
+- 7.修改script命令，且执行`npm run build-publish`
+```
+ "scripts": {
+    ......
+    "build-publish": "node build/build.js && node build/zip.js"
+  },
+```
