@@ -98,3 +98,21 @@ plugins: [
     ......
 ].concat(utils.htmlPlugin())
 ```
+
+
+- 5、最后的调整
+(1)安装less：`npm install --save-dev less-loader less`
+(2)在文件`webpack.base.conf.js`中注释createLintingRule方法内容，eslint不再起作用。
+
+现在想要实现多页中的单页功能，做了如下配置：添加了base属性。
+```
+export default new Router({
+  base: '/other.html/',
+  mode: 'history',
+})
+```
+
+需要注意的点：src/下的文件夹内html和js文件名跟文件夹要相同。如other.js,other.html
+
+
+可以跑起来

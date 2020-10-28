@@ -1,8 +1,12 @@
 <template>
   <div id="app">
-    我是其他页面，同时也引入了hello组件
+    我是其他页面
     <br>
-    这是新页面：{{msg}}
+    <router-link  to='/'>跳转到首页</router-link>
+    <router-link to='/test'>跳转到测试页</router-link>
+    <br>
+    {{msg}}
+    <hr>
     <router-view/>
   </div>
 </template>
@@ -12,7 +16,7 @@ export default {
   name: 'App',
   data () {
     return {
-      msg: '动态数据'
+      msg: '下面是组件'
     }
   }
 }
