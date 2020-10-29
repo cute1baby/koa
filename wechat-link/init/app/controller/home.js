@@ -15,11 +15,6 @@ const w = new Wechat()
 // 自定义菜单目录
 const menuList = {
     "button":[
-        // {	
-        //     "type":"click",
-        //     "name":"书单测试",
-        //     "key": nanoid(12)
-        // },
         {	
             "type":"view",
             "name":"免费送书",

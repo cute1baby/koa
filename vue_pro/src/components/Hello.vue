@@ -1,9 +1,13 @@
 <template>
     <div class="test">
+        <Ha>
+            我是插槽内容
+        </Ha>
         <pre v-html='imgUrlStr' v-lazy-container='{ selector: "img",preLoad: 1.3 }'></pre>
     </div>
 </template>
 <script>
+import Ha from './Ha.vue'
 export default {
     data(){
         return {
@@ -49,13 +53,16 @@ export default {
         })
         this.imgUrlStr = newUrl
         console.log('new==', newUrl)
+    },
+    components: {
+        Ha
     }
 }
 </script>
 
 <style lang="scss" scoped>
 .test{
-    background: #000;
+    // background: #000;
     pre{
         overflow: hidden;
         >>> img{

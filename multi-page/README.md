@@ -112,7 +112,4 @@ export default new Router({
 })
 ```
 
-需要注意的点：src/下的文件夹内html和js文件名跟文件夹要相同。如other.js,other.html
-
-
-可以跑起来
+需要注意的点：src/下的文件夹内html和js文件名跟文件夹要相同。如other.js,other.html，这样就可以跑起来。

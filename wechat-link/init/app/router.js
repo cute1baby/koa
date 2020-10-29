@@ -5,8 +5,6 @@
  */
 module.exports = app => {
     const { router, controller } = app;
-//   // 注册中间件
-//   app.middleware.checkWechat();
     // 验证服务器的有效性
     router.get('/', controller.home.index);
     // 回复自定义消息

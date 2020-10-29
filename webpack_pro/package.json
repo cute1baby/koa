@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "html-webpack-plugin": "^4.3.0"
+  }
+}
