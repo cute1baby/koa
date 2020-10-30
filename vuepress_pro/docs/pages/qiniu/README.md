@@ -19,6 +19,8 @@ meta:
 - 选择`Node.js(服务端)`，进入`文档`。[文档链接](https://developer.qiniu.com/kodo/sdk/1289/nodejs)
 
 
+- 七牛云文件上传的例子：[点这里](http://wechat.familyli.cn/uploadFile.html)
+- 例子的项目链接：https://github.com/cute1baby/koa/tree/master/wechat-link/js
 
 ## 定义上传文件的方法
 [使用参考例子](https://github.com/cute1baby/koa/blob/master/wechat/public/day02/04/server/qiniu/index.js)

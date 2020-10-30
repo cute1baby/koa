@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue例子</title>
+</head>
+<body>
+<div id="root">
+    <!-- 写模板 -->
+    <p>{{name}}</p>
+    <p>{{message}}</p>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.5.6/vue.min.js"></script>
+<script>
+console.log(root)
+// 第二步 创建实例
+let app = new Vue({
+    el: '#root',
+    data(){
+        return {
+            name: '张三',
+            message: '这是一个那人'
+        }
+    }
+})
+
+// 第三步是挂载：这种用法的挂载在vue.js中帮我们实现了
+console.log(root)
+</script>
+</body>
+</html>
