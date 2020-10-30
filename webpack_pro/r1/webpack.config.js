@@ -4,6 +4,11 @@ const Webpack = require('webpack')
 module.exports = {
     mode: 'development',   // development | production
     entry: './src/index.js',
+    devServer: {
+        port: 3000,
+        open: true,
+        contentBase: './dist'
+    },
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist')
@@ -32,6 +37,9 @@ module.exports = {
         ]
     },
     plugins: [
+        new Webpack.DllReferencePlugin({
+            manifest: path.resolve(__dirname, 'dist', 'manifest.json')
+        }),
         new HtmlWebpackPlugin({
             template: './public/index.html',
             filename: 'index.html' // 生成的文件名称
