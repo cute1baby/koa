@@ -6,6 +6,7 @@ const {getDataAsync, toJson, toXml} = require('../tool/xmlTool')
 // 引入sha1模块
 const sha1 = require('sha1')
 const nanoid = require('nanoid')
+const uploadToken = require('../tool/upload')
 const rp = require('request-promise-native')
 const axios = require('axios')
 const { successRes, failRes } = require("../utils/response");
@@ -233,6 +234,15 @@ class HomeController extends Controller {
     }else{
         ctx.body = failRes('获取模板信息失败')
     }
+  }
+
+  // 上传图片到七牛云
+  async uploadImg(){
+    const { ctx } = this;
+    const fileName = ctx.request.body
+    console.log('bodyVal===', fileName)
+    console.log('uploadToken>>>>>>', uploadToken)
+    ctx.body = successRes(uploadToken)
   }
 }
 

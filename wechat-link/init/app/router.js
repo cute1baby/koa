@@ -28,4 +28,6 @@ module.exports = app => {
     // 获取模板信息并发送
     router.get('/getTemplateInfo', controller.home.getTemplateInfo);
     
+    // 上传图片到七牛云  
+    router.post('/uploadImg', controller.home.uploadImg);
 };

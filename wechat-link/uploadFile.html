@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<input type="file" class="ipt_file" />
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.12.0/axios.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/qiniu-js/2.2.1/qiniu.min.js"></script>
+<script>
+document.querySelector('.ipt_file').onchange = () => {
+  const file = document.querySelector('input').files[0]
+
+  let formData = new FormData()
+  formData.append('file', file)
+  console.log('>>>>file', file)
+  uploadImg(file)
+}
+
+
+function uploadImg(file){
+    //图片类型
+    var imgType = [
+        'image/gif',
+        'image/jpeg',
+        'image/png',
+        'image/jpg',
+        'image/bmp'
+    ];
+    if(file){
+        //视频文件
+        var image = file;
+        //文件类型
+        var type = image.type;
+        //是否是图片文件
+        var index = imgType.indexOf(type)
+        if (index < 0) {
+            return v.$message('只能选择图片文件哦')
+        }
+
+        //region 获取文件后缀名及新文件名
+        var i = image.name.lastIndexOf('.');
+        var fileExt = image.name.substring(i + 1);
+        var tmpName = new Date().getTime();
+        var fileName = tmpName + '.' + fileExt;
+        var putExtra = {
+            fname: image.name,
+            params: {},
+            mimeType: type
+        };
+        //region 七牛进度配置
+        var config = {
+            useCdnDomain: true,
+            zone: qiniu.zone.Zone_z0
+        };
+        // 发送请求
+        axios.post('http://127.0.0.1:3005/uploadImg', {
+            fileName
+        }).then(res => {
+            const data = res.data;
+            if(!data.status){
+                const token = data.data
+
+                var formUploader = new qiniu.form_up.FormUploader(config);
+                var putExtra = new qiniu.form_up.PutExtra();
+                formUploader.putFile(token, fileName, image, putExtra, function(respErr,
+                    respBody, respInfo) {
+                    if (respErr) {
+                        throw respErr;
+                    }
+                    if (respInfo.statusCode == 200) {
+                        console.log(respBody);
+                    } else {
+                        console.log(respInfo.statusCode);
+                        console.log(respBody);
+                    }
+                });
+            }
+        }).catch(err => {
+            console.log('图片上传出错了：', err)
+        })
+
+    }
+}
+</script>
+</body>
+</html>
