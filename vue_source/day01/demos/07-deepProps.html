@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue例子</title>
+</head>
+<body>
+<div id="root">
+    <div>
+        <div>
+            {{name}} -- {{message}}
+        </div>
+    </div>
+    <!-- 写模板 -->
+    <p>{{study.project.name}}</p>
+</div>
+<script>
+
+/*
+* 统一代码版
+* 该文件为了解决02likeVue.html中的[2、只考虑到了单属性({{name}})，而vue中大量的使用层级（{{child.name.key}}）]的问题
+*/
+
+// 正则表达式
+let rkuohao = /\{\{(.+?)\}\}/g;  //{{}}的匹配
+
+function getValueByPath(obj, path){
+    let paths = path.split('.') // [xx,yy,zz]
+    let res = obj;
+    let prop;
+    while(prop = paths.shift()){
+        res = res[prop]
+    }
+    return res
+}
+
+function compiler(template, data){
+    let childNodes = template.childNodes
+    for(let i=0;i<childNodes.length;i++){
+        let type = childNodes[i].nodeType;  //1 元素节点，3 文本节点
+        if(type === 3){
+            // 文本节点，可以判断里面是否有{{}}插值
+            let txt = childNodes[i].nodeValue; //该属性只有文本节点才有意义
+
+            // 是否有{{}}
+            txt = txt.replace(rkuohao, (_, g) => { // replace使用正则匹配一次 函数就会调用一次
+                // 函数的第一个参数_,表示匹配到的内容
+                // 函数的第二个参数g，表示正则中圆括号的分组，第n组（目前只有一组）
+                let path = g.trim();  //{{}}里面的东西
+                let value = getValueByPath(data, path);
+                // 将{{***}}用这个值替换
+                return value
+            })
+            // 注意：此时txt与DOM元素是没有关系的，现在需要关联
+            childNodes[i].nodeValue = txt
+        }else if(type === 1){
+            // 元素节点，判断是否有子元素
+            compiler(childNodes[i], data)
+        }
+
+    }
+}
+
+function JGVue(options){
+    // 习惯：内部的数据使用下划线开头，只读数据使用$开头
+    this._data = options.data;
+    this._el = options.el;
+
+    // 准备模板
+    this._templateDOM = document.querySelector(this._el);
+    this._parent = this._templateDOM.parentNode;
+
+    // 准备渲染
+    this.render()
+}
+
+// 将模板和数据转化为html，插入到页面中
+JGVue.prototype.render = function(){
+    this.compiler()
+}
+JGVue.prototype.compiler = function(){
+    let realHTMLDOM = this._templateDOM.cloneNode(true)
+    compiler(realHTMLDOM, this._data)
+    this.update(realHTMLDOM)
+}
+// 将DOM元素放入到页面中
+JGVue.prototype.update = function(real){
+    // 将准备好的DOM节点插入到页面中
+    this._parent.replaceChild(real, document.querySelector('#root'))
+}
+
+new JGVue({
+    el: '#root',
+    data: {
+        name: '李云龙',
+        message: '你开炮啊',
+        study: {
+            project: {
+                name: '语文'
+            }
+        }
+    }
+})
+
+</script>
+</body>
+</html>

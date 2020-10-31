@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+let tags = 'div,p,a,img,ul,li'.split(',');
+
+function makeUp(keys){
+    let set = {}  // 集合
+    // 往集合类填充标签名，值为true的键值
+    keys.forEach(key => {
+        set[key] = true
+    });
+
+    return function(tagName) {
+        const name = tagName.toLowerCase()
+        return !!set[name]
+    }
+}
+
+let isHTMLTag = makeUp(tags) // 返回判断是否为标签的函数
+
+// 10个标签需要判断，那么还有没有循环存在？ 回答：不存在，提升了性能
+
+</script> 
+</body>
+</html>

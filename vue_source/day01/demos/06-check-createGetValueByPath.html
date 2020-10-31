@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+/*
+* 函数柯里化之后的结果
+* 这个函数是在Vue编译模板的时候就生成了
+*/
+function createGetValueByPath(path){
+    let paths = path.split('.') // [xx,yy,zz]
+
+    return function getValueByPath(obj){
+        let res = obj;
+        let prop;
+        while(prop = paths.shift()){
+            res = res[prop]
+        }
+        return res
+    }
+    
+}
+
+var o = {
+    a: {
+        b: {
+            c: {
+                d: '是政'
+            }
+        }
+    }
+}
+// 这样做的目的是：vue中的模板是不变的，而数据是经常变化的。那这里可以把模板缓存起来，减少模板的调用
+let getValueByPath = createGetValueByPath('a.b.c.d')
+let res = getValueByPath(o)
+console.log(res)
+</script>
+</body>
+</html>
