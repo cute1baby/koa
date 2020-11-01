@@ -6,17 +6,158 @@
     <title>Document</title>
 </head>
 <body>
+    <div id="root">
+        <div>
+            <div class="h1">{{name}}</div>
+            <div class="h2">{{age}}</div>
+            <ul>
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+            </ul>
+        </div>
+    </div>
 <script>
+// 正则表达式
+let rkuohao = /\{\{(.+?)\}\}/g;  //{{}}的匹配
+
+// 虚拟dom构造函数
+class Vnode{
+    /*
+    * tag: 标签名
+    * data: 属性数据
+    * value: 文本节点的值
+    * type: 节点类型
+    */
+    constructor(tag, data, value, type){
+        this.tag = tag && tag.toLowerCase()
+        this.data = data
+        this.value = value
+        this.type = type
+        this.children = []
+    }
+
+    appendChild(vnode){
+        this.children.push(vnode)
+    }
+}
+
+/*
+* 由html dom => 虚拟dom，将这个函数当成compiler函数（编译成抽象语法树的函数）
+*/
+function getVNode(node){
+    let nodeType = node.nodeType
+    let _vnode = null;
+    if(nodeType === 1){
+        // 元素节点
+        let nodeName = node.nodeName
+        let attrs = node.attributes // 类数组
+        let _attobj = {}
+        for (let i = 0; i < attrs.length; i++) {  // attrs[i]属性节点(nodeType==2)
+            _attobj[attrs[i].nodeName] = attrs[i].nodeValue
+        }
+        _vnode = new Vnode(nodeName, _attobj, undefined, nodeType)
+
+        // 考虑node的子元素
+        let childNodes = node.childNodes
+        for (let i = 0; i < childNodes.length; i++) {
+            const element = childNodes[i];
+            _vnode.appendChild(getVNode(element));  //递归插入
+        }
+    }else if(nodeType === 3){
+        // 文本节点
+        _vnode = new Vnode(undefined, undefined, node.nodeValue, nodeType)
+    }
+    return _vnode
+}
+
+/* 根据路径访问对象成员 */
+function getValueByPath(obj, path){
+    let paths = path.split('.') // [xx,yy,zz]
+    let res = obj;
+    let prop;
+    while(prop = paths.shift()){
+        res = res[prop]
+    }
+    return res
+}
+/** 将带有坑的VNode和数据data结合，得到填充数据的VNode:模拟AST => VNode */
+function combine(vnode, data){
+    let _tag = vnode.tag;
+    let _data = vnode.data;
+    let _value = vnode.value;
+    let _type = vnode.type;
+    let _children = vnode.children;
+
+    // 这里其实就是换了一下_value
+    let _vnode = null
+    if(type === 3){
+        // 文本节点
+        _value = _value.replace(rkuohao, function(_, g){
+            return getValueByPath(data, g.trim())
+        })
+        _vnode = new VNode(_tag, _data, _value, _type)
+    }else if(_type === 1){
+        // 元素节点
+        _vnode = new VNode(_tag, _data, _value, _type)
+        _children.forEach(_subvnode => {
+            _vnode.appendChild(combine(_subvnode, data))
+        });
+    }
+}
 function JGVue(options){
-    this._data = option.data
-    this._el = option.el
+    this._data = options.data
+    this._template = document.querySelector(options.el)  //在vue中是字符串，这里是dom
 
     this.mount()  // 数据挂载
 }
 
 JGVue.prototype.mount = function(){
-    
+    // 需要提供一个render方法：生成虚拟dom
+    this.render = this.createRenderFn()
+
+    this.mountComponent()
 }
+JGVue.prototype.mountComponent = function(){
+    // 执行mountComponent函数
+    let mount = () => {
+        // 将虚拟dom渲染到页面上
+        this.update(this.render())
+    }
+    mount.call(this); // 本质应该交给watcher来调用，但是还没有讲到这里来
+}
+
+/*
+* 在真正的vue中使用了 二次提交的 设计结构
+* 1、在页面中 的DOM和 虚拟DOM 是一一对应的关系
+* 2、先由 AST 和 数据生成 VNode(新，render)
+* 3、将 旧的VNode 和 新的 VNode比较（diff）,更新(update)
+*/
+
+// 这里是生成render函数，目的是缓存 抽象语法树（我们使用虚拟dom来模拟）
+JGVue.prototype.createRenderFn = function(){
+    let ast = getVNode(this._template)
+    // Vue:将AST + data => VNode
+    // 这个例子：带坑的VNode + data => 含有数据的VNode
+    return function render(){
+        // 将带坑的的Vnode和data结合，得到填充数据的VNode
+        let _tmp =  combine(ast, this._data)
+        return _tmp
+    }
+}
+// 将虚拟dom渲染到页面中：diff算法就在这里
+// diff算法的目的是为了减少递归的操作。
+JGVue.prototype.update = function(){
+
+}
+
+let app = new JGVue({
+    el: '#root',
+    data: {
+        name: '张三',
+        age: 18
+    }
+})
 </script>
 </body>
 </html>
