@@ -91,19 +91,20 @@ function combine(vnode, data){
 
     // 这里其实就是换了一下_value
     let _vnode = null
-    if(type === 3){
+    if(_type === 3){
         // 文本节点
         _value = _value.replace(rkuohao, function(_, g){
             return getValueByPath(data, g.trim())
         })
-        _vnode = new VNode(_tag, _data, _value, _type)
+        _vnode = new Vnode(_tag, _data, _value, _type)
     }else if(_type === 1){
         // 元素节点
-        _vnode = new VNode(_tag, _data, _value, _type)
+        _vnode = new Vnode(_tag, _data, _value, _type)
         _children.forEach(_subvnode => {
             _vnode.appendChild(combine(_subvnode, data))
         });
     }
+    return _vnode
 }
 function JGVue(options){
     this._data = options.data
@@ -142,6 +143,7 @@ JGVue.prototype.createRenderFn = function(){
     return function render(){
         // 将带坑的的Vnode和data结合，得到填充数据的VNode
         let _tmp =  combine(ast, this._data)
+        console.log('_tmp====>>>>>', _tmp)
         return _tmp
     }
 }
