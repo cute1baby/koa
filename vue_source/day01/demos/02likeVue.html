@@ -62,7 +62,7 @@ function compiler(template, data){
             // 注意：此时txt与DOM元素是没有关系的，现在需要关联
             childNodes[i].nodeValue = txt
         }else if(type === 1){
-            // 元素节点，判断是否有子元素
+            // 元素节点，判断是否有子元素（基本元素节点是一定有文本子节点的）
             compiler(childNodes[i], data)
         }
 

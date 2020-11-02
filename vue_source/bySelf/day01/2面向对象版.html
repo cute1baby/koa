@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div id="root">
+    <div>{{name}}</div>
+    <div>{{age}}</div>
+    <hr>
+    <div>
+        <p>嵌套深一点看下效果</p>
+        <p>{{myname.hobby.sport}}</p>
+    </div>
+    
+</div>
+<script>
+const rkuo = /\{\{(.+?)\}\}/g;
+
+// 向模板中填充数据
+function compile(tmp, data){
+    const childNodes = tmp.childNodes
+    for (let i = 0; i < childNodes.length; i++) {
+        const _node = childNodes[i];
+        const _type = _node.nodeType
+        if(_type===1){
+            // 元素节点
+            compile(_node, data)
+        }else if(_type===3){
+            // 文本节点
+            const _val = _node.nodeValue
+            // 用文本节点的值去替换data的值
+            const realVal = _val.replace(rkuo, function(_, group){
+                const key = group.trim()
+                return getValueByPath(data, key)
+            })
+            _node.nodeValue = realVal
+        }
+    }
+}
+
+function getValueByPath(data, path){
+    const arr = path.split('.')
+    let val = data
+    let res = null
+    while (res = arr.shift()) {
+        val = val[res]
+    }
+    return val
+}
+
+function GVue(options){
+    this._el = options.el
+    this._data = options.data
+
+    this.rootVode = document.querySelector(options.el)
+    this.parentNode = this.rootVode.parentNode
+    this.render()
+}
+
+GVue.prototype.render = function(){
+    this.compile()
+}
+GVue.prototype.compile = function(){
+    // 获取模板
+    const tmp = this.rootVode.cloneNode(true)
+    // 操作模板
+    compile(tmp, this._data)
+    this.update(tmp)
+}
+
+GVue.prototype.update = function(_tmp){
+    // 将组合的模板插入到页面
+    this.parentNode.replaceChild(_tmp, this.rootVode)
+}
+
+
+new GVue({
+    el: '#root',
+    data: {
+        name: '李云龙，你开炮啊',
+        age: '我今年19岁',
+        myname: {
+            hobby: {
+                sport: '我爱踢足球'
+            }
+        }
+    }
+})
+
+</script>
+</body>
+</html>

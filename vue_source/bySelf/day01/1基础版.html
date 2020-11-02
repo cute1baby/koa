@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div id="root">
+    <div>{{name}}</div>
+    <div>{{age}}</div>
+</div>
+<script>
+const rkuo = /\{\{(.+?)\}\}/g;
+// 获取dom节点
+const rDom = document.querySelector('#root')
+
+// 定义数据
+const data = {
+    name: '李云龙',
+    age: 18
+}
+
+// 向模板中填充数据
+function compile(tmp, data){
+    const childNodes = tmp.childNodes
+    for (let i = 0; i < childNodes.length; i++) {
+        const _node = childNodes[i];
+        const _type = _node.nodeType
+        if(_type===1){
+            // 元素节点
+            compile(_node, data)
+        }else if(_type===3){
+            // 文本节点
+            const _val = _node.nodeValue
+            // 用文本节点的值去替换data的值
+            const realVal = _val.replace(rkuo, function(_, group){
+                const key = group.trim()
+                return data[key]
+            })
+            _node.nodeValue = realVal
+        }
+    }
+}
+
+// 获取模板
+const _tmp = rDom.cloneNode(true)
+// 操作模板
+compile(_tmp, data)
+
+// 将组合的模板插入到页面
+document.querySelector('#root').parentNode.replaceChild(_tmp, rDom)
+</script>
+</body>
+</html>
