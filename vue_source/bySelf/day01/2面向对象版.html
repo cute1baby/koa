@@ -40,7 +40,7 @@ function compile(tmp, data){
         }
     }
 }
-
+// 根据路径获取值
 function getValueByPath(data, path){
     const arr = path.split('.')
     let val = data
@@ -51,6 +51,7 @@ function getValueByPath(data, path){
     return val
 }
 
+// 仿Vue实例
 function GVue(options){
     this._el = options.el
     this._data = options.data
@@ -71,8 +72,8 @@ GVue.prototype.compile = function(){
     this.update(tmp)
 }
 
+// 将组合的模板插入到页面
 GVue.prototype.update = function(_tmp){
-    // 将组合的模板插入到页面
     this.parentNode.replaceChild(_tmp, this.rootVode)
 }
 

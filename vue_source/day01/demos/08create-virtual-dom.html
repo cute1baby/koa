@@ -29,13 +29,14 @@
 * <div><hr/<div> => {tag: 'div', children: [{tag: 'div'}]}
 */
 
-// 定义节点类
+// 定义节点类(虚拟dom类)
 class Vnode{
     /*
-    * tag: 标签名
-    * data: 属性数据
-    * value: 文本节点的值
-    * type: 节点类型
+    * tag: 标签名  tag: 'div'
+    * data: 属性数据  data: {'class': 'name'}
+    * value: 文本节点的值  value: '我是文本'
+    * type: 节点类型  nodeType
+    * children: 子节点
     */
     constructor(tag, data, value, type){
         this.tag = tag && tag.toLowerCase()
@@ -51,7 +52,7 @@ class Vnode{
 }
 
 /*
-* 使用递归 来遍历DOOM元素，生成虚拟DOM
+* 使用递归 来遍历DOM元素，生成虚拟DOM
 * vue中的源码使用栈结构，使用栈存储父元素来实现递归生成
 */
 function getVNode(node){
@@ -94,6 +95,7 @@ function parseVNode(vnode){
 
         // 属性
         let data = vnode.data;   // 现在这个data是键值对
+        // 给节点添加属性
         Object.keys(data).forEach(key => {
             let attrName = key
             let attrValue = data[key]
@@ -110,7 +112,9 @@ function parseVNode(vnode){
 }
 
 const root = document.querySelector('#root')
+// 通过真实dom生成虚拟dom
 let vroot = getVNode(root)
+
 console.log('回车也是一个文本节点：', vroot)
 // 在真正的Vue中也是使用递归 + 栈 数据类型
 let dom2 = parseVNode(vroot)

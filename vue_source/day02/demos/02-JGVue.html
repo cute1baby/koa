@@ -114,7 +114,7 @@ function JGVue(options){
 }
 
 JGVue.prototype.mount = function(){
-    // 需要提供一个render方法：生成虚拟dom
+    // 需要提供一个render方法：生成填充数据的虚拟dom
     this.render = this.createRenderFn()
 
     this.mountComponent()
