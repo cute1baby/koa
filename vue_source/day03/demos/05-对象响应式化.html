@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+let data = {
+    name: 'zhansan1',
+    age: 20,
+    course: [
+        {name: '语文'},
+        {name: '数学'},
+        {name: '化学'}
+    ]
+}
+
+function defineReactive(targte, key, value, enumerable){
+    // 判断value是对象时
+    if(typeof value === 'object' && value !== null && !Array.isArray(value)){
+        reactify(value)
+    }
+
+    Object.defineProperty(targte, key, {
+        configurable: true,
+        enumerable: enumerable,
+        get(){
+            console.log(`我来获取值为:${value}`)
+            return value
+        },
+        set(newVal){
+            console.log(`我来设置值新值为：${newVal}`)
+            value = newVal
+        }
+    })
+}
+
+// 将对象o响应式化
+function reactify(o){
+    let keys = Object.keys(o)
+    for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        const value = o[key]
+        /*
+        * 如果value是基本类型，直接设置响应式
+        * 如果是数组，则循环这每一项进行绑定
+        * 如果是对象则进行递归设置响应式
+        */
+        if(Array.isArray(value)){
+            for (let j = 0; j < value.length; j++) {
+                const v_key = value[j];
+                // 给数组的每一项进行递归
+                reactify(v_key)
+            }
+        }else{
+            defineReactive(o, key, value, true)
+        }
+    }
+}
+
+reactify(data)
+</script>
+</body>
+</html>

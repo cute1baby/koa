@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+var o = {}
+o.name = '账单'
+
+// 等价于
+Object.defineProperty(o, 'age', {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: 18
+})
+
+// 改成响应式的。用一个变量_gender作为中间量进行暂存
+/*
+* 但是这样有一个问题：在Vue的data中有很多属性，如果每个都用一个中间属性_gender的话，要设置很多这样的值；
+* 存放在哪里呢？存放在全局，会造成变量的污染，肯定是不好的。
+* 那么【04将对象转换为响应式.html】就是解决这个问题的
+*/
+let _gender;
+Object.defineProperty(o, 'gender', {
+    configurable: true,
+    enumerable: true,
+    get(){
+        console.log('我来获取值')
+        return _gender
+    },
+    set(newVal){
+        console.log('我来设置值')
+        _gender = newVal
+    }
+})
+
+console.log(o)
+</script>
+</body>
+</html>

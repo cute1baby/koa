@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// 这就是在函数原有的基础上增加额外的操作：函数的拦截
+// 1、使用一个临时的函数名存储函数
+// 2、重新定义原来的函数
+// 3、定义扩展的功能
+// 4、调用临时的那个函数
+
+function func(){
+    console.log('原始的功能')
+}
+
+// 1
+const _temp = func
+
+// 2
+func = function(){
+    // 4
+    _temp()
+    // 3
+    console.log('打印新的数据')
+}
+
+func()
+</script>
+</body>
+</html>

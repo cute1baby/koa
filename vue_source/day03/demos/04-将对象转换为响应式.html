@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+let o = {
+    name: '账单',
+    age: 10,
+    gender: '男'
+}
+
+// 简化版
+/*
+    有点类似闭包的写法，value作为参数，作为中间值。这样就不用设置一个全局的变量来保存这个中间量了
+
+    函数内部就是一个局部作用域，这个value就只在函数内使用的变量（闭包）
+*/
+function defineReactive(targte, key, value, enumerable){
+    Object.defineProperty(targte, key, {
+        configurable: true,
+        enumerable: enumerable,
+        get(){
+            console.log(`我来获取值为:${value}`)
+            return value
+        },
+        set(newVal){
+            console.log(`我来设置值新值为：${newVal}`)
+            value = newVal
+        }
+    })
+}
+
+const keys = Object.keys(o)
+console.log(keys)
+for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    defineReactive(o, key, o[key], true)
+}
+</script>
+</body>
+</html>

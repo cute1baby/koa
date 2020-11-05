@@ -106,10 +106,37 @@ function combine(vnode, data){
     }
     return _vnode
 }
+
+// 虚拟dom转化为真实dom
+function transToRealnode(vnode){
+    const _type = vnode.type
+    if(_type === 1){
+        // 元素节点
+        const _tag = document.createElement(vnode.tag)
+        const _data = vnode.data
+        for (const key in _data) {
+            if (_data.hasOwnProperty(key)) {
+                const value = _data[key];
+                _tag.setAttribute(key, value)
+            }
+        }
+        if(vnode.children.length){
+            vnode.children.forEach(sub => {
+                _tag.appendChild(transToRealnode(sub))
+            })
+        }
+        return _tag
+    }else if(_type === 3){
+        // 创建文本节点
+        return document.createTextNode(vnode.value)
+    }
+}
+
 function JGVue(options){
     this._data = options.data
-    this._template = document.querySelector(options.el)  //在vue中是字符串，这里是dom
-
+    const _root = document.querySelector(options.el)  //在vue中是字符串，这里是dom
+    this._template = _root
+    this._parentNode = _root.parentNode
     this.mount()  // 数据挂载
 }
 
@@ -149,9 +176,11 @@ JGVue.prototype.createRenderFn = function(){
 }
 // 将虚拟dom渲染到页面中：diff算法就在这里
 // diff算法的目的是为了减少递归的操作。
-JGVue.prototype.update = function(){
+JGVue.prototype.update = function(vnode){
     // 简化，直接生成html DOM replaceChild到页面中
-    
+    const newDom = transToRealnode(vnode)
+    console.log('realdom', newDom)
+    this._parentNode.replaceChild(newDom, document.querySelector('#root'))
 }
 
 let app = new JGVue({

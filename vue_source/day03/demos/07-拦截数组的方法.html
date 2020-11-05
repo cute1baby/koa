@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+let ARRAY_METHOD = [
+    'push',
+    'pop',
+    'shift',
+    'unshift',
+    'reverse',
+    'sort',
+    'splice'
+]
+
+// 思路：原型链继承：修改原型链的结构
+let arr = []
+// 继承关系：arr => Array.prototype => Object.prototype ...
+// 中间加一层：arr => 改写的方法 => Array.prototype => Object.prototype ...
+
+// 1 使用临时变量
+let array_methods = Object.create(Array.prototype)
+arr.__proto__ = array_methods
+
+ARRAY_METHOD.forEach(method => {
+    // 2
+    array_methods[method] = function(){
+        // 3
+        console.log(`调用了拦截的方法${method}`)
+        // 将数据响应式化,使用遍历的方法
+
+        // 4
+        const res = Array.prototype[method].apply(this, arguments)
+        return res
+    }
+})
+
+
+// __proto__兼容性的处理，Vue源码是这么处理的
+// 如果浏览器不支持__proto__,则使用混入法（即不挂载到原型，而是挂到对象上）
+
+</script>
+</body>
+</html>
