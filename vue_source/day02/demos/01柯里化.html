@@ -7,8 +7,10 @@
 </head>
 <body>
 <script>
+// 假设这是枚举的内置标签
 let tags = 'div,p,a,img,ul,li'.split(',');
 
+// 内置标签还是自定义标签
 function makeUp(keys){
     let set = {}  // 集合
     // 往集合类填充标签名，值为true的键值
@@ -22,7 +24,10 @@ function makeUp(keys){
     }
 }
 
-let isHTMLTag = makeUp(tags) // 返回判断是否为标签的函数
+let isHTMLFunc = makeUp(tags) // 返回判断是否为标签的函数
+
+console.log(isHTMLFunc('div'))  // 内置标签
+console.log(isHTMLFunc('create-Func'))  //自定义标签
 
 // 10个标签需要判断，那么还有没有循环存在？ 回答：不存在，提升了性能
 
