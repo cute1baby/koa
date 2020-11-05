@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div id="root">
+    <div>
+        <p>{{name}}</p>
+        <p>{{age}}</p>
+        <hr>
+        <p>我的运动爱好是：{{hobby.name}}，持续{{hobby.years}}年了</p>
+    </div>
+</div>
+<script>
+const rkuo = /\{\{(.+?)\}\}/g;
+class Vnode {
+    constructor(tag, data, value, type){
+        this.tag = tag
+        this.data = data
+        this.value = value
+        this.type = type
+        this.children = []
+    }
+    appendChildNode(node){
+        this.children.push(node)
+    }
+}
+// 模板转化为带坑的虚拟dom
+function transToVnode(_node){
+    const _type = _node.nodeType;
+    if(_type === 3){
+        // 文本节点
+        return new Vnode(undefined, undefined,  _node.nodeValue, _type)
+    }else if(_type === 1){
+        const _tagName = _node.nodeName.toLowerCase()
+        let attributes = _node.attributes
+        let attrObj = {}
+        for (let j = 0; j < attributes.length; j++) {
+            const eleAttr = attributes[j];
+            attrObj[eleAttr.name] = eleAttr.value
+        }
+        
+        // 元素节点
+        const childList = _node.childNodes
+        let _vnode = new Vnode(_tagName, attrObj, undefined, _type)
+        childList.forEach(subNode => {
+            _vnode.appendChildNode(transToVnode(subNode))
+        });
+        return _vnode
+    }
+}
+
+// 将数据填充到带坑模板中
+function importDataInfoTmp(vnode, data){
+    const _type = vnode.type
+    if(_type === 1){
+        // 元素节点
+        const list = vnode.children
+        if(list.length){
+            list.forEach(subNode => {
+                importDataInfoTmp(subNode, data)
+            })
+        }
+    }else if(_type === 3){
+        // 文本节点
+        const _value = vnode.value
+        const newVal = _value.replace(rkuo, (_, g) => {
+            return getValueByPath(data, g)
+        }) 
+        vnode.value = newVal
+    }
+    return vnode
+}
+
+// 根据路径获取值
+function getValueByPath(data, path){
+    const arr = path.split('.')
+    let val = data
+    let res = null
+    while (res = arr.shift()) {
+        val = val[res]
+    }
+    return val
+}
+
+/*创建Vue类*/
+class _Vue{
+    constructor(options){
+        this._data = options.data
+        this._template = document.querySelector(options.el)
+
+        this.mount()
+    }
+    mount(){
+        this.render = this.createRender()
+        this.mountDom()
+    }
+    createRender(){
+        const vtmp = transToVnode(this._template)
+        return function(){
+            const vn = importDataInfoTmp(vtmp, this._data)
+            return vn
+        }
+    }
+    mountDom(){
+        this.update(this.render())
+    }
+    update(vnode){
+        console.log(vnode)
+    }
+}
+
+// 实例化
+new _Vue({
+    el: '#root',
+    data: {
+        name: '李云龙',
+        age: 28,
+        hobby: {
+            name: '足球',
+            years: 5
+        }
+    }
+})
+</script>
+</body>
+</html>

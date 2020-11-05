@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div id="root">
+    <div>
+        <div class="h1">{{hello1}}</div>
+        <div class="h2">{{hello2}}</div>
+        <div class="h3">{{hello3}}</div>
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul>
+    </div>
+</div>
+<script>
+/*
+* tag: 标签
+* data: 属性
+* value: 文本值
+* type: 文本类型
+*/
+class Vnode {
+    constructor(tag, data, value, type){
+        this.tag = tag
+        this.data = data
+        this.value = value
+        this.type = type
+        this.children = []
+    }
+    appendChildNode(node){
+        this.children.push(node)
+    }
+}
+
+// 真实dom转化为虚拟dom
+function transToVnode(_node){
+    const _type = _node.nodeType;
+    if(_type === 3){
+        // 文本节点
+        return new Vnode(undefined, undefined,  _node.nodeValue, _type)
+    }else if(_type === 1){
+        const _tagName = _node.nodeName.toLowerCase()
+        let attributes = _node.attributes
+        let attrObj = {}
+        for (let j = 0; j < attributes.length; j++) {
+            const eleAttr = attributes[j];
+            attrObj[eleAttr.name] = eleAttr.value
+        }
+        
+        // 元素节点
+        const childList = _node.childNodes
+        let _vnode = new Vnode(_tagName, attrObj, undefined, _type)
+        childList.forEach(subNode => {
+            _vnode.appendChildNode(transToVnode(subNode))
+        });
+        return _vnode
+    }
+}
+
+// 虚拟dom转化为真实dom
+function transToRealnode(vnode){
+    const _type = vnode.type
+    if(_type === 1){
+        // 元素节点
+        const _tag = document.createElement(vnode.tag)
+        const _data = vnode.data
+        for (const key in _data) {
+            if (_data.hasOwnProperty(key)) {
+                const value = _data[key];
+                _tag.setAttribute(key, value)
+            }
+        }
+        if(vnode.children.length){
+            vnode.children.forEach(sub => {
+                _tag.appendChild(transToRealnode(sub))
+            })
+        }
+        return _tag
+    }else if(_type === 3){
+        // 创建文本节点
+        return document.createTextNode(vnode.value)
+    }
+}
+
+const root = document.querySelector('#root')
+const vroot = transToVnode(root)
+console.log(vroot)
+const realRoot = transToRealnode(vroot)
+console.log(realRoot)
+</script>
+</body>
+</html>
