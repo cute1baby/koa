@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+var eventObjs;
+// 全局的event对象，提供on,off,emit方法
+var event  = (function(){
+    eventObjs = {};
+    return {
+        /* 注册事件，可以连续注册，可以注册多个事件 */
+        on: function(type, handler){
+            ( eventObjs[type] || (eventObjs[type] = [])).push(handler)
+        },
+        /*
+        * 移除事件
+        - 如果没有参数，移除所有事件；
+        - 如果只带有 事件名 参数，就移除那个事件名下的所有事件
+        - 如果带有 两个 参数，那么就是表示移除某一个事件的具体处理函数
+        */
+        off: function(type, handler){
+            // 没有参数，移除所有事件
+            if(!arguments.length){
+                eventObjs = {}
+            }else if(arguments.length===1){
+                // 只有type,则移除该事件的所有处理函数
+                eventObjs[type] = []
+            }else if(arguments.length===2){
+                const _events = eventObjs[type]
+                if(!_events) return
+                for (let i = _events.length - 1; i >= 0; i--) {
+                    const element = _events[i];
+                    if(element === handler){ //判断两个对象是否指向内存中同一个位置
+                        _events.splice(i, 1)
+                    }
+                }
+            }
+        },
+        /*
+        * 发射事件，触发事件，包装参数 传递给事件处理函数
+        */
+        emit: function(type){
+            // 指从第一位开始的参数
+            let args = Array.prototype.slice.call(arguments, 1)
+            const _events = eventObjs[type]
+            if(!_events) return
+            for (let i = 0; i < _events.length; i++) {
+                const element = _events[i];
+                element.apply(null, args)
+            }
+        }
+    }
+}())
+
+// 测试
+function f2(){
+    console.log('这是一个函数')
+}
+// 订阅了3个click事件函数
+event.on('click', f2)
+event.on('click', function(){console.log('打印222')})
+event.on('click', function(){console.log('打印333')})
+console.log('代码继续往下执行')
+console.log('代码继续往下执行')
+console.log('代码继续往下执行')
+
+// 发布了所有的click事件
+event.emit('click')
+console.log('eventObjs==>>>>>>>>>', eventObjs)
+</script>
+</body>
+</html>

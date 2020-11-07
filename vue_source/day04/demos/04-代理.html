@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// 我想实现访问a.b的时候，实际上访问的是base.b，如何做
+// 这个时候就要用代理的思想
+var a = {}
+var base = {
+    b: '李钟'
+}
+Object.defineProperty(a, 'b', {
+    configurable: true,
+    enumerable: true,
+    get(){
+        return base.b
+    },
+    set(newVal){
+        base.b = newVal
+    }
+})
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div id="root">
+    <div>
+        <div class="h1">{{name}}</div>
+        <div class="h2">{{age}}</div>
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul>
+    </div>
+</div>
+<script src="./src/watcher.js"></script>
+<script src="./src/vnode.js"></script>
+<script src="./src/compiler.js"></script>
+<script src="./src/jgvue.js"></script>
+<script src="./src/initrender.js"></script>
+<script src="./src/initdata.js"></script>
+<script>
+let app = new JGVue({
+    el: '#root',
+    data: {
+        name: '张三',
+        age: 18,
+        datas: [
+            {info: '好难啊'},
+            {info: '太难了'},
+            {info: '真的难吗'},
+            {info: '练习一下啊'}
+        ],
+        setObj: {name: 'lizhong'}
+    }
+})
+</script>
+</body>
+</html>

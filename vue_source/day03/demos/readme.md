@@ -64,6 +64,7 @@ data.course.push({name: '化学'})  // 此时的化学就不是响应式的了
 1、在改变数组数据的时候，要发出通知
     - Vue2中的缺陷，数组发生变化，设置length没法通知（Vue3中使用Proxy语法解决了这个问题）
 2、加入的元素应该变成响应式的
+
 技巧：如果一个函数已经定义了，但是我们需要扩展其功能，我们一般的处理方法：
 
 1、使用一个临时的函数名存储函数
@@ -72,7 +73,42 @@ data.course.push({name: '化学'})  // 此时的化学就不是响应式的了
 4、调用临时的那个函数
 示例见【06-扩展函数功能.html】
 
-扩展数组的方法: push和pop
+扩展数组的方法: push和pop，应该怎么处理呢？
 修改要进行响应式化的数组的__proto__
+```js
+// 原理
+// 继承关系：arr => Array.prototype => Object.prototype ...
+// 中间加一层：arr => 改写的方法 => Array.prototype => Object.prototype ...
+
+// 基础修改
+let array_methods = Object.create(Array.prototype)
+ARRAY_METHOD.forEach(method => {
+    // 2
+    array_methods[method] = function(){
+        // 3
+        console.log(`调用了拦截的方法${method}`)
+        // 将数据响应式化,使用遍历的方法
+        for (let i = 0; i < arguments.length; i++) {
+            const element = arguments[i];
+            reactify(element);  //给数组方法的参数做响应式处理
+        }
+        // 4
+        const res = Array.prototype[method].apply(this, arguments)
+        return res
+    }
+})
+```
+已经将对象改成响应式得了，如果直接给对象赋值，赋值另一个对象，那就不是响应式的了，怎么办？（作业）
+
+这里有一个bug，我认为老师的方法并没有解决掉这个问题。
+```
+set(newVal){
+    console.log(`我来设置值新值为：${newVal}`)
+    value = newVal
+    reactify(newVal)  **********增加了一行这个代码，但是值为数组的时候，根本就不会走set这个方法。
+    // 模板刷新（现在是假的，只是演示）
+    that.mountComponent()
+}
+```
 
 # 发布订阅模式

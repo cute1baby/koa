@@ -6,6 +6,94 @@
     <title>Document</title>
 </head>
 <body>
-    
+<script>
+let data = {
+    name: 'zhansan1',
+    age: 20,
+    course: [
+        {name: '语文'},
+        {name: '数学'},
+        {name: '化学'}
+    ]
+}
+
+let ARRAY_METHOD = [
+    'push',
+    'pop',
+    'shift',
+    'unshift',
+    'reverse',
+    'sort',
+    'splice'
+]
+
+// 思路：原型链继承：修改原型链的结构
+// 1 使用临时变量
+let array_methods = Object.create(Array.prototype)
+ARRAY_METHOD.forEach(method => {
+    // 2
+    array_methods[method] = function(){
+        // 3
+        console.log(`调用了拦截的方法${method}`)
+        // 将数据响应式化,使用遍历的方法
+        for (let i = 0; i < arguments.length; i++) {
+            const element = arguments[i];
+            reactify(element);  //给数组方法的参数做响应式处理
+        }
+        // 4
+        const res = Array.prototype[method].apply(this, arguments)
+        return res
+    }
+})
+
+// 简化的版本
+function defineReactive(targte, key, value, enumerable){
+    // 判断value是对象时
+    if(typeof value === 'object' && value !== null && !Array.isArray(value)){
+        reactify(value)
+    }
+
+    Object.defineProperty(targte, key, {
+        configurable: true,
+        enumerable: enumerable,
+        get(){
+            console.log(`我来获取值为:${value}`)
+            return value
+        },
+        set(newVal){
+            console.log(`我来设置值新值为：${newVal}`)
+            // reactify(newVal) // 对赋值的情况做响应式
+            value = newVal
+        }
+    })
+}
+
+// 将对象o响应式化
+function reactify(o){
+    let keys = Object.keys(o)
+    for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        const value = o[key]
+        /*
+        * 如果value是基本类型，直接设置响应式
+        * 如果是数组，则循环这每一项进行绑定
+        * 如果是对象则进行递归设置响应式
+        */
+        if(Array.isArray(value)){
+            // 给数组做响应式
+            value.__proto__ = array_methods;  // 数组就响应式了
+            for (let j = 0; j < value.length; j++) {
+                const v_key = value[j];
+                // 给数组的每一项进行递归
+                reactify(v_key)
+            }
+        }else{
+            defineReactive(o, key, value, true)
+        }
+    }
+}
+
+reactify(data)
+</script> 
 </body>
 </html>
