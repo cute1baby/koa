@@ -1,10 +1,16 @@
 new Promise((resolve, reject) => {
-    console.log('开始了')
     resolve(1)
 })
 .then(res => {
-    console.log('成功了：', res)
+    return new Promise((resolve, reject) => {
+        resolve(100)
+    })
+}, reason => {
+    console.log('失败了：', reason)
 })
-.catch(err => {
-    console.log('出错了：', err)
+.then(res => {
+    console.log('value', res)
+}, reason => {
+    console.log('reason', reason)
 })
+console.log('3')
