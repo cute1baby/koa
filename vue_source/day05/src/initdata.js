@@ -43,6 +43,8 @@ function defineReactive(targte, key, value, enumerable){
         enumerable: enumerable,
         get(){
             console.log(`我来获取值为:${value}`)
+            // 进行依赖收集
+            dep.depend();
             return value
         },
         set(newVal){
@@ -53,12 +55,9 @@ function defineReactive(targte, key, value, enumerable){
                 observer(newVal)
             }
             value = newVal
-            // 模板刷新（现在是假的，只是演示）
-            /**
-             * 这是一个临时解决方案，因为数组现在没有参与页面的渲染
-             * 所以在数组上进行响应式的处理，不需要页面的刷新；那么，即使这里无法调用也没关系
-             */
-            typeof that.mountComponent === 'function' && that.mountComponent()
+            
+            // 派发更新，找到全局的watcher，调用update
+            dep.notify();
         }
     })
 }

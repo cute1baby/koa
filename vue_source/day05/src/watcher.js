@@ -20,7 +20,9 @@ class Watcher {
 
     // 计算和触发getter
     get(){
+        pushTarget(this);
         this.getter.call( this.vm, this.vm ); // 上下文的问题就解决了
+        popTarget();
     }
     /**
      * 执行, 并判断是懒加载, 还是同步执行, 还是异步执行: 

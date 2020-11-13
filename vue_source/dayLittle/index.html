@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div id="app">
+    <input type="text" v-model="username" />
+    <h1>{{username}}</h1>
+    <h1 v-html="msg"></h1>
+    <button @click="changeEvent(1, 2)">带参数修改msg</button>
+    <button @click="changeEvent">不带修改msg</button>
+</div>
+<script src="./watch.js"></script>
+<script src="./index.js"></script>
+<script>
+
+let app = new Vue({
+    el: '#app',
+    data: {
+        msg: 64,
+        username: '小明'
+    },
+    methods: {
+        changeEvent(a, b){
+            // console.log('我执行了click方法', a, b)
+            this.msg = Math.floor(Math.random() * 100) + 100
+        }
+    },
+    beforeCreate(){
+        console.log('相对于数据劫持来说的，初始化之前')
+    },
+    created(){
+        console.log('相对于数据劫持来说的，完成初始化')
+    },
+    beforeMount(){
+        console.log('相对于模板编译来说的，挂载之前')
+    },
+    mounted(){
+        console.log('相对于模板编译来说的，挂载之后')
+    },
+    beforeUpdate(){
+        console.log('相对于页面更新来说的，更新前(在watch.js文件)')
+    },
+    updated(){
+        console.log('相对于页面更新来说的，更新后(在watch.js文件)')
+    }
+})
+</script>
+</body>
+</html>
