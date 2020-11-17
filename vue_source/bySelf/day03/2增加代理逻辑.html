@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div id="root">
+    <div>
+        <p>{{name}}</p>
+        <p>{{age}}</p>
+        <hr>
+    </div>
+</div>
+<script>
+const rkuo = /\{\{(.+?)\}\}/g;
+class Vnode {
+    constructor(tag, data, value, type){
+        this.tag = tag
+        this.data = data
+        this.value = value
+        this.type = type
+        this.children = []
+    }
+    appendChildNode(node){
+        this.children.push(node)
+    }
+}
+// 模板转化为带坑的虚拟dom
+function transToVnode(_node){
+    const _type = _node.nodeType;
+    if(_type === 3){
+        // 文本节点
+        return new Vnode(undefined, undefined,  _node.nodeValue, _type)
+    }else if(_type === 1){
+        const _tagName = _node.nodeName.toLowerCase()
+        let attributes = _node.attributes
+        let attrObj = {}
+        for (let j = 0; j < attributes.length; j++) {
+            const eleAttr = attributes[j];
+            attrObj[eleAttr.name] = eleAttr.value
+        }
+        
+        // 元素节点
+        const childList = _node.childNodes
+        let _vnode = new Vnode(_tagName, attrObj, undefined, _type)
+        childList.forEach(subNode => {
+            _vnode.appendChildNode(transToVnode(subNode))
+        });
+        return _vnode
+    }
+}
+
+// 将数据填充到带坑模板中
+function importDataInfoTmp(vnode, data){
+    const _type = vnode.type
+    if(_type === 1){
+        // 元素节点
+        const list = vnode.children
+        if(list.length){
+            list.forEach(subNode => {
+                importDataInfoTmp(subNode, data)
+            })
+        }
+    }else if(_type === 3){
+        // 文本节点
+        const _value = vnode.value
+        const newVal = _value.replace(rkuo, (_, g) => {
+            return getValueByPath(data, g)
+        }) 
+        vnode.value = newVal
+    }
+    return vnode
+}
+
+// 虚拟dom转化为真实dom
+function transToRealnode(vnode){
+    const _type = vnode.type
+    if(_type === 1){
+        // 元素节点
+        const _tag = document.createElement(vnode.tag)
+        const _data = vnode.data
+        for (const key in _data) {
+            if (_data.hasOwnProperty(key)) {
+                const value = _data[key];
+                _tag.setAttribute(key, value)
+            }
+        }
+        if(vnode.children.length){
+            vnode.children.forEach(sub => {
+                _tag.appendChild(transToRealnode(sub))
+            })
+        }
+        return _tag
+    }else if(_type === 3){
+        // 创建文本节点
+        return document.createTextNode(vnode.value)
+    }
+}
+
+// 根据路径获取值
+function getValueByPath(data, path){
+    const arr = path.split('.')
+    let val = data
+    let key = null
+    while (key = arr.shift()) {
+        val = val[key]
+    }
+    return val
+}
+
+/*创建Vue类*/
+class _Vue{
+    constructor(options){
+        this._data = options.data
+        this._template = document.querySelector(options.el)
+        this._parentNode = this._template.parentNode
+        // 添加响应式和代理
+        this.initProxy()
+        this.mount()
+    }
+    mount(){
+        this.render = this.createRender()
+        this.mountDom()
+    }
+    createRender(){
+        const vtmp = transToVnode(this._template)
+        return function(){
+            const vn = importDataInfoTmp(vtmp, this._data)
+            return vn
+        }
+    }
+    mountDom(){
+        this.update(this.render())
+    }
+    // 将生成的实际dom插入到页面中
+    update(vnode){
+        // 重新更新的时候拿不到body节点。
+        console.log('template>>>>', this._template.parentNode)
+        // 将虚拟dom转化成真实dom
+        const newTag = transToRealnode(vnode)
+        this._parentNode.replaceChild(newTag, document.querySelector('#root'))
+    }
+}
+
+
+/**************************添加响应式代码*****************************/
+
+/*****下面是重写Array.prototype上的方法*****/
+let arrList = [
+    'push',
+    'pop',
+    'shift',
+    'unshift',
+    'reverse',
+    'sort',
+    'splice'    
+]
+
+let _tempFunc = Object.create(Array.prototype);
+arrList.forEach(item => {
+    // 重新定义函数
+    _tempFunc[item] = function(){
+        console.log('这是我在原型链上添加的方法')
+        for (let i = 0; i < arguments.length; i++) {
+            const element = arguments[i];
+            reactify(element)
+        }
+        // 执行原函数，并按照原函数的返回值
+        const res = Array.prototype[item].apply(this, arguments)
+        return res;
+    }
+})
+// 响应式核心函数
+function defineReactive(target, key, value, enumerable){
+    const that = this
+    if(value !== null && typeof value === 'object'){
+        reactify(value, this)
+    }
+    Object.defineProperty(target, key, {
+        configurable: true,
+        enumerable,
+        get(){
+            console.log(`响应式 - 获取值：${value}`)
+            return value
+        },
+        set(newVal){
+            console.log(`设置值：${newVal}`)
+            value = newVal
+            that.mount()
+            console.log('>>>>>>数据', that._data)
+        }
+    })
+}
+
+// 响应式的调用
+function reactify(o, vm){
+    if(o !== null && typeof o === 'object'){
+        const keys = Object.keys(o)
+        for (let i = 0; i < keys.length; i++) {
+            const key = keys[i];
+            const value = o[key];
+            if(Array.isArray(value)){
+                value.__proto__ = _tempFunc
+                value.forEach(sub => {
+                    // 使用递归
+                    reactify(sub, vm)
+                })
+            }else{
+                defineReactive.call(vm, o, key, value, true)
+            }
+        }
+    }
+    
+}
+
+// 增加数据代理
+_Vue.prototype.initProxy = function(){
+    const keys = Object.keys(this._data);
+    // 响应式
+    reactify(this._data, this)
+
+    // 代理
+    for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        proxy(this, '_data', key)
+    }
+}
+
+// 数据代理
+function proxy(target, prop, key){
+    Object.defineProperty(target, key, {
+        configurable: true,
+        enumerable: true,
+        get(){
+            return target[prop][key]
+        },
+        set(newVal){
+            target[prop][key] = newVal
+        }
+    })
+}
+
+
+// 实例化
+const app = new _Vue({
+    el: '#root',
+    data: {
+        name: '李云龙',
+        age: 28,
+        likes: [
+            {
+                name: '足球',
+                years: 5
+            },
+            {
+                name: '羽毛球',
+                years: 10
+            }
+        ]
+    }
+})
+</script>
+</body>
+</html>

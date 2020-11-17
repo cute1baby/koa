@@ -270,3 +270,12 @@ archive.finalize()
     "build-publish": "node build/build.js && node build/zip.js"
   },
 ```
+
+
+- 8、引入mixin
+文件见src/mixin/mixin.js和src/component/TopicList.js
+mixin可以定义公用的变量或方法，但是mixin中的数据是不共享的，也就是每个组件中的mixin实例都是不一样的，都是单独存在的个体，不存在相互影响的；
+
+注意下面几点：
+1、当mixin中有声明了跟组件内同名的变量和methods，都会被组件内的变量和函数覆盖
+2、当mixin中有声明了跟组件内同名的生命周期函数，都会执行。且mixin中的会先执行。

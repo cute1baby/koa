@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// 这个是为了解决数组方法响应式的问题。既要对Array.prototype做修改
+// [].__proto__ === Array.prototype
+function demo1(){
+    console.log('测试函数11')
+}
+
+var _temp = demo1;
+demo1 = function(){
+    console.log('这是增加的函数拦截的代码')
+    _temp()
+}
+
+demo1()
+
+/*****下面是重写Array.prototype上的方法*****/
+let arrList = [
+    'push',
+    'pop',
+    'shift',
+    'unshift',
+    'reverse',
+    'sort',
+    'splice'    
+]
+
+let _tempFunc = Object.create(Array.prototype);
+arrList.forEach(item => {
+    // 重新定义函数
+    _tempFunc[item] = function(){
+        console.log('这是我在原型链上添加的方法')
+
+        // 执行原函数，并按照原函数的返回值
+        const res = Array.prototype[item].apply(this, arguments)
+        return res;
+    }
+})
+
+
+let newArr = [1, 2, 3]
+// 当前数组与拦截方法进行关联
+newArr.__proto__ = _tempFunc
+console.log(newArr.push(6))
+</script>
+</body>
+</html>

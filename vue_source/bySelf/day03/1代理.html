@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+let app = {
+    el: '#app',
+    data: {
+        name: '李云龙',
+        msg: '你开炮啊' 
+    }
+}
+
+// 数据代理
+function proxy(target, prop, key){
+    Object.defineProperty(target, key, {
+        configurable: true,
+        enumerable: true,
+        get(){
+            return target[prop][key]
+        },
+        set(newVal){
+            target[prop][key] = newVal
+        }
+    })
+}
+
+const keys = Object.keys(app.data)
+for (let i = 0; i < keys.length; i++) {
+    const key = keys[i]
+    proxy(app, 'data', key)
+}
+
+</script>
+</body>
+</html>

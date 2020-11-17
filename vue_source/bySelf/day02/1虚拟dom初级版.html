@@ -75,13 +75,38 @@ function importDataInfoTmp(vnode, data){
     return vnode
 }
 
+// 虚拟dom转化为真实dom
+function transToRealnode(vnode){
+    const _type = vnode.type
+    if(_type === 1){
+        // 元素节点
+        const _tag = document.createElement(vnode.tag)
+        const _data = vnode.data
+        for (const key in _data) {
+            if (_data.hasOwnProperty(key)) {
+                const value = _data[key];
+                _tag.setAttribute(key, value)
+            }
+        }
+        if(vnode.children.length){
+            vnode.children.forEach(sub => {
+                _tag.appendChild(transToRealnode(sub))
+            })
+        }
+        return _tag
+    }else if(_type === 3){
+        // 创建文本节点
+        return document.createTextNode(vnode.value)
+    }
+}
+
 // 根据路径获取值
 function getValueByPath(data, path){
     const arr = path.split('.')
     let val = data
-    let res = null
-    while (res = arr.shift()) {
-        val = val[res]
+    let key = null
+    while (key = arr.shift()) {
+        val = val[key]
     }
     return val
 }
@@ -108,13 +133,16 @@ class _Vue{
     mountDom(){
         this.update(this.render())
     }
+    // 将生成的实际dom插入到页面中
     update(vnode){
-        console.log(vnode)
+        // 将虚拟dom转化成真实dom
+        const newTag = transToRealnode(vnode)
+        this._template.parentNode.replaceChild(newTag, document.querySelector('#root'))
     }
 }
 
 // 实例化
-new _Vue({
+const app = new _Vue({
     el: '#root',
     data: {
         name: '李云龙',
@@ -125,6 +153,7 @@ new _Vue({
         }
     }
 })
+
 </script>
 </body>
 </html>

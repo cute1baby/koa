@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+let event = (function(){
+    let eventObj = {}
+    return {
+        on: function(type, func){
+            (eventObj[type] || (eventObj[type] = [])).push(func)
+        },
+        off: function(type, func){
+            if(!arguments){
+                eventObj = {}
+            }else if(arguments.length === 1){
+                if(!eventObj[type]) return 
+                eventObj[type] = []
+            }else if(arguments.length === 2){
+                const lens = eventObj[type] || []
+                for (let i = lens.length - 1; i >= 0; i--) {
+                    const ele = lens[i];
+                    if(func === ele){
+                        eventObj[type].splice(0, 1)
+                    }
+                }
+            }
+        },
+        emit: function(type){
+            let args = [].slice.call(arguments, 1)
+            console.log(args)
+            if(!arguments) return
+            for (let i = 0; i < eventObj[type].length; i++) {
+                const fn = eventObj[type][i];
+                fn.apply(null, args)
+            }
+        }
+    }
+}())
+
+/***
+ * 事件模型如下：
+ *  eventObj: {
+ *      'click': [fn1. fn2, fn3, fn4, fn5],
+ *      'mouseover': [gn1, gn2, gn3]
+ * }
+ * 
+ */
+
+
+let fn1 = function(){console.log(111)}
+let fn2 = function(){console.log(222)}
+let fn3 = function(){console.log(333)}
+event.on('click', fn1)
+event.on('click', fn3)
+event.off('click', fn1)
+event.emit('click')
+</script>
+</body>
+</html>

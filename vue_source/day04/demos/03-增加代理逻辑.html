@@ -214,7 +214,7 @@ ARRAY_METHOD.forEach(method => {
         // 将数据响应式化,使用遍历的方法
         for (let i = 0; i < arguments.length; i++) {
             const element = arguments[i];
-            reactify(element);  //给数组方法的参数做响应式处理
+            reactify(element);  //给数组方法的参数做响应式处理，这一步没有处理传入this的方案
         }
         // 4
         const res = Array.prototype[method].apply(this, arguments)
@@ -278,16 +278,12 @@ function reactify(o, vm){
 }
 
 
-// reactify(data)
 JGVue.prototype.initData = function(){
     // 遍历this._data的成员，将属性转化为响应式的，将直接属性，代理到实例上
     const keys = Object.keys(this._data)
     // 响应式化
-    for (let i = 0; i < keys.length; i++) {
-        const key = keys[i];
-        // 这里将对象this._data[key]变成响应式的
-        reactify(this._data, this)
-    }
+    // 这里将对象this._data[key]变成响应式的
+    reactify(this._data, this)
 
     // 代理
     for (let i = 0; i < keys.length; i++) {

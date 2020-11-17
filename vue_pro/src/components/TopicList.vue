@@ -56,10 +56,12 @@
 </template>
 
 <script>
+import {mixin} from "@/mixin/mixin"
 import moment from 'moment'
 // moment.locale('zh-cn')
 export default {
   name: 'TopicList',
+  mixins:[mixin],
   data () {
     return {
       pageIndex: 0,
@@ -76,6 +78,9 @@ export default {
     }
   },
   created () {
+    this.demo1()
+    this.getData()
+    console.log('输出同名的mixin数据pageLimit', this.pageLimit)
     this.getData()
   },
   methods: {

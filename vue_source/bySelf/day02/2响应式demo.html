@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+const data = {
+    name: '李忠',
+    age: 20,
+    hobby: ['篮球', '足球', '乒乓球'],  //这种情况下没有响应式化
+    testList: [
+        {name: '周的话'},
+        {name: '3234re'},
+        {name: '3fre3'},
+    ]
+}
+
+// 响应式核心函数
+function defineReactive(target, key, value, enumerable){
+    if(value !== null && typeof value === 'object'){
+        reactify(value)
+    }
+    Object.defineProperty(target, key, {
+        configurable: true,
+        enumerable,
+        get(){
+            console.log(`响应式 - 获取值：${value}`)
+            return value
+        },
+        set(newVal){
+            console.log(`设置值：${newVal}`)
+            value = newVal
+        }
+    })
+}
+
+// 响应式的调用
+function reactify(o){
+    if(o !== null && typeof o === 'object'){
+        const keys = Object.keys(o)
+        for (let i = 0; i < keys.length; i++) {
+            const key = keys[i];
+            const value = o[key];
+            if(Array.isArray(value)){
+                value.forEach(sub => {
+                    // 使用递归
+                    reactify(sub)
+                })
+            }else{
+                defineReactive(o, key, value, true)
+            }
+        }
+    }
+    
+}
+
+reactify(data)
+</script>
+</body>
+</html>
