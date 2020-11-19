@@ -30,4 +30,7 @@ module.exports = app => {
     
     // 上传图片到七牛云  
     router.post('/uploadImg', controller.home.uploadImg);
+
+    // 获取ticket的值
+    router.get('/getBasicTicket', controller.home.getBasicTicket);
 };

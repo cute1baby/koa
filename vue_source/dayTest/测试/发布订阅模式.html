@@ -7,19 +7,34 @@
 </head>
 <body>
 <script>
+/**
+ * 要实现的目的
+ * event.on('selfSet', function(){...})
+ * event.emit('selfSet', 1, 5)
+*/
 var event = {
-    on: function(){
-
+    eventObj: {},
+    on: function(type, fn){
+        (this.eventObj[type] || (this.eventObj[type] = [])).push(fn)
     },
-    off: function(){
-
-    },
-    emit: function(){
-
+    emit: function(type){
+        if(type){
+            const args = [].slice.call(arguments, 1)
+            const list = this.eventObj[type]
+            for (let i = 0; i < list.length; i++) {
+                const fn = list[i];
+                fn.apply(null, args)
+            }
+        }
     }
 }
 
-
+function fn1(a,b){
+    console.log(a + b)
+}
+event.on('selfSet', fn1)
+event.on('selfSet', fn1)
+event.emit('selfSet', 1, 5)
 </script>
 </body>
 </html>

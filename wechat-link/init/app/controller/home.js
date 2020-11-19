@@ -2,6 +2,7 @@
 // 引入配置文件
 const config = require('../config')
 const {Wechat} = require('../tool/accessToken')
+const {Ticket} = require('../tool/ticket')
 const {getDataAsync, toJson, toXml} = require('../tool/xmlTool')
 // 引入sha1模块
 const sha1 = require('sha1')
@@ -12,6 +13,7 @@ const axios = require('axios')
 const { successRes, failRes } = require("../utils/response");
 const Controller = require('egg').Controller;
 const w = new Wechat()
+const ticketInstance = new Ticket()
 
 // 自定义菜单目录
 const menuList = {
@@ -243,6 +245,36 @@ class HomeController extends Controller {
     console.log('bodyVal===', fileName)
     console.log('uploadToken>>>>>>', uploadToken)
     ctx.body = successRes(uploadToken)
+  }
+
+  async getBasicTicket(){
+    /**
+     * 生成js-sdk使用签名
+     * 1、组合参与签名的四个参数：jsapi_ticket(临时票据),noncestr(随机字符串),timestamp(时间戳),url(当前网页的URL，不包含#及其后面部分)
+     * 2、将其进行字典序排序，且用&拼接在一起
+     * 3、进行sha1加密，最终生成signature
+     */
+    const { ctx } = this;
+    // 获取随机数和时间戳
+    const noncestr = String(Math.random()).split('.')[1]
+    const timestamp = Date.now()
+    const {url} = config
+    const {ticket} = await ticketInstance.fetchTicket()
+    // 拼接并进行sha1加密
+
+    // 这里的url是当前页面的url
+    const signature = sha1([
+        `jsapi_ticket=${ticket}`,
+        `noncestr=${noncestr}`,
+        `timestamp=${timestamp}`,
+        `url=${url}/jssdkbase.html`
+    ].sort().join('&'))
+    console.log('ticket的value===', signature)
+    ctx.body = successRes({
+        signature,
+        noncestr,
+        timestamp
+    })
   }
 }
 

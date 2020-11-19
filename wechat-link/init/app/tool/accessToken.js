@@ -148,38 +148,3 @@ class Wechat {
 module.exports = {
     Wechat
 }
-// 测试数据
-// const w = new Wechat()
-// new Promise((resolve, reject) => {
-//     w.readAccessToken()
-//     .then(res=> {
-//         // 判断是否过期
-//         if(w.isValidAccessToken(res)){
-//             resolve(res)
-//         }else{
-//             // 获取数据并且保存数据
-//             w.getAccessToken()
-//             .then(res => {
-//                 console.log(res)
-//                 w.saveAccessToken(res)
-//                 .then(() => {
-//                     resolve(res)
-//                 })
-//             })
-
-//         }
-//     })
-//     .catch(err => {
-//         // 获取数据并且保存数据
-//         w.getAccessToken()
-//         .then(res => {
-//             console.log(res)
-//             w.saveAccessToken(res)
-//             .then(() => {
-//                 resolve(res)
-//             })
-//         })
-//     })
-// }).then(r => {
-//     console.log('获取到最新的access_token====>>>>>>>', r)
-// })

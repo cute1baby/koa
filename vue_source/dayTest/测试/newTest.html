@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 构造函数（发布者对象）
+        function Deliver() {
+            this.subscribers = [];
+        }
+        Deliver.prototype = {
+            constructor: Deliver,
+            deliver: function (message) {
+                this.subscribers.forEach(function (fun) {
+                    fun(message);
+                });
+                return this;
+            }
+        }
+
+
+        //订阅事件
+        function subscribe(subscriber, deliver) {
+            var hasExists = false,
+                isFunction = Object.prototype.toString.call(subscriber) === '[object Function]';
+            if (isFunction && deliver instanceof Deliver) {
+                // 原来的发布者对象容器中是否存在该函数。存在则忽略，不存在则插入。
+                hasExists = deliver.subscribers.some(function (fun) {
+                    return fun === subscriber;
+                });
+                if (!hasExists) {
+                    deliver.subscribers.push(subscriber);
+                }
+            }
+        }
+        //退订subscriber事件（将函数subscriber从发布者对象容器中筛出）
+        function unSubscribe(subscriber, deliver) {
+            var isFunction = Object.prototype.toString.call(subscriber) === '[object Function]';
+            if (isFunction && deliver instanceof Deliver) {
+                deliver.subscribers = deliver.subscribers.filter(function (fun) {
+                    return fun !== subscriber;
+                })
+            }
+        }
+
+        // 实例化一个发布者并为其添加订阅者
+        var endDeliver = new Deliver();
+        (function (window) {
+            // 将endHandle、endHandle2插入到发布者并插入到订阅者容器内。
+            subscribe(endHandle, endDeliver);
+            subscribe(endHandle2, endDeliver);
+            // if (webSocket.data == "@end") {
+            //     endDeliver.deliver(); //当返回数据为end时，end发布者发布消息
+            // }
+            if (true) {
+                endDeliver.deliver();
+            }
+        })(window)
+
+        function endHandle() {
+            console.log("已执行结束")
+        }
+
+        function endHandle2() {
+            console.log("重新开始执行函数");
+        }
+    </script>
+</body>
+
+</html>

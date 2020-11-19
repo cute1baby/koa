@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+.set-share{
+    font-size: 16px;
+    color: blueviolet;
+}
+</style>
+<body>
+<p class="set-share">设置分享的功能</p>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/zepto/1.0.0/zepto.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.8.0/axios.min.js"></script>
+<script>
+const serverUrl = 'http://127.0.0.1:3005'
+const appid = 'wxd9f5805ea8e18784'    
+$(function(){
+    axios.get(serverUrl + '/getBasicTicket', {
+        params: {
+            url: 111
+        }
+    })
+    .then(res => {
+        console.log(res)
+        const data = res.data
+        if(!data.status){
+            const {
+                ...params
+            } = data.data
+            setConfig(params)
+        }
+    })
+
+    function setConfig(params){
+        wx.config({
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: appid, // 必填，公众号的唯一标识
+            timestamp: params.timestamp, // 必填，生成签名的时间戳
+            nonceStr: params.noncestr, // 必填，生成签名的随机串
+            signature: params.signature,// 必填，签名
+            jsApiList: [
+                'updateAppMessageShareData',  // 分享给朋友、qq
+                'updateTimelineShareData',  // 分享到朋友圈、qq空间
+                'startRecord', // 开始录音
+                'stopRecord',  // 结束录音
+                'translateVoice',  // 转换录音
+                'playVoice'   //播放录音
+            ] // 必填，需要使用的JS接口列表
+        });
+    }
+    
+})
+</script>
+</body>
+</html>
