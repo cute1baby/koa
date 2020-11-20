@@ -7,7 +7,7 @@ class Watcher {
 		//保存旧值
 		this.oldVal = this.getOldVal();
 	}
-
+    // 获取老值的时候给Dep.target赋值
 	getOldVal() {
         // debugger
 		Dep.target = this;
@@ -26,7 +26,7 @@ class Watcher {
 	}
 }
 
-
+// 收集依赖的容器
 class Dep {
 	constructor() {
 		this.subs = [];
@@ -40,7 +40,7 @@ class Dep {
 		this.subs.forEach(w => w.notify())
 	}
 }
-
+// 做的是数据劫持这件事
 class Observer {
 	constructor(data) {
 		// this.dep = new Dep()
@@ -57,7 +57,8 @@ class Observer {
 
 	defineReactive(obj, key, value) {
 		//递归遍历
-		this.observer(value);
+        this.observer(value);
+        // 实例化dep
 		let dep=new Dep()
 		console.log("defineReactive"+key)
 		Object.defineProperty(obj, key, {
@@ -74,13 +75,13 @@ class Observer {
 				dep.notify()
 			},
 			get() {
-                // debugger
+                // 这里的Dep.target就是Watcher的实例，相当于一个类似于window的变量
 				// console.log("get"+key)
                 console.log(Dep.target)
                 // console.log('obj==>>>key', obj, key)
                 Dep.target && dep.addSub(Dep.target)
                 console.log(dep)
-				//订阅数据变化，王dep中添加观察者，dep是观察者集合
+				//订阅数据变化，dep中添加观察者，dep是观察者集合
 				return value;
 			}
 		})

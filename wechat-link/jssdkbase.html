@@ -19,11 +19,13 @@
 <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.8.0/axios.min.js"></script>
 <script>
 const serverUrl = 'http://127.0.0.1:3005'
+// const serverUrl = 'http://server.familyli.cn'
 const appid = 'wxd9f5805ea8e18784'    
 $(function(){
+    const url = decodeURIComponent(location.href.split('#')[0])
     axios.get(serverUrl + '/getBasicTicket', {
         params: {
-            url: 111
+            url
         }
     })
     .then(res => {

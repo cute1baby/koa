@@ -1,3 +1,6 @@
+/**
+ * 工具类
+ */
 const compileUtils = {
 
 	getContentValue(value, vm) {

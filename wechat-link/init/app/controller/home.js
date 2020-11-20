@@ -74,6 +74,7 @@ class HomeController extends Controller {
   }
   // 获取accessToken
   async getAccessToken(){
+      console.log(111222)
     const { ctx } = this;
     const res = await w.fetchAccessToken()
     ctx.body = successRes(res, '获取accessToken')
@@ -255,10 +256,12 @@ class HomeController extends Controller {
      * 3、进行sha1加密，最终生成signature
      */
     const { ctx } = this;
+    const {url} = ctx.query
+    console.log('url>>>>', url)
     // 获取随机数和时间戳
     const noncestr = String(Math.random()).split('.')[1]
     const timestamp = Date.now()
-    const {url} = config
+    // const {url} = config
     const {ticket} = await ticketInstance.fetchTicket()
     // 拼接并进行sha1加密
 
