@@ -19,7 +19,7 @@ const compileUtils = {
 		} else {
             // 'v-text'的方式不会产生new Watcher，个人觉得有问题，所以又加上一个watcher
             new Watcher(vm, value, (newVal) => {
-                this.update.htmlUpdate(node, newVal)
+                this.update.textUpdate(node, newVal)
             })
 
 			val = this.getValue(value, vm);
