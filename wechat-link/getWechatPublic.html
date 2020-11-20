@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>获取用户列表</title>
+</head>
+<style>
+*{
+    margin: 0;
+    padding: 0;
+}
+ul, li{
+    list-style: none;
+}
+#root .name{
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 6px;
+}
+#root .nums{
+    color: brown;
+}
+hr{
+    margin: 12px 0;
+}
+ul li{
+    line-height: 30px;
+    font-size: 16px;
+    color: #333;
+}
+</style>
+<body>
+<div id="root">
+    <p class="name">一共有<span class="nums"></span>个用户关注了公众号</p>
+    以下是用户openId列表：
+    <hr/>
+    <ul class="user-list"></ul>
+</div>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/zepto/1.0.0/zepto.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.8.0/axios.min.js"></script>
+<script>
+// const serverUrl = 'http://127.0.0.1:3005'
+const serverUrl = 'http://server.familyli.cn'
+$(function(){
+    axios.get(serverUrl + '/getUserList', {
+        params: {}
+    })
+    .then(res => {
+        console.log(res)
+        const dataRes = res.data
+        if(!dataRes.status){
+            let openidStr = ''
+            const { count, data } = dataRes.data
+            const openidList = data.openid
+            for (let i = 0; i < openidList.length; i++) {
+                const element = openidList[i];
+                openidStr+= '<li>'+ element +'</li>'
+            }
+            $('.nums').html(count)
+            $('.user-list').html(openidStr)
+            console.log('data>>>>>', dataRes.data)
+        }
+    }) 
+})
+   
+</script>
+</body>
+</html>

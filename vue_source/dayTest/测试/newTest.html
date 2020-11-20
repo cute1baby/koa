@@ -15,6 +15,7 @@
         }
         Deliver.prototype = {
             constructor: Deliver,
+            // 容器内的函数执行
             deliver: function (message) {
                 this.subscribers.forEach(function (fun) {
                     fun(message);

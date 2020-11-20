@@ -19,6 +19,7 @@ class Watcher {
 	}
 
 	notify() {
+        // 这一步在执行setter之前会执行一遍getter
 		const newVal = compileUtils.getValue(this.expr, this.vm);
 		if (this.oldVal != newVal) {
 			this.cb(newVal)
