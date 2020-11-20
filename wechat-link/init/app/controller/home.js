@@ -258,16 +258,15 @@ class HomeController extends Controller {
     // 获取随机数和时间戳
     const noncestr = String(Math.random()).split('.')[1]
     const timestamp = Date.now()
-    const {url} = config
+    const {url} = ctx.query
     const {ticket} = await ticketInstance.fetchTicket()
     // 拼接并进行sha1加密
-
-    // 这里的url是当前页面的url
+    // 这里的url是当前页面的url，前端作为参数传过来
     const signature = sha1([
         `jsapi_ticket=${ticket}`,
         `noncestr=${noncestr}`,
         `timestamp=${timestamp}`,
-        `url=${url}/jssdkbase.html`
+        `url=${url}`
     ].sort().join('&'))
     console.log('ticket的value===', signature)
     ctx.body = successRes({

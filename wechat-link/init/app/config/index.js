@@ -1,6 +1,5 @@
 module.exports = {
     token: 'laoli0629shezhimogen10011',
     appID: 'wxd9f5805ea8e18784',
-    appsecret: '39501d5d4b78eca0c1f1593481c76165',
-    url: 'http://wechat.familyli.cn'  //客户端的域名
+    appsecret: '39501d5d4b78eca0c1f1593481c76165'
 }

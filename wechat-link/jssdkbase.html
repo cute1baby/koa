@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>设置分享的功能</title>
 </head>
 <style>
 .set-share{
@@ -18,12 +18,38 @@
 <script src="https://cdn.bootcdn.net/ajax/libs/zepto/1.0.0/zepto.min.js"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.8.0/axios.min.js"></script>
 <script>
-const serverUrl = 'http://127.0.0.1:3005'
+// const serverUrl = 'http://127.0.0.1:3005'
+const serverUrl = 'http://server.familyli.cn'
 const appid = 'wxd9f5805ea8e18784'    
+
+// 获取链接参数
+function getUrlParameter(data) {
+  let query = {}
+  let url = data
+    ? data.substr(data.indexOf('?'))
+    : document.location.search.replace('?', '')
+  let urlParams = []
+  if (url) {
+    urlParams = url.split('&')
+    urlParams.forEach(item => {
+      let value = item.split('=')
+      query[value[0]] = value[1]
+    })
+  }
+  return query
+}
+
 $(function(){
+    const query = getUrlParameter();
+    if(query.redirectUrl){
+        window.location.href = query.redirectUrl
+    }
+    const url = location.href.split('#')[0]
+    // 直接重定向
+    // const url = 'http://wechat.familyli.cn/authBySilent.html'
     axios.get(serverUrl + '/getBasicTicket', {
         params: {
-            url: 111
+            url
         }
     })
     .then(res => {
@@ -39,7 +65,7 @@ $(function(){
 
     function setConfig(params){
         wx.config({
-            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: appid, // 必填，公众号的唯一标识
             timestamp: params.timestamp, // 必填，生成签名的时间戳
             nonceStr: params.noncestr, // 必填，生成签名的随机串
@@ -53,6 +79,29 @@ $(function(){
                 'playVoice'   //播放录音
             ] // 必填，需要使用的JS接口列表
         });
+
+        wx.ready(function(){
+            /**
+             * 测试之后发现：有2种方式可实现a页面分享b页面
+             *  1、分享时把新页面作为参数。
+             *  2、重定向的方式
+             * */
+            wx.updateAppMessageShareData({ 
+                title: '测试的分享的标题', // 分享标题
+                desc: '自定义带参数静默授权链接', // 分享描述
+                // link: url + '?redirectUrl=' + decodeURIComponent('http://wechat.familyli.cn/authBySilent.html'), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                link: 'http://wechat.familyli.cn/getWechatPublic.html', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: 'http://img.familyli.cn/11.jpg', // 分享图标
+                success: function () {
+                    // 设置成功
+                    console.log('分享成功')
+                },
+                cancel: function(){
+                    console.log('取消分享')
+                }
+            })
+
+        })
     }
     
 })
