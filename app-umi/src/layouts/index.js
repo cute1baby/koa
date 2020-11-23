@@ -1,4 +1,6 @@
 import styles from './index.css';
+// 作为入口文件
+import 'antd/dist/antd.css';
 
 function BasicLayout(props) {
   return (

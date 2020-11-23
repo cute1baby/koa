@@ -1,5 +1,6 @@
 
 // ref: https://umijs.org/config/
+// 这部分是声明式路由（删除就变成约定式路由了）
 export default {
   treeShaking: true,
   routes: [
@@ -7,7 +8,8 @@ export default {
       path: '/',
       component: '../layouts/index',
       routes: [
-        { path: '/', component: '../pages/index' }
+        { path: '/', component: '../pages/home' },
+        { path: '/user', component: '../pages/user' },
       ]
     }
   ],
