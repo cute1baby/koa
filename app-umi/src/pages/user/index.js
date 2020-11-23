@@ -1,15 +1,80 @@
 import React from 'react';
-import styles from './index.less';
+import { Table, Tag } from 'antd';
+// import styles from './index.less';
+import { connect } from 'umi';
 
-export default () => (
-    <div style={{ textAlign: 'center' }}>
-      想要添加更多页面？请参考{' '}
-      <a href="https://umijs.org/guide/block.html" target="_blank" rel="noopener noreferrer">
-       切换分支测试
-  
-      </a>
-      。
-      <div className={"mb-m"}>666666</div>
-      <div className={styles.box}>666666</div>
-    </div>
-  );
+// const Index = ({users}) => {
+class Index extends React.Component {
+    constructor(props){
+        super(props)
+    }  
+    render(){
+        const columns = [
+            {
+              title: 'Name',
+              dataIndex: 'name',
+              key: 'name',
+              render: text => <a>{text}</a>
+            },
+            {
+              title: 'Age',
+              dataIndex: 'age',
+              key: 'age'
+            },
+            {
+              title: 'Address',
+              dataIndex: 'address',
+              key: 'address'
+            },
+            {
+              title: 'Tags',
+              key: 'tags',
+              dataIndex: 'tags',
+              render: tags => (
+                <>
+                  {tags.map(tag => {
+                    let color = tag.length > 5 ? 'geekblue' : 'green';
+                    if (tag === 'loser') {
+                      color = 'volcano';
+                    }
+                    return (
+                      <Tag color={color} key={tag}>
+                        {tag.toUpperCase()}
+                      </Tag>
+                    );
+                  })}
+                </>
+              ),
+            },
+            {
+              title: 'Action',
+              key: 'action',
+              render: (text, record) => (
+                <div size="middle">
+                  <a>Invite {record.name}</a>
+                  <a>Delete</a>
+                </div>
+              ),
+            },
+        ];
+        const {users} = this.props
+        // 返回值
+        return (
+            <div className="list-table">
+                <Table columns={columns} dataSource={users} />
+            </div>
+        )
+    }
+    
+}
+
+// connect
+const mapStateToProps = ({users}) => {
+    console.log(users)
+    return {
+        users
+    }
+}
+
+export default connect (mapStateToProps)(Index)
+// export default Index

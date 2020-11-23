@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Table, Radio, Divider } from 'antd';
+import { Table } from 'antd';
 import styles from './index.less';
 
 const Column = Table.Column;
