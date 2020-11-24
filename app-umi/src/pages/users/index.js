@@ -1,11 +1,12 @@
 import React from 'react';
 import { Table, Tag } from 'antd';
 // import styles from './index.less';
-import { connect } from 'umi';
+import { connect } from 'dva';
 
 // const Index = ({users}) => {
 class Index extends React.Component {
     constructor(props){
+        console.log('>>>>>', props)
         super(props)
     }  
     render(){
@@ -58,6 +59,7 @@ class Index extends React.Component {
             },
         ];
         const {users} = this.props
+        console.log('>>>11111>>', connect)
         // 返回值
         return (
             <div className="list-table">
@@ -68,13 +70,11 @@ class Index extends React.Component {
     
 }
 
-// connect
-const mapStateToProps = ({users}) => {
-    console.log(users)
+const mapStateToProps = (state) => {
     return {
-        users
+        users: state.users
     }
 }
 
-export default connect (mapStateToProps)(Index)
+export default connect(mapStateToProps)(Index)
 // export default Index

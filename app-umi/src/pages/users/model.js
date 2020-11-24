@@ -1,9 +1,7 @@
-import {Effect, ImmerReducer, Reducer, Subscription} from 'umi'
+// import {Effect, ImmerReducer, Reducer, Subscription} from 'umi'
 export default {
     namespace: 'users', // 表示在全局 state 上的 key
-    state: {
-
-    }, // 状态数据
+    state: {}, // 状态数据
     reducers: {
         save(state, action){
             const data = [
@@ -38,12 +36,12 @@ export default {
     subscriptions: {
         setup({ dispatch, history }) {
             history.listen(({ pathname }) => {
-              if (pathname === '/user') {
+              if (pathname === '/users') {
                 dispatch({
                   type: 'save',
                 });
               }
             });
-        },
-    }, // 订阅数据源
+        }
+    } // 订阅数据源
   };

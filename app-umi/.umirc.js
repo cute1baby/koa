@@ -9,7 +9,7 @@ export default {
       component: '../layouts/index',
       routes: [
         { path: '/', component: '../pages/home' },
-        { path: '/user', component: '../pages/user' },
+        { path: '/users', component: '../pages/users' },
       ]
     }
   ],
@@ -17,7 +17,9 @@ export default {
     // ref: https://umijs.org/plugin/umi-plugin-react.html
     ['umi-plugin-react', {
       antd: false,
-      dva: true,
+      dva: {
+        immer: true
+      },
       dynamicImport: false,
       title: 'app-umi',
       dll: false,
