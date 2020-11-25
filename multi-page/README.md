@@ -18,6 +18,7 @@ var path = require('path')
 var glob = require('glob')
 var HtmlWebpackPlugin = require('html-webpack-plugin')  //对每个页面单独打包生成一个新页面的插件
 var PAGE_PATH = path.resolve(__dirname, '../src/pages')
+vue多页应用：
 var merge = require('webpack-merge')
 
 //多入口配置
