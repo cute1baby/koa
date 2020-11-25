@@ -44,7 +44,6 @@ class Home extends React.Component {
         const { list } = this.state
         return (
             <div>
-                <p className={styles.title} >初始化一个table</p>
                 <Table 
                     className={styles.boxTable} 
                     rowKey="id" 

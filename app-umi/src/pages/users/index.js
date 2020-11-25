@@ -6,9 +6,29 @@ import { connect } from 'dva';
 // const Index = ({users}) => {
 class Index extends React.Component {
     constructor(props){
-        console.log('>>>>>', props)
         super(props)
-    }  
+        this.state = {
+            questionList: []
+        }
+    }
+    //加载数据
+    componentWillMount(){
+        this.getQuestionList()
+    }
+    getQuestionList(){
+        const { dispatch } = this.props;
+        dispatch({
+            type: "users/getQuestionList",
+            payload: {}
+        }).then(result => {
+            const data = result.data.data
+            if(data.resultTypeId === 1){
+                this.setState({
+                    questionList: data.list
+                })
+            }
+        });
+    }
     render(){
         const columns = [
             {
@@ -59,11 +79,14 @@ class Index extends React.Component {
             },
         ];
         const {users} = this.props
-        console.log('>>>11111>>', connect)
+        const {questionList} = this.state
         // 返回值
         return (
-            <div className="list-table">
-                <Table columns={columns} dataSource={users} />
+            <div className="list-table" >
+                {
+                    questionList.length && 
+                    <Table columns={columns} dataSource={questionList} />
+                }
             </div>
         )
     }

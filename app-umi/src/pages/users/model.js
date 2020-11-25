@@ -1,4 +1,6 @@
 // import {Effect, ImmerReducer, Reducer, Subscription} from 'umi'
+import * as services from './services';
+
 export default {
     namespace: 'users', // 表示在全局 state 上的 key
     state: {}, // 状态数据
@@ -31,7 +33,10 @@ export default {
         }
     }, // 管理同步方法，必须是纯函数
     effects: {
-
+        // 获取题目列表（异步操作，一般是接口请求）
+        *getQuestionList({ payload }, { call }){
+            return yield call(services.getQuestionList, payload);
+        }
     }, // 管理异步操作，采用了 generator 的相关概念
     subscriptions: {
         setup({ dispatch, history }) {
