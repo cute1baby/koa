@@ -1,5 +1,6 @@
 'use strict';
 // 引入配置文件
+var request = require('request');
 const config = require('../config')
 const {Wechat} = require('../tool/accessToken')
 const {Ticket} = require('../tool/ticket')
@@ -277,6 +278,61 @@ class HomeController extends Controller {
         noncestr,
         timestamp
     })
+  }
+
+  // 检测url是否被微信封了
+  async long2ShortUrl(){
+    const { ctx } = this;
+    const {domain} = ctx.request.body
+    console.log('domain>>>>>>', domain)
+    const tokenRes = await w.fetchAccessToken()
+    const {access_token} = tokenRes
+    const to_short_params = {
+        "access_token": access_token,
+        "action": "long2short",
+        "long_url": domain
+    }
+    const url = `https://api.weixin.qq.com/cgi-bin/shorturl?access_token=${access_token}`
+    const {data} = await axios({
+        method: 'POST',
+        url,
+        data: JSON.stringify(to_short_params)
+    })
+    if(!data.errcode){
+        const { short_url } = data
+        ctx.body = successRes(short_url)
+    }else{
+        ctx.body = failRes(data.errcode)
+    }
+  }
+
+  // 测试短链接是否有效
+  async testUrlIsValid(){
+    const { ctx } = this;
+    const {url} = ctx.request.body
+    try {
+        const res = await checkDomainBanned(url)
+        ctx.body = successRes(res)
+    } catch (error) {
+        ctx.body = failRes(error)
+    }
+
+    function checkDomainBanned(url) {
+        return new Promise(function (resolve, reject) {
+            return request(url, function(err, res, body) {
+                if (!err) {
+                    console.log('res.request.uri>>>>>>', res.request.uri)
+                    if (res && res.request && res.request.uri && res.request.uri.host.includes('weixin110.qq.com')) {
+                        resolve({ state: 1, msg: '封号了' });
+                    }else{
+                        resolve({ state: 0, msg: '一切正常' });
+                    }
+                }else{
+                    reject(err);
+                }
+            })
+        })
+    }
   }
 }
 

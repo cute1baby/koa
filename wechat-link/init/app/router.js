@@ -33,4 +33,10 @@ module.exports = app => {
 
     // 获取ticket的值
     router.get('/getBasicTicket', controller.home.getBasicTicket);
+
+    // 长链接换短连接，检测H5网址是否被微信封了
+    router.post('/long2ShortUrl', controller.home.long2ShortUrl);
+
+    // 测试短链接是否有效
+    router.post('/testUrlIsValid', controller.home.testUrlIsValid);
 };

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+.set-share{
+    font-size: 16px;
+    color: blueviolet;
+}
+.urls li{
+    font-size: 16px;
+    color: #333;
+    line-height: 2;
+}
+</style>
+<body>
+<div id="app">
+    <p class="set-share">测试下面网站是否被微信封了</p>
+    <hr>
+    <ul class="urls" v-if="textList.length">
+        <li v-for="(item, index) in textList" :key="index">
+            <span>{{item.name}}</span>
+            <span>是否正常运行：{{item.state?'正常':'被封'}}</span>
+        </li>
+    </ul>
+</div>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.8.0/axios.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.4.0/vue.min.js"></script>    
+<script>
+// const serverUrl = 'http://127.0.0.1:3005'
+const serverUrl = 'http://server.familyli.cn'
+// const url = 'http://wechat.familyli.cn/authBySilent.html'
+
+// 判断某个域名是否被封（https://www.zhihu.com/question/42101054）
+new Vue({
+    el: '#app',
+    data(){
+        return {
+            textList: [
+                {
+                    name: 'http://www.lanmaoketang.cn/files/liveCodeDirect/views/glq-1-glq.html?code=1202011180940516',
+                    state: true
+                },
+                {
+                    name: 'http://www.lanmaoketang.cn/files/liveCodeDirect/views/glq-gr-1-glq-gr.html?code=1202011180940516',
+                    state: true
+                },
+                {
+                    name: 'http://www.lanmaoketang.cn/files/liveCodeDirect/views/jdlq-1-jdlq.html?code=1202011180940516',
+                    state: true
+                },
+                {
+                    name: 'http://www.lanmaoketang.cn/files/liveCodeDirect/views/lq-1-lq.html?code=1202011180940516',
+                    state: true
+                },
+                {
+                    name: 'http://www.lanmaoketang.cn/files/liveCodeDirect/views/lq-gr-1-lq-gr.html?code=1202011180940516',
+                    state: true
+                }
+            ]
+            // textList: [
+            //     {
+            //         name: 'http://wechat.familyli.cn/authBySilent.html',
+            //         state: true
+            //     },
+            //     {
+            //         name: 'http://wechat.familyli.cn/jssdkbase.html',
+            //         state: true
+            //     },
+            //     {
+            //         name: 'http://wechat.familyli.cn/uploadFile.html',
+            //         state: true
+            //     }
+            // ]
+        }
+    },
+    created(){
+        const time = 1000 * 60 * 60;  //设置1小时，查一次
+        this.loopData()
+        setInterval(() => {
+            this.loopData()
+        }, time)
+        
+    },
+    methods: {
+        // 轮循数据
+        loopData(){
+            this.textList.forEach(item => {
+                const name = item.name
+                const shortUrl = localStorage.getItem(name);
+                if(shortUrl){
+                    this.testUrl(shortUrl, name)
+                }else{
+                    this.getShortUrl(name, (short, u) => {
+                        this.testUrl(short, u)
+                    })
+                }
+            })
+        },
+        // 获取短链接
+        getShortUrl(url, cb){
+            axios.post(serverUrl + '/long2ShortUrl', {
+                domain: url
+            })
+            .then(async res => {
+                console.log(res)
+                const data = res.data
+                if(!data.status){
+                    const shortUrl = data.data
+                    localStorage.setItem(url, shortUrl)
+                    cb && cb(shortUrl, url)
+                }
+            })
+        },
+        // 检测短链接是否可用
+        testUrl(shortUrl, url){
+            const { textList } = this
+            axios.post(serverUrl + '/testUrlIsValid', {
+                url: shortUrl
+            }).then(res => {
+                let list = []
+                const data = res.data
+                if(!data.status){
+                    if(!data.data.state){
+                        list = textList.map(item => {
+                            if(item.name === url){
+                                return {...item, state: true}
+                            }
+                            return item
+                        })
+                        console.log('网站运转正常')
+                    }else{
+                        list = textList.map(item => {
+                            if(item.name === url){
+                                return {...item, state: false}
+                            }
+                            return item
+                        })
+                        console.log('网站被封了')
+                    }
+                    this.textList = list
+                }
+            })
+        }
+    }
+})
+
+</script>
+</body>
+</html>
