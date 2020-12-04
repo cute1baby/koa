@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+class MyVue {
+    constructor(){
+        this.data = {
+            msg: 'hello world',
+            name: 'Jim',
+            age: 20
+        }
+    }
+}
+
+// 标准版
+function observe(data){
+    if(typeof data === 'object' && data !== null){
+        Object.keys(data).forEach(key => 
+            defineReactive(data, key, data[key], true)
+        )
+    }
+}
+
+function defineReactive(data, key, value, bool){
+    Object.defineProperty(data, key, {
+        configurable: false,
+        enumerable: bool,
+        get(){
+            return value
+        },
+        set(newVal){
+            value = newVal
+        }
+    })
+}
+
+function proxy(_this, data){
+    Object.keys(data).forEach(key => 
+        Object.defineProperty(_this, key, {
+            configurable: false,
+            enumerable: true,
+            get(){
+                return data[key]
+            },
+            set(newVal){
+                data[key] = newVal
+            }
+        })
+    )
+}
+
+// 数据代理
+const myV = new MyVue()
+proxy(myV, myV.data)
+
+// 响应式原理
+observe(myV.data)
+
+console.log(myV.msg)
+myV.age = 30
+console.log(myV.age)
+</script>
+</body>
+</html>
