@@ -3,27 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>判断微信网址是否被封</title>
 </head>
 <style>
+*{
+    margin: 0;
+    padding: 0;
+}
 .set-share{
     font-size: 16px;
     color: blueviolet;
+    margin-bottom: 30px;
 }
 .urls li{
     font-size: 16px;
     color: #333;
     line-height: 2;
+    padding: 12px 0;
+    border-bottom: 1px dashed #999;
+}
+.urls li:last-child{
+    border-bottom: none;
+}
+.urls li .isnormal{
+    padding: 3px 6px;
+    font-size: 14px;
+    color: #fff;
+    background: #06609a;
+    border-radius: 3px;
+}
+.urls li .iserror{
+    padding: 3px 6px;
+    font-size: 14px;
+    color: #fff;
+    background: #e15e5d;
+    border-radius: 3px;
 }
 </style>
 <body>
 <div id="app">
-    <p class="set-share">测试下面网站是否被微信封了</p>
-    <hr>
+    <p class="set-share">下面网站在微信浏览器运行情况：</p>
     <ul class="urls" v-if="textList.length">
         <li v-for="(item, index) in textList" :key="index">
             <span>{{item.name}}</span>
-            <span>是否正常运行：{{item.state?'正常':'被封'}}</span>
+            <p>是否正常运行：
+                <span v-if="item.state" class="isnormal">正常</span>
+                <span v-else class="iserror">被封</span>
+            </p>
         </li>
     </ul>
 </div>
