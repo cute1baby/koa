@@ -8,33 +8,35 @@
 <body>
 <script>
 class MyVue {
-    constructor(){
-        this.data = {
-            msg: 'hello world',
-            name: 'Jim',
-            age: 20
-        }
+    constructor(options){
+        this._data = options.data
+        // 数据代理
+        proxy(this, this._data)
+        // 响应式原理
+        observe(this._data, options.render)
     }
 }
 
 // 标准版
-function observe(data){
+function observe(data, cb){
     if(typeof data === 'object' && data !== null){
         Object.keys(data).forEach(key => 
-            defineReactive(data, key, data[key], true)
+            defineReactive(data, key, data[key], cb)
         )
     }
 }
 
-function defineReactive(data, key, value, bool){
+function defineReactive(data, key, value, cb){
     Object.defineProperty(data, key, {
         configurable: false,
-        enumerable: bool,
+        enumerable: true,
         get(){
+            /* 这部分是依赖收集的逻辑 */
             return value
         },
         set(newVal){
             value = newVal
+            cb && cb()  // 订阅者收到消息的回调
         }
     })
 }
@@ -55,13 +57,18 @@ function proxy(_this, data){
 }
 
 // 数据代理
-const myV = new MyVue()
-proxy(myV, myV.data)
-
-// 响应式原理
-observe(myV.data)
+const myV = new MyVue({
+    data: {
+        msg: 'hello world',
+        age: 20
+    },
+    render(){
+        console.log('数据修改之后执行的回调函数')
+    }
+})
 
 console.log(myV.msg)
+// 修改数据之后会执行render方法
 myV.age = 30
 console.log(myV.age)
 </script>

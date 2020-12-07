@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// Dep类
+class Dep {
+    static target   // 全局的一个Watcher
+    constructor(){
+        this.subs = []
+    }
+    addSub(sub){
+        this.subs.push(sub)
+    }
+    notify(){
+        const subs = this.subs
+        subs.forEach(sub => {
+            // sub是Watcher的实例
+            sub.update()
+        })
+    }
+}
+/*依赖收集完需要将Dep.target设为null，防止后面重复添加依赖。*/
+Dep.target = null
+
+
+// Watcher类
+class Watcher{
+    constructor(vm, cb){
+        this.vm = vm
+        this.cb = cb
+        
+        // 执行this.getter,就可以读取data.a.b.c的内容。parsePath有点类似getValueByPath方法
+        this.get = parsePath(expOrFn)
+        this.value = this.get()
+    }
+    // 获取老值的时候给Dep.target赋值
+	get() {
+		// 将观察者本身赋值给全局的target,只有被target标记过的才会进行依赖收集
+        Dep.target = this
+		const value = this.getter.call(this.vm, this.vm)
+		Dep.target = null;
+		return value;
+	}
+    update(){
+        this.cb.call(this.vm)
+    }
+}
+
+/*************下面是基础版响应式原理*************/
+
+class MyVue {
+    constructor(options){
+        this._data = options.data
+        // 数据代理
+        proxy(this, this._data)
+        // 响应式原理
+        observe(this._data)
+        // 实例化watcher
+        new Watcher(this, options.render)
+    }
+}
+
+// 标准版
+function observe(data){
+    if(typeof data === 'object' && data !== null){
+        Object.keys(data).forEach(key => 
+            defineReactive(data, key, data[key])
+        )
+    }
+}
+
+function defineReactive(data, key, value){
+    /*在闭包中存储一个dep*/
+    const dep = new Dep()
+
+    const getter = property && property.get
+    const setter = property && property.set
+
+    Object.defineProperty(data, key, {
+        configurable: false,
+        enumerable: true,
+        get(){
+            // const val = getter ? getter.call(data) : value
+            /* 这部分是依赖收集的逻辑 */
+            if(Dep.target){
+                dep.addSub(Dep.target)
+            }
+            return value
+        },
+        set(newVal){
+            if(value === newVal){
+                return
+            }
+            value = newVal
+            /*只有在dep.subs中的函数才会触发*/
+            dep.notify();
+        }
+    })
+    // Dep.target重置
+    Dep.target = null
+}
+
+function proxy(_this, data){
+    Object.keys(data).forEach(key => 
+        Object.defineProperty(_this, key, {
+            configurable: false,
+            enumerable: true,
+            get(){
+                return data[key]
+            },
+            set(newVal){
+                data[key] = newVal
+            }
+        })
+    )
+}
+
+
+// 测试数据
+const myV = new MyVue({
+    data: {
+        msg: 'hello world',
+        age: 20
+    },
+    render(){
+        console.log('数据修改之后执行的回调函数')
+    }
+})
+
+console.log(myV.msg)
+// 修改数据之后会执行render方法
+myV.age = 30
+// console.log(myV.age)
+</script>
+</body>
+</html>

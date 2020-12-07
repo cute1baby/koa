@@ -24,6 +24,7 @@ function observe(data, cb){
         Object.keys(data).forEach(key => {
             // 每一项是数组
             if(Array.isArray(data[key])){
+                
                 data[key].forEach(sub => {
                     observe(sub, cb)
                 })

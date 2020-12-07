@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+class Vue{
+    constructor(){
+        // 保存各种事件
+        this._events = Object.create(null)
+    }
+    // 绑定事件
+    $on(event, fn){
+        (this._events[event] || (this._events[event] = [])).push(fn)
+        return this
+    }
+    // 绑定一次就失效
+    $once(event, fn){
+        function once(){
+            this.$off(event, once)
+            // 修改this的指向问题
+            fn.apply(this, arguments)
+        }
+        this.$on(event, once)
+    }
+    $off(event, fn){
+        if(!arguments.length){
+            this._events = Object.create(null)
+            return this
+        }
+        if(arguments.length=== 1){
+            this._events[event] = []
+            return this
+        }
+        const index = this._events[event].indexOf(fn)
+        this._events[event].splice(index, 1)
+        return this
+    }
+    $emit(event){
+        const args = [].slice.call(arguments, 1)
+        const arr = this._events[event]
+        arr.forEach(ele => {
+            ele.apply(this, args)
+        })
+    }
+}
+
+
+const v = new Vue()
+const fn1 = (a, b) => {console.log(a + b)}
+const fn2 = (a, b) => {console.log(33)}
+v.$on('handleChange', fn1)
+v.$on('handleChange', fn2)
+v.$off('handleChange', fn2)
+
+v.$emit('handleChange', 2, 3)
+</script>
+</body>
+</html>
