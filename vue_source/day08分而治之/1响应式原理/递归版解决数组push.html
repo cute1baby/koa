@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>响应式原理</title>
+</head>
+<body>
+<script>
+/*
+ *  需要重写的数组方法 OAR 是 overrideArrayMethod 的缩写
+ */
+const OAM = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse'];
+
+class MyVue {
+    constructor(options){
+        this._data = options.data
+        // 数据代理
+        this.proxy(this, this._data)
+        // 响应式原理
+        this.observe(this._data, options.render)
+    }
+    // 考虑到递归，对象多层的情况
+    observe(data, cb){
+        // 考虑到数组递归时，是基础数据类型的情况（不让它走这个逻辑）
+        if(typeof data === 'object' && data !== null){
+            Object.keys(data).forEach(key => {
+                // 每一项是数组
+                if(Array.isArray(data[key])){
+                    // 数组
+                    this.overrideArrayProto(data[key]);
+                    // data[key].forEach(sub => {
+                    //     this.observe(sub, cb)
+                    // })
+                }else{
+                    // 普通情况
+                    this.defineReactive(data, key, data[key], cb)
+                }
+                
+            })
+            
+        }
+    }
+    defineReactive(data, key, value, cb){
+        // 本身要做响应式，内部属性也要做响应式
+        if(typeof data[key] === 'object' && data[key] !== null){
+            this.observe(data[key], cb)  
+        }
+        Object.defineProperty(data, key, {
+            configurable: false,
+            enumerable: true,
+            get(){
+                /* 这部分是依赖收集的逻辑 */
+                return value
+            },
+            set(newVal){
+                value = newVal
+                cb && cb()  // 订阅者收到消息的回调
+            }
+        })
+    }
+    proxy(_this, data){
+        Object.keys(data).forEach(key => 
+            Object.defineProperty(_this, key, {
+                configurable: false,
+                enumerable: true,
+                get(){
+                    return data[key]
+                },
+                set(newVal){
+                    data[key] = newVal
+                }
+            })
+        )
+    }
+    // 兼容push方法的响应式
+    overrideArrayProto(list){
+        let originalProto = Array.prototype,
+        // 通过 Object.create 方法创建一个对象，该对象的原型就是Array.prototype
+        overrideProto = Object.create(Array.prototype),
+        self = this,
+        _list = list,
+        result;
+        OAM.forEach(method => {
+            Object.defineProperty(overrideProto, method, {
+                configurable: false,
+                enumerable: true,
+                writable: true,
+                value(){
+                    let oldArray = this.slice(0);
+
+                    var arg = [].slice.apply(arguments);
+                    // 调用原始 原型 的数组方法
+                    result = originalProto[method].apply(this, arg);
+                    // 对新的数组进行监测
+                    self.observe(this);
+                    // 执行回调
+                    // self.$callback(this, oldArray);
+
+                    return result;
+                }
+            })
+        })
+        // 最后 让该数组实例的 __proto__ 属性指向 假的原型 overrideProto
+        list.__proto__ = overrideProto;
+    }
+
+}
+
+// 数据代理
+const myV = new MyVue({
+    data: {
+        msg: 'hello world',
+        userInfo: {
+            name: 'Jim',
+            age: 20
+        },
+        list: [
+            { hobby: '篮球' }
+        ]
+    },
+    render(){
+        console.log('数据修改之后执行的回调函数')
+    }
+})
+
+console.log(myV.list)
+myV.userInfo.age = 30
+console.log(myV.userInfo)
+myV.list.push({name: 'lizhong'})
+console.log(myV.list)
+</script>
+</body>
+</html>
