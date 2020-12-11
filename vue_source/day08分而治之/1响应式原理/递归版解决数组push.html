@@ -15,6 +15,7 @@ const OAM = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse'];
 class MyVue {
     constructor(options){
         this._data = options.data
+        this._render = options.render
         // 数据代理
         this.proxy(this, this._data)
         // 响应式原理
@@ -73,6 +74,7 @@ class MyVue {
             })
         )
     }
+
     // 兼容push方法的响应式
     overrideArrayProto(list){
         let originalProto = Array.prototype,
@@ -94,8 +96,9 @@ class MyVue {
                     result = originalProto[method].apply(this, arg);
                     // 对新的数组进行监测
                     self.observe(this);
+                    
                     // 执行回调
-                    // self.$callback(this, oldArray);
+                    self._render(this, oldArray);
 
                     return result;
                 }
