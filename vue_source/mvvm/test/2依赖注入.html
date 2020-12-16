@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+.childTs{
+    color: red;cursor: pointer;
+}
+</style>
+<body>
+<div id="app">
+    <p>{{message}}</p>
+    <child></child>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.5.4/vue.min.js"></script>
+<script>
+const vm = new Vue({
+    el: '#app', 
+    data(){
+        return {
+            message: '第一个实例',
+            childMsg: '子组件信息'
+        }
+    },
+    provide() {
+        return {
+            childMsg: this.childMsg,
+            getData: this.getData
+        }
+    },
+    methods: {
+        getData(){
+            console.log('获取父组件的数据')
+        }
+    },
+    components: {
+        child: {
+            template: '<span class="childTs" @click="getData">{{childMsg}}</span>',
+            inject: ['childMsg', 'getData']
+        }
+    }
+})
+console.log('>>>>vm>>', vm)
+</script>
+</body>
+</html>

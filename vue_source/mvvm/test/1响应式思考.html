@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+/**
+ * 证明一个事
+ * 在阅读响应式原理代码时，不知道为什么dep能保存在内存中。现在写一个例子看出结果了
+ * 
+ * 就是每一次递归执行defineReactive时，都会将当前的dep存储到内存中。所以在执行setter的时候，
+ * 遍历dep.subs就能准确的找到当前修改的那个了。
+*/
+
+const obj = {
+    myInfo: {
+        base: {
+            name: 'lizhong',
+            age: 20
+        },
+        hobby: {
+            play: [
+                {
+                    name: 'foot'
+                }, {
+                    name: 'basket'
+                }
+            ],
+            love: 'swim'
+        }
+    }
+}
+
+function Dep(){
+    this.subs = []
+    this.nums = Math.floor(Math.random() * 100)
+}
+
+function observe(data){
+    const keys = Object.keys(data)
+    keys.forEach(key => {
+        if(Array.isArray(data[key])){
+            const itemArr = data[key]
+            itemArr.forEach(sub => {
+                observe(sub)
+            })
+        }else{
+            defineReactive(data, key, data[key])
+        }
+    })
+}
+
+function defineReactive(obj, key, value){
+    if(typeof value === 'object' && value !== null){
+        observe(value)
+    }
+    const dep = new Dep()
+    Object.defineProperty(obj, key, {
+        configurable: true,
+        enumerable: true,
+        get(){
+            console.log(`执行getter方法，value=${value}，dep=`, dep)
+            return value
+        },
+        set(newVal){
+            console.log(`执行setter方法，newVal=${newVal}，，dep=`, dep)
+            value = newVal
+            dep.update
+        }
+    })
+}
+
+// 响应式
+observe(obj)
+obj.myInfo.base.name = 'pp'
+</script>
+</body>
+</html>
