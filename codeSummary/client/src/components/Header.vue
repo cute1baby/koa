@@ -35,7 +35,8 @@ export default {
         return {
             currentNav: 0,
             navList: [
-                {id: 1, name: '前端', path: '/front'}
+                {id: 1, name: '前端', path: '/front'},
+                {id: 2, name: '生活', path: '/life'}
             ]
         }
     },
@@ -91,11 +92,11 @@ export default {
         .header-nav{
             li{
                 line-height: 60px;
-                font-size: 18px;
-                color: #757575;
-                padding: 0 12px;
+                font-size: 16px;
+                color: #1F2D3D;
+                padding: 0 18px;
                 cursor: pointer;
-                &.navActive{
+                &:hover, &.navActive{
                     color: #50a1ff;
                 }
             }
@@ -121,10 +122,10 @@ export default {
                     border-color: #50a1ff;
                     box-shadow: 0 1px 5px rgba(80,161,255,.1);
                 }
-                &::-webkit-input-placeholder{color: rgba(117,117,117,.5);}    /* 使用webkit内核的浏览器 */
-                &:-moz-placeholder{color: rgba(117,117,117,.5);}                  /* Firefox版本4-18 */
-                &::-moz-placeholder{color: rgba(117,117,117,.5);}                  /* Firefox版本19+ */
-                &:-ms-input-placeholder{color: rgba(117,117,117,.5);} 
+                &::-webkit-input-placeholder{color: #757575;}    /* 使用webkit内核的浏览器 */
+                &:-moz-placeholder{color: #757575;}                  /* Firefox版本4-18 */
+                &::-moz-placeholder{color: #757575;}                  /* Firefox版本19+ */
+                &:-ms-input-placeholder{color: #757575;} 
             }
             .btn-search{
                 position: absolute;
@@ -143,7 +144,7 @@ export default {
                 cursor: pointer;
                 .iconfont{
                     font-size: 16px;
-                    color: #757575;
+                    color: #1F2D3D;
                     &:hover{
                         color: #50a1ff;
                     }
@@ -154,8 +155,8 @@ export default {
             display: none;
         }
         .concat{
-            font-size: 18px;
-            color: #757575;
+            font-size: 16px;
+            color: #1F2D3D;
             cursor: pointer;
             position: relative;
             .wechatImg{
@@ -171,6 +172,7 @@ export default {
                     width: 140px;
                     height: 140px;
                     display: block;
+                    z-index: 100;
                 }
             }
         }

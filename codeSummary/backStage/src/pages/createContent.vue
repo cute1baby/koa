@@ -38,7 +38,7 @@
             </el-form-item>
             
             <!-- 上传图片 -->
-            <el-form-item class="qrcode_img" label="二维码图片">
+            <el-form-item class="qrcode_img" label="图片资源">
                 <input 
                     style="display: none;"
                     class="uploadIpt df dfc"

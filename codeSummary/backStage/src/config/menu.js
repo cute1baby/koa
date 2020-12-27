@@ -21,7 +21,7 @@ const homeList = [
         path: 'reply',
         baseUrl: 'home',
         belongPathList: ['/home/reply'],
-        name: '自动回复',
+        name: '生活资料',
         meta: { requireAuth: true },
         component: AutoReply
     },
@@ -29,7 +29,7 @@ const homeList = [
         path: 'menu',
         baseUrl: 'home',
         belongPathList: ['/home/menu'],
-        name: '自定义菜单',
+        name: '————',
         meta: { requireAuth: true },
         component: CustomMenu
     },
@@ -37,7 +37,7 @@ const homeList = [
         path: 'template',
         baseUrl: 'home',
         belongPathList: ['/home/template'],
-        name: '模板消息',
+        name: '————',
         meta: { requireAuth: true },
         component: TemplateInfo
     },

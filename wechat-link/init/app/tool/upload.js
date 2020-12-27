@@ -12,9 +12,10 @@ var bucket = "cdn-self";
 
 
 //自定义凭证有效期（示例2小时，expires单位为秒，为上传凭证的有效时间）
+// 我设置了过期时间之后，过一段时间反而不能用，于是我把expires属性去掉了
 var options = {
-    scope: bucket,
-    expires: 7200
+    scope: bucket
+    // expires: 7200
 };
 var putPolicy = new qiniu.rs.PutPolicy(options);
 var uploadToken = putPolicy.uploadToken(mac);

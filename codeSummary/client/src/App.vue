@@ -2,25 +2,41 @@
   <div id="app">
     <!-- <img src="./assets/logo.png"> -->
     <Header />
-    <router-view/>
+    <div class="appCon">
+        <router-view/>
+    </div>
+    <Footer />
   </div>
 </template>
 
 <script>
 const Header = () => import('@/components/Header')
+const Footer = () => import('@/components/Footer')
 export default {
     name: 'App',
     components: {
-        Header
+        Header,
+        Footer
     }
 }
 </script>
 
 <style>
+html,body{
+    width: 100%;
+    height: 100%;
+    background: #f8fafc;
+}
 #app {
-  font-family: Microsoft YaHei,Heiti SC,tahoma,arial,Hiragino Sans GB,"\5B8B\4F53",sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    width: 100%;
+    height: 100%;
+    font-family: Dosis,Open Sans,pingfang SC,helvetica neue,arial,hiragino sans gb,microsoft yahei ui,microsoft yahei,simsun,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.appCon{
+    padding-bottom: 80px;
+    width: 100%;
 }
 /* @media (max-width: 768px){
     .app-header .header-main{

@@ -245,6 +245,7 @@ class HomeController extends Controller {
     const { ctx } = this;
     const fileName = ctx.request.body
     console.log('bodyVal===', fileName)
+    // 获取token
     console.log('uploadToken>>>>>>', uploadToken)
     ctx.body = successRes(uploadToken)
   }
