@@ -21,17 +21,21 @@
             <el-form-item label="链接地址" prop="address">
                 <el-input v-model="ruleForm.address" placeholder="填写链接地址"></el-input>
             </el-form-item>
-            <el-form-item label="所属类型" prop="belongType">
+            <el-form-item label="所属类型" prop="belongTypeId">
                 <div class="typeSelect df dfaic">
-                    <span class="add" @click="handleModalChange">
+                    <span class="add" @click="routerPath('/home/addArtType')">
                         <i class="iconfont">&#xe618;</i>
                     </span>
-                    <el-select class="df1" v-model="ruleForm.belongType" placeholder="填写所属类型">
+                    <el-select class="df1" 
+                        filterable
+                        clearable
+                        v-model="ruleForm.belongTypeId" 
+                        placeholder="选择所属类型">
                         <el-option
                             v-for="item in typeList"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
+                            :key="item.typeId"
+                            :label="item.title"
+                            :value="item.typeId">
                         </el-option>
                     </el-select>
                 </div>
@@ -65,7 +69,6 @@
                             status="success"></el-progress>
                     </div>
                 </div>
-                <span class="img-upload-tip" v-if="imgUploadTip">请上传图片</span>
             </el-form-item>
             <div class="df dfjcc">
                 <el-button 
@@ -76,19 +79,6 @@
             </div>
         </el-form>
 
-        <!-- 浮窗 拷贝训练营 -->
-        <el-dialog 
-            class="typeDialog"
-            title="添加类型" 
-            :visible.sync="typeVisible"
-            top="4vh"
-            width="400px" 
-            append-to-body >
-                <el-input v-model="addType" maxlength='12' placeholder="添加类型"></el-input>
-                <p class="df dfjend">
-                    <el-button type="primary" class="subType" @click="saveType">提交</el-button>
-                </p>
-        </el-dialog>
     </div>
 </template>
 
@@ -96,6 +86,13 @@
 import {hostAddress} from '@/config/index.js'
 import { uploadPic, uploadVideo } from '@/utils/upload.js'
 import axios from '@/utils/fetch'
+const ruleFormClone = {
+    resourceTitle: '',
+    resourceDesc: '',
+    address: '',
+    belongTypeId: '',
+    resourceImg: ''  //二维码图片
+}
 export default {
     data(){
         const validateResourceTitle = (rule, value, callback) => {
@@ -122,21 +119,12 @@ export default {
         return {
             isLoading: false,
             isCreate: true,
-            imgUploadTip: false,  //上传图片的提示
             progressRate: 0, //图片上传进度
             currentId: '',
             typeList: [
                 { value: '选项1', label: '黄金糕' }
             ],
-            typeVisible: false,
-            addType: '',  // 添加类型
-            ruleForm: {
-                resourceTitle: '',
-                resourceDesc: '',
-                address: '',
-                belongType: '',
-                resourceImg: ''  //二维码图片
-            },
+            ruleForm: JSON.parse(JSON.stringify(ruleFormClone)),
             rules: {
                 resourceTitle: [
                     { validator: validateResourceTitle, trigger: 'blur' }
@@ -159,10 +147,26 @@ export default {
             this.isCreate = false
             this.ruleForm = {...query}
         }
+        this.findTypeList()
     },
     methods: {
-        handleModalChange(){
-            this.typeVisible = !this.typeVisible
+        findTypeList(){
+            const {pageNum, pageSize} = this
+            axios.get('/qianduan/getArticleTypeList', {
+                params: {
+                    pageNum: 1, 
+                    pageSize: 100, 
+                    typeName: ''
+                }
+            }).then(res => {
+                const {status, data} = res.data
+                if(!status){
+                    const {counts, list} = data
+                    this.typeList = list
+                }
+            }).catch(err => {
+                console.log('获取类型列表接口出现问题：' + err)
+            })
         },
         fileToUpload(){
             const uploadIpt = document.querySelector('.uploadIpt')
@@ -184,11 +188,6 @@ export default {
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    if(!this.ruleForm.resourceImg){
-                        this.imgUploadTip = true
-                        return
-                    }
-                    this.imgUploadTip = false
                     this.submitData()
                 } else {
                     console.log('提交参数错误');
@@ -200,56 +199,35 @@ export default {
             this.$router.push({path, query})
         },
         submitData(){
-            console.log('提交数据')
-            // const that = this
-            // const {
-            //     resourceTitle, 
-            //     resourceDesc, 
-            //     address,
-            //     belongType,
-            //     resourceImg
-            // } = this.ruleForm;
-            // const resetForm = {
-            //     resourceTitle: '',
-            //     resourceDesc: '',
-            //     address: '',
-            //     belongType: '',
-            //     resourceImg: ''
-            // }
-            // const id = this.currentId
-            // if(this.isLoading){
-            //     return;
-            // }
-            // this.isLoading = true
-            // axios.post(hostAddress + '/wechat/wechat.info/save', {
-            //     id,
-            //     resourceTitle: resourceTitle.trim(),
-            //     resourceDesc: resourceDesc.trim(),
-            //     address: address.trim(),
-            //     belongType: belongType.trim(),
-            //     resourceImg
-            // })
-            // .then(function (res) {
-            //     const data = res.data;
-            //     if(res.status === 200){
-            //         that.isLoading = false
-            //         that.$message({
-            //             type: 'success',
-            //             message: '保存成功'
-            //         })
-            //         setTimeout(() => {
-            //             that.routerPath('/home/manage')
-            //         }, 500)
-            //     }
-            // })
-            // .catch(function (error) {
-            //     console.log('新增或修改公众号信息出错：' + error);
-            // })
+            const { ruleForm, currentId } = this
+            const {
+                resourceTitle,
+                resourceDesc,
+                address,
+                belongTypeId,
+                resourceImg
+            } = ruleForm
+            axios.post('/qianduan/addArticleData', {
+                articleId: currentId,
+                title: resourceTitle,
+                desc: resourceDesc,
+                address,
+                typeId: belongTypeId,
+                picLink: resourceImg
+            }).then(res => {
+                const {status} = res.data
+                if(!status){
+                    this.ruleForm = ruleFormClone
+                    this.$message({
+                        type: 'success',
+                        message: '文章添加成功'
+                    })
+                }
+            }).catch(err => {
+                console.log('文章（视频）接口出现问题：' + err)
+            })
         },
-        // 保存类型
-        saveType(){
-            console.log('保存类型>>>>>')
-        }
+        
     }
 }
 </script>
@@ -332,22 +310,6 @@ export default {
         font-size: 12px;
     }
     
-}
-
-.typeDialog{
-    .subType{
-        margin-top: 24px;
-    }
-}
-
-// 提交按钮
-.subType, .submit-btn{
-    background: #06609A;
-    border-color: #06609A;
-    &:hover{
-        background: #097dc7;
-        border-color: #097dc7;
-    }
 }
 
 </style>

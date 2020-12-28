@@ -1,15 +1,14 @@
 <template>
 <div>
-    <h3 class="title df dfaic dfjbw">
-        前端文章（视频）管理
+    <h3 class="title df dfjbw">
+        前端文章（视频）类型管理
         <div class="df dfaic">
-            <span class="typeList" @click="routerPath('/home/addArtType')">查看类型列表</span>
-            <span class="newAdd add-btn" @click="routerPath('/home/wechat/new')">新增数据</span>
+            <span class="back" @click="$router.back()">返回上一步</span>
+            <span class="newAdd add-btn" @click="handleModalChange">新增类型</span>
         </div>
     </h3>
-    <!-- 查询 -->
     <div class="searchDiv df dfjend">
-        <el-input class="searchIpt" v-model="articleName" maxlength='12' placeholder="输入文章标题"></el-input>
+        <el-input class="searchIpt" v-model="typeName" maxlength='12' placeholder="输入类型标题"></el-input>
         <el-button type="primary" class="submit-btn" @click="searchData">搜索</el-button>
     </div>
     <!-- 表格 -->
@@ -21,46 +20,18 @@
             style="width: 100%"
         >
             <el-table-column
-                label="资源标题"
+                label="序号"
+                width="80"
             >
                 <template slot-scope="scope">
-                    <span class="code_base">{{ scope.row.title}}</span>
+                    <span class="code_base">{{ Number(scope.row.index) + 1}}</span>
                 </template>
             </el-table-column>
             <el-table-column
-                label="资源描述"
+                label="标题"
             >
                 <template slot-scope="scope">
-                    <span class="code_base">{{ scope.row.desc || '-'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column
-                label="链接地址"
-                width="180"
-            >
-                <template slot-scope="scope">
-                    <span class="code_base">{{ scope.row.address || '-'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column
-                label="所属类型"
-            >
-                <template slot-scope="scope">
-                    <span class="typeTag">{{ scope.row.typeIdName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column
-                label="资源图片"
-                width="140"
-            >
-                <template slot-scope="scope">
-                    <el-image 
-                        class="code_img"
-                        style="width: 100px; height: 100px"
-                        :src="scope.row.picLink"
-                        :preview-src-list="[scope.row.picLink]"
-                    >
-                    </el-image>
+                    <span class="code_base">{{ scope.row.title || '-'}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -74,14 +45,14 @@
             <el-table-column
                 label="操作"
                 fixed="right"
-                width="100"
+                width="120"
             >
                 <template slot-scope="scope">
                     <div class="df dfc">
                         <el-button
-                            class="btn_details"
-                            @click="handleDetails(scope.row)"
-                        >编辑</el-button>
+                            class="delete-btn"
+                            @click="handleDelete(scope.row)"
+                        >删除</el-button>
                     </div>
                 </template>
             </el-table-column>
@@ -103,6 +74,20 @@
         </div>
         
     </div>
+
+    <!-- 浮窗 新增类型 -->
+    <el-dialog 
+        class="typeDialog"
+        title="添加类型" 
+        :visible.sync="typeVisible"
+        top="4vh"
+        width="400px" 
+        append-to-body >
+            <el-input v-model="addTypeTitle" maxlength='12' placeholder="添加类型"></el-input>
+            <p class="df dfjend">
+                <el-button type="primary" class="submit-btn" @click="saveType">提交</el-button>
+            </p>
+    </el-dialog>
 </div>
 
 </template>
@@ -115,8 +100,19 @@ export default {
     data(){
         return {
             loading: false,
-            tableData: [],
-            articleName: '',  //文章名称
+            typeVisible: false,
+            addTypeTitle: '',  // 添加类型标题
+            tableData: [
+                {
+                    id: 1,
+                    resourceTitle: '资源标题',
+                    resourceDesc: '随便写点东西描述，随便写点东西描述',
+                    address: 'http://www.baidu.com',
+                    belongType: 1,
+                    resourceImg: ''
+                }
+            ],
+            typeName: '',  // 类型名称
             pageNum: 1, // 当前页数
             pageSize: 20, // 每页显示条目个数
             total: 0, // 总条目数
@@ -126,35 +122,51 @@ export default {
         this.initTable()
     },
     methods: {
-        routerPath(path, query){
-            this.$router.push({path, query})
+        handleModalChange(){
+            this.typeVisible = !this.typeVisible
         },
         formatTimer(time){
             return moment(time).format("YYYY年MM月DD日 HH:mm:ss")
+        },
+        
+        handleDelete(){
+            console.log('删除》》》')
         },
         searchData(){
             this.pageNum = 1;
             this.initTable()
         },
-        handleDetails(item){
-            // 跳转到编辑
-            const query = {
-                resourceTitle: item.title || '',
-                resourceDesc: item.desc || '',
-                address: item.address || '',
-                belongTypeId: item.typeId || '',
-                resourceImg: item.picLink || ''
+        // 添加类型
+        saveType(){
+            const { addTypeTitle } = this
+            if(!addTypeTitle){
+                return this.$message('请输入类型标题')
             }
-            this.routerPath(`/home/wechat/${item.articleId}`, query)
+            axios.post('/qianduan/addArticleTypes', {
+                title: addTypeTitle
+            }).then(res => {
+                const {status} = res.data
+                if(!status){
+                    this.addTypeTitle = ''
+                    this.handleModalChange()
+                    this.initTable()
+                    this.$message({
+                        type: 'success',
+                        message: '类型添加成功'
+                    })
+                }
+            }).catch(err => {
+                console.log('新增文件（视频）类型接口出现问题：' + err)
+            })
         },
         initTable(){
-            const {pageNum, pageSize, articleName} = this
+            const {pageNum, pageSize, typeName} = this
             this.loading = true
-            axios.get('/qianduan/getArticleList', {
+            axios.get('/qianduan/getArticleTypeList', {
                 params: {
                     pageNum, 
                     pageSize, 
-                    articleName
+                    typeName
                 }
             }).then(res => {
                 const {status, data} = res.data
@@ -172,10 +184,11 @@ export default {
             }).catch(err => {
                 console.log('获取类型列表接口出现问题：' + err)
             })
-        },        
+        },
         // 分页切换
-        handleCurrentChange(){
-            console.log('分页切换')
+        handleCurrentChange(val){
+            this.pageNum = val;
+            this.initTable();
         }
     }
 }
@@ -187,11 +200,9 @@ export default {
     font-weight: bold;
     color: #111C2A;
     margin: 10px 0 20px;
-    .typeList{
+    .back{
         font-size: 14px;
         color: #06609A;
-        padding: 6px 10px;
-        border-radius: 4px;
         cursor: pointer;
     }
     .newAdd{
@@ -251,26 +262,6 @@ export default {
                             color: #111C2A;
                             line-height: 1.2;
                         }
-                        .typeTag{
-                            background: #FF9759;
-                            font-size: 14px;
-                            padding: 6px 8px;
-                            border-radius: 4px;
-                            color: #fff;
-                        }
-                        .btn_details{
-                            width: 52px;
-                            height: 36px;
-                            background: #06609A;
-                            border-color: #06609A;
-                            font-size: 14px;
-                            color: #fff;
-                            padding: 0;
-                            &:hover{
-                                border-color: #03578e;
-                                background: #03578e;
-                            }
-                        }
                     }
                 }
                 &:last-child{
@@ -285,4 +276,11 @@ export default {
         }
     }
 }
+
+.typeDialog{
+    .submit-btn{
+        margin-top: 24px;
+    }
+}
+
 </style>

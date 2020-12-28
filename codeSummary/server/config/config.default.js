@@ -14,6 +14,21 @@ module.exports = appInfo => {
 
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1608781675479_2528';
+    // 设置安全请求的方式
+    config.security = {
+        csrf: {
+            enable: false,
+        },
+        domainWhiteList: ["http://localhost:8080"], //白名单
+    };
+
+    // 设置mongoose配置
+    config.mongoose = {
+        url: process.env.EGG_MONGODB_URL || 'mongodb://127.0.0.1:27017/qianduan',
+        options: {
+            
+        },
+    };
 
   // add your middleware config here
   config.middleware = [];

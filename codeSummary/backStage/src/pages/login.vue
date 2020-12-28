@@ -94,42 +94,45 @@ export default {
             });
         },
         login() {
-            const {userName, pass} = this.ruleForm;
+            // const {userName, pass} = this.ruleForm;
             const that = this
-            const resetForm = {
-                userName: '',
-                pass: ''
-            }
-            axios.post(hostAddress + '/wechat/auth/login', {
-                userName: userName.trim(),
-                password: pass.trim()
-            })
-            .then(function (res) {
-                const data = res.data;
-                if(res.status === ERR_OK){
-                    if(!data.code){
-                        const token = data.data.token;
-                        const name = data.data.real_name;
-                        that.ruleForm = resetForm
-                        that.$message({
-                            message: '登录成功',
-                            type: 'success'
-                        });
-                        that.SET_USERINFO({name})
-                        // 存储七天  domain: '.ichazuo.cn'
-                        // Cookies.set('LOGINKEY', token, { expires: 7 })
-                        // Cookies.set('userName', name, { expires: 7 })
-                        Cookies.set('LOGINKEY', token, { expires: 7 })
-                        Cookies.set('userName', name, { expires: 7 })
-                        that.$router.push('/home');
-                    }
-                }
+            // const resetForm = {
+            //     userName: '',
+            //     pass: ''
+            // }
+            // axios.post(hostAddress + '/wechat/auth/login', {
+            //     userName: userName.trim(),
+            //     password: pass.trim()
+            // })
+            // .then(function (res) {
+            //     const data = res.data;
+            //     if(res.status === ERR_OK){
+            //         if(!data.code){
+            //             const token = data.data.token;
+            //             const name = data.data.real_name;
+            //             that.ruleForm = resetForm
+            //             that.$message({
+            //                 message: '登录成功',
+            //                 type: 'success'
+            //             });
+            //             that.SET_USERINFO({name})
+            //             Cookies.set('LOGINKEY', token, { expires: 7 })
+            //             Cookies.set('userName', name, { expires: 7 })
+            //             that.$router.push('/home');
+            //         }
+            //     }
                 
-            })
-            .catch(function (error) {
-                console.log(error);
+            // })
+            // .catch(function (error) {
+            //     console.log(error);
+            // });
+            that.$message({
+                message: '登录成功',
+                type: 'success'
             });
-            
+            Cookies.set('LOGINKEY', 'agent_haoduoke', { expires: 7 })
+            Cookies.set('userName', '李钟', { expires: 7 })
+            that.$router.push('/home');
         }
     }
 }

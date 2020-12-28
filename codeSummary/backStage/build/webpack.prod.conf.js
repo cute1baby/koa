@@ -115,7 +115,13 @@ const webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    
+    //解决moment打包的时候把所有的语言都打包进去的问题
+    new webpack.ContextReplacementPlugin(
+        /moment[\\\/]locale$/,
+        /^\.\/(zh-cn)$/
+    )
   ]
 })
 
