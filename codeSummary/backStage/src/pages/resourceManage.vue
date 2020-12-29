@@ -254,7 +254,7 @@ export default {
                         .typeTag{
                             background: #FF9759;
                             font-size: 14px;
-                            padding: 6px 8px;
+                            padding: 2px 8px;
                             border-radius: 4px;
                             color: #fff;
                         }

@@ -9,7 +9,7 @@
             />
         </p>
         <ul class="header-nav df dfaic df1">
-            <li :class="currentNav===nav.id?'navActive':''" 
+            <li :class="nav.belongList.includes(currentPath)?'navActive':''" 
                 v-for="nav in navList" :key="nav.id"
                 @click="changeNav(nav)"
             >{{nav.name}}</li>
@@ -33,10 +33,10 @@
 export default {
     data(){
         return {
-            currentNav: 0,
+            currentPath: '',
             navList: [
-                {id: 1, name: '前端', path: '/front'},
-                {id: 2, name: '生活', path: '/life'}
+                {id: 1, name: '前端', path: '/front', belongList:['/front', '/frontDetails']},
+                {id: 2, name: '生活', path: '/life', belongList:[] }
             ]
         }
     },
@@ -45,12 +45,12 @@ export default {
     },
     methods: {
         changeNav(nav){
-            this.currentNav = nav.id
+            this.currentPath = nav.path
             this.toPath(nav.path)
         },
         toHome(){
             const { path } = this.$route
-            this.currentNav = 0
+            this.currentPath = ''
             if(path !== '/'){
                 this.toPath('/')
             }

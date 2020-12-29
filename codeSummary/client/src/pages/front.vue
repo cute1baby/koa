@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="ul">
     <h1>{{ msg }}</h1>
     <h2>前端</h2>
   </div>
