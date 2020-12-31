@@ -33,6 +33,26 @@ class ArticleTypesController extends Controller {
         ctx.body = successRes(resArtLists, '查询类型列表')
     }
   }
+  // 获取类型以及当前类型下的数量
+  async getTypeAndArtLens(){
+    const { ctx, service } = this;
+    const {pageNum, pageSize, typeName} = ctx.query
+    let resArtLists = await service.atypes.getArticleTypeList({
+        pageNum: 1, 
+        pageSize: 1000, 
+        typeName: ''
+    })
+    if(resArtLists.list.length){
+        for (let i = 0; i < resArtLists.list.length; i++) {
+            const item = resArtLists.list[i];
+            const {typeId} = item._doc
+            let artLens = await service.article.findArtCountsByParams({typeId})
+            console.log('item._doc>>>>', item._doc)
+            item._doc.artLens = artLens
+        }
+    }
+    ctx.body = successRes(resArtLists, '查询类型列表')
+  }
 }
 
 module.exports = ArticleTypesController;

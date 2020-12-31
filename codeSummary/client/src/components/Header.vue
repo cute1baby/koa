@@ -9,7 +9,7 @@
             />
         </p>
         <ul class="header-nav df dfaic df1">
-            <li :class="nav.belongList.includes(currentPath)?'navActive':''" 
+            <li :class="isClass(nav, currentPath)"
                 v-for="nav in navList" :key="nav.id"
                 @click="changeNav(nav)"
             >{{nav.name}}</li>
@@ -35,16 +35,30 @@ export default {
         return {
             currentPath: '',
             navList: [
-                {id: 1, name: '前端', path: '/front', belongList:['/front', '/frontDetails']},
-                {id: 2, name: '生活', path: '/life', belongList:[] }
+                {id: 1, name: '前端', isOpen: true, path: '/front', belongList:['/front', '/frontDetails']},
+                {id: 2, name: '生活', isOpen: false, path: '/life', belongList:[] }
             ]
         }
     },
     created() {
-        console.log(this.$route)
+        // console.log(this.$route)
     },
     methods: {
+        isClass(nav, currentPath){
+            if(!nav.isOpen){
+                return 'disabled'
+            }else{
+                return nav.belongList.includes(currentPath)?'navActive' : ''
+            }
+        },
         changeNav(nav){
+            const {path} = this.$route
+            if(!nav.isOpen){
+                return
+            }
+            if(path === nav.path){
+                return
+            }
             this.currentPath = nav.path
             this.toPath(nav.path)
         },
@@ -98,6 +112,13 @@ export default {
                 cursor: pointer;
                 &:hover, &.navActive{
                     color: #50a1ff;
+                }
+            }
+            .disabled{
+                color: #ccc;
+                cursor: default;
+                &:hover{
+                    color: #ccc;
                 }
             }
         }

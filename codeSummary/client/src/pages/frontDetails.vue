@@ -1,13 +1,15 @@
 <template>
     <div class="d_wrapper">
-        <h1 class="title">前端</h1>
+        <h1 class="title">{{typeTitle}}</h1>
         <ul class="u_list df">
-            <li v-for="(item,index) in artList" :key="index">
+            <li v-for="(item,index) in artList" :key="index"
+                @click="goToPath(item)"
+            >
                 <div class="art_item df dfdir dfjbw">
-                    <img src="" class="cover" alt="" />
-                    <div class="art_details">
-                        <span class="name">费雪</span>
-                        <p class="details">一本关于如何投资的书</p>
+                    <img :src="imgCover" class="cover" alt="" />
+                    <div class="art_details df dfjbw dfdir">
+                        <span class="name ellipsis2">{{item.title}}</span>
+                        <p class="details ellipsis2">{{item.desc}}</p>
                     </div>
                 </div>
             </li>
@@ -18,37 +20,31 @@
 <script>
 import axios from '@/utils/fetch'
 export default {
-    name: 'HelloWorld',
     data () {
         return {
-            artList: [1,2,3,4]
+            artList: [],
+            typeTitle: '',
+            imgCover: require('@/assets/img/resource.jpg')
         }
     },
     created(){
-        this.initData()
+        const {typeId, typeTitle} = this.$route.query
+        this.typeTitle = typeTitle
+        this.initData(typeId)
     },
     methods: {
-        initData(){
-            const {pageNum, pageSize, articleName} = this
-            this.loading = true
-            axios.get('/qianduan/getArticleList', {
+        goToPath(item){
+            window.open(item.address)
+        },
+        initData(typeId){
+            axios.get('/qianduan/findArticleByParams', {
                 params: {
-                    pageNum, 
-                    pageSize, 
-                    articleName
+                    typeId
                 }
             }).then(res => {
                 const {status, data} = res.data
-                this.loading = false
                 if(!status){
-                    const {counts, list} = data
-                    this.total = counts
-                    this.tableData = list.map((item, index) => {
-                        return {
-                            index,
-                            ...item
-                        }
-                    })
+                    this.artList = data
                 }
             }).catch(err => {
                 console.log('获取类型列表接口出现问题：' + err)
@@ -77,15 +73,18 @@ export default {
             padding: 0 15px 30px;
             box-sizing: border-box;
             .art_item{
-                padding: 25px 25px 20px;
                 border-radius: 5px;
                 border: 1px solid hsla(210,8%,51%,.09);
                 background: #fff;
+                transition: all 0.3s;
+                cursor: pointer;
                 .cover{
                     width: 100%;
                     display: block;
                 }
                 .art_details{
+                    padding: 12px 14px 20px;
+                    height: 106px;
                     .name{
                         font-size: 20px;
                         font-weight: bold;
@@ -98,6 +97,11 @@ export default {
                         color: #979b9e;
                         opacity: 0.7;
                     }
+                }
+                &:hover{
+                    transform: translateY(-5px);
+                    box-shadow: 0 4px 8px rgba(84,81,81,.15);
+                    z-index: 1;
                 }
             }
         }

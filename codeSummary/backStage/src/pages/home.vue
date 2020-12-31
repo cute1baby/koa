@@ -5,7 +5,7 @@
         />
         <div class="container df1 df dfdir">
             <Header />
-            <div class="con df1">
+            <div class="conWrapper df1">
                 <router-view />
             </div>
         </div>
@@ -55,7 +55,7 @@ export default {
     z-index: 1;
 }
 .container{
-    .con{
+    .conWrapper{
         width: 100%;
         padding: 26px 46px 50px 30px;
         background: #ECF0F5;

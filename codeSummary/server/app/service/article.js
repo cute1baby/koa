@@ -18,6 +18,7 @@ class AtypesService extends Service {
     // 查询列表
     async getArticleList(params){
         const reg = new RegExp(params.articleName, 'i')
+        console.log('reg>>>>', reg)
         const counts = await this.ctx.model.Article.find().count({
             title: {$regex : reg},
         })
@@ -32,6 +33,16 @@ class AtypesService extends Service {
         .limit(params.pageSize || 20)
 
         return { counts, list: data }
+    }
+    // 通过属性查文章
+    async findArticleByParams(params){
+        const data = await this.ctx.model.Article.find(params)
+        return data
+    }
+    // 通过属性查文章数量
+    async findArtCountsByParams(params){
+        const data = await this.ctx.model.Article.count(params)
+        return data
     }
 }
 

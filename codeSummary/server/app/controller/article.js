@@ -61,6 +61,15 @@ class ArticleController extends Controller {
         ctx.body = successRes(resArtLists, '查询类型列表')
     }
   }
+  // 通过文章属性查找文章列表
+  async findArticleByParams(){
+    const { ctx, service } = this;
+    const {...params} = ctx.query
+    let artLists = await service.article.findArticleByParams(params)
+    if(artLists){
+        ctx.body = successRes(artLists, '根据属性查询文章成功')
+    }
+  }
 }
 
 module.exports = ArticleController;

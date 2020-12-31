@@ -11,7 +11,7 @@ class AtypesService extends Service {
     // 查询列表
     async getArticleTypeList(params){
         const reg = new RegExp(params.typeName, 'i')
-        const counts = await this.ctx.model.Atypes.find().count({
+        const counts = await this.ctx.model.Atypes.count({
             title: {$regex : reg},
         })
         const data = await this.ctx.model.Atypes.find({

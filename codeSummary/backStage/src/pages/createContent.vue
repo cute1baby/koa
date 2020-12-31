@@ -86,13 +86,6 @@
 import {hostAddress} from '@/config/index.js'
 import { uploadPic, uploadVideo } from '@/utils/upload.js'
 import axios from '@/utils/fetch'
-const ruleFormClone = {
-    resourceTitle: '',
-    resourceDesc: '',
-    address: '',
-    belongTypeId: '',
-    resourceImg: ''  //二维码图片
-}
 export default {
     data(){
         const validateResourceTitle = (rule, value, callback) => {
@@ -124,7 +117,13 @@ export default {
             typeList: [
                 { value: '选项1', label: '黄金糕' }
             ],
-            ruleForm: JSON.parse(JSON.stringify(ruleFormClone)),
+            ruleForm: {
+                resourceTitle: '',
+                resourceDesc: '',
+                address: '',
+                belongTypeId: '',
+                resourceImg: ''  //二维码图片
+            },
             rules: {
                 resourceTitle: [
                     { validator: validateResourceTitle, trigger: 'blur' }
@@ -207,6 +206,13 @@ export default {
                 belongTypeId,
                 resourceImg
             } = ruleForm
+            const ruleFormClone = {
+                resourceTitle: '',
+                resourceDesc: '',
+                address: '',
+                belongTypeId: '',
+                resourceImg: ''  //二维码图片
+            }
             axios.post('/qianduan/addArticleData', {
                 articleId: currentId,
                 title: resourceTitle,
@@ -217,11 +223,16 @@ export default {
             }).then(res => {
                 const {status} = res.data
                 if(!status){
+                    const conWrapper = document.querySelector('.conWrapper')
+                    conWrapper.scrollTo(0, 0)
                     this.ruleForm = ruleFormClone
                     this.$message({
                         type: 'success',
                         message: '文章添加成功'
                     })
+                    if(currentId){
+                        this.$router.back()
+                    }
                 }
             }).catch(err => {
                 console.log('文章（视频）接口出现问题：' + err)
