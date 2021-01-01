@@ -5,7 +5,7 @@
             <div class="swiper-wrapper">
                 <div class="swiper-slide df dfaic" v-for="(poster, index) in posterList" :key="index">
                     <div class="bg-holder">
-                        <img src="https://cdn.macwk.com/assets/svg/shape-1.svg" class="shape1">
+                        <img src="https://cdn.macwk.com/assets/svg/shape-61.svg" class="shape1">
                         <img src="https://cdn.macwk.com/assets/svg/shape-58.svg" class="shape2">
                         <img src="https://cdn.macwk.com/assets/svg/shape-60.svg" class="shape3">
                         <img src="https://cdn.macwk.com/assets/svg/shape-61.svg" class="shape4">
