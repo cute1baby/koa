@@ -32,7 +32,8 @@ module.exports = appInfo => {
     // 设置mongoose配置
     config.mongoose = {
         client: {
-          url: 'mongodb://selfowner:selfowner@127.0.0.1:27017/qianduan?authSource=admin',
+          // url: 'mongodb://root:111111@127.0.0.1:27017/qianduan?authSource=admin',
+          url: 'mongodb://127.0.0.1:27017/qianduan',
           options: {}
         }
     };
