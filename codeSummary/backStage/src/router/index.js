@@ -11,7 +11,7 @@ Vue.use(Router)
 
 const router = new Router({
   mode: 'history',
-  // base: '/wxmp',
+  base: '/backStage',
   routes: [
     {
       path: '/',

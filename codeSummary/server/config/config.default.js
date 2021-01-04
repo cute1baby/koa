@@ -11,6 +11,13 @@ module.exports = appInfo => {
    * @type {Egg.EggAppConfig}
    **/
   const config = exports = {};
+  // 修改绑定的端口号
+  config.cluster = {
+    listen: {
+        port: 3006,
+        // hostname: '127.0.0.1'
+    }
+  }
 
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1608781675479_2528';
@@ -24,10 +31,10 @@ module.exports = appInfo => {
 
     // 设置mongoose配置
     config.mongoose = {
-        url: process.env.EGG_MONGODB_URL || 'mongodb://127.0.0.1:27017/qianduan',
-        options: {
-            
-        },
+        client: {
+          url: 'mongodb://selfowner:selfowner@127.0.0.1:27017/qianduan?authSource=admin',
+          options: {}
+        }
     };
 
   // add your middleware config here

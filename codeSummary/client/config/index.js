@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         '/qianduan':{
-            target: 'http://localhost:7001', //测试线
+            target: 'http://localhost:3006', //测试线
             changeOrigin: true, // 是否跨域
             pathRewrite: {
               '^/qianduan': ''
