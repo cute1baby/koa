@@ -42,5 +42,3 @@ sudo lsof -i:端口号   // 通过对应的端口查pid进程，也可以根据�
 sudo kill -9 pid     // 杀死进程
 ```
 
-
-

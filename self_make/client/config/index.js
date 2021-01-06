@@ -17,7 +17,7 @@ module.exports = {
             pathRewrite: {
               '^/juejin': ''
             }
-          }
+        }
     },
 
     // Various Dev Server settings
