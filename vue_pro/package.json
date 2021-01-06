@@ -14,7 +14,7 @@
     "upload": "gulp upload"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "mint-ui": "^2.2.13",
     "moment": "^2.24.0",
     "vue": "^2.5.2",
