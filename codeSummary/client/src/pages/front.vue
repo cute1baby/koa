@@ -85,4 +85,51 @@ export default {
         
     }
 }
+
+@media (min-width: 992px) and (max-width: 1260px){
+    .u_list{
+        width: 992px;
+        min-width: 992px;
+        li{
+            .art_item{
+                font-size: 20px;
+                padding: 18px;
+            }
+        }
+    }
+}
+@media (min-width: 768px) and (max-width: 992px){
+    .u_list{
+        width: 768px;
+        min-width: 768px;
+        li{
+            padding: 8px;
+            .art_item{
+                font-size: 18px;
+                padding: 10px 6px;
+                .size{
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px){
+    .u_list{
+        width: 100%;
+        max-width: 768px;
+        li{
+            width: 100%;
+            padding: 10px;
+            .art_item{
+                font-size: 18px;
+                padding: 16px 8px;
+                .size{
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}
 </style>

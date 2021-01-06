@@ -174,8 +174,10 @@ export default {
             })
         },        
         // 分页切换
-        handleCurrentChange(){
+        handleCurrentChange(val){
             console.log('分页切换')
+            this.pageNum = val
+            this.initTable()
         }
     }
 }
