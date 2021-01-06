@@ -21,6 +21,10 @@
             <el-form-item label="链接地址" prop="address">
                 <el-input v-model="ruleForm.address" placeholder="填写链接地址"></el-input>
             </el-form-item>
+            <el-form-item label="链接类型" prop="linkType">
+                <el-radio v-model="ruleForm.linkType" :label="1">视频</el-radio>
+                <el-radio v-model="ruleForm.linkType" :label="2">文章</el-radio>
+            </el-form-item>
             <el-form-item label="所属类型" prop="belongTypeId">
                 <div class="typeSelect df dfaic">
                     <span class="add" @click="routerPath('/home/addArtType')">
@@ -114,13 +118,12 @@ export default {
             isCreate: true,
             progressRate: 0, //图片上传进度
             currentId: '',
-            typeList: [
-                { value: '选项1', label: '黄金糕' }
-            ],
+            typeList: [],
             ruleForm: {
                 resourceTitle: '',
                 resourceDesc: '',
                 address: '',
+                linkType: 1,  //链接类型（'1':视频,'2':文章）
                 belongTypeId: '',
                 resourceImg: ''  //二维码图片
             },
@@ -144,7 +147,7 @@ export default {
             const query = this.$route.query
             this.currentId = id
             this.isCreate = false
-            this.ruleForm = {...query}
+            this.ruleForm = {...query, linkType: Number(query.linkType)}
         }
         this.findTypeList()
     },
@@ -168,8 +171,8 @@ export default {
             })
         },
         fileToUpload(){
-            const uploadIpt = document.querySelector('.uploadIpt')
-            uploadIpt.click()
+            // const uploadIpt = document.querySelector('.uploadIpt')
+            // uploadIpt.click()
         },
         // 文件改变时的操作
         handleFileChange(e){
@@ -198,11 +201,12 @@ export default {
             this.$router.push({path, query})
         },
         submitData(){
-            const { ruleForm, currentId } = this
+            const { ruleForm, currentId,  } = this
             const {
                 resourceTitle,
                 resourceDesc,
                 address,
+                linkType,
                 belongTypeId,
                 resourceImg
             } = ruleForm
@@ -210,6 +214,7 @@ export default {
                 resourceTitle: '',
                 resourceDesc: '',
                 address: '',
+                linkType: 1,
                 belongTypeId: '',
                 resourceImg: ''  //二维码图片
             }
@@ -218,6 +223,7 @@ export default {
                 title: resourceTitle,
                 desc: resourceDesc,
                 address,
+                linkType,
                 typeId: belongTypeId,
                 picLink: resourceImg
             }).then(res => {
@@ -228,7 +234,7 @@ export default {
                     this.ruleForm = ruleFormClone
                     this.$message({
                         type: 'success',
-                        message: '文章添加成功'
+                        message: '文章|视频添加成功'
                     })
                     if(currentId){
                         this.$router.back()

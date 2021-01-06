@@ -6,6 +6,7 @@ module.exports = app => {
         title: { type: String },
         desc: { type: String },
         address: { type: String },
+        linkType: { type: Number},
         typeId: { type: String },
         picLink: { type: String },
         updateTime: {
