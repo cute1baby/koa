@@ -27,11 +27,11 @@
             <div class="swiper-pagination" v-if="posterList.length > 1"></div>
         </div>
         <ul class="mode">
-            <li class="df dfc">
+            <li class="df dfc" @click="routerPath('/front')">
                 <i class="iconfont">&#xe61c;</i>
                 <span>前端整理</span>
             </li>
-            <li class="df dfc">
+            <li class="df dfc disabled">
                 <i class="iconfont">&#xe6ab;</i>
                 <span>生活总结</span>
             </li>
@@ -76,6 +76,9 @@ export default {
             nextButton: '.swiper-button-next',
             pagination: '.swiper-pagination',
         })
+    },
+    routerPath(path, query){
+        this.$router.push({path, query})
     },
   }
 }
@@ -196,6 +199,9 @@ export default {
             &:hover{
                 transform: rotate(1deg) skewX(1deg) scale(1.02);
             }
+        }
+        .disabled{
+            background: #ccc;
         }
     }
 }
