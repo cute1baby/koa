@@ -80,7 +80,6 @@ function uploadImg(file){
         axios.post('http://server.familyli.cn/uploadImg', {
             fileName
         }).then(res => {
-            debugger
             const data = res.data;
             if(!data.status){
                 const token = data.data
@@ -91,7 +90,6 @@ function uploadImg(file){
                 var config = {};
                 let observer = {
                     next(res){
-                        debugger
                         let progress =  Number(res.total.percent.toFixed(0));
                         // 此处得到上传进度百分比 可加后续操作
                         console.log('进度哦：' + progress)
@@ -103,7 +101,6 @@ function uploadImg(file){
                         if(err.response) console.log('请求失败！请检查网络', err)
                     },
                     complete(res){
-                        debugger
                         console.log('res>>>>>', res)
                         const photoUrl = `http://img.familyli.cn/${res.key}`
                         $('.preview').show().attr('src', photoUrl)
