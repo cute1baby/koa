@@ -64,6 +64,14 @@
                 </template>
             </el-table-column>
             <el-table-column
+                label="链接类型"
+            >
+                <template slot-scope="scope">
+                    <span class="typeTag typeTagWater" v-if="scope.row.linkType===1">{{ formatLinkType(scope.row.linkType)}}</span>
+                    <span class="typeTag typeTagGreen" v-else>{{ formatLinkType(scope.row.linkType)}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
                 label="创建时间"
                 width="200"
             >
@@ -126,6 +134,18 @@ export default {
         this.initTable()
     },
     methods: {
+        formatLinkType(type){
+            switch (type) {
+                case 1:
+                    return '视频'
+                    break;
+                case 2:
+                    return '文章'
+                    break;
+                default:
+                    break;
+            }
+        },
         routerPath(path, query){
             this.$router.push({path, query})
         },
@@ -142,6 +162,7 @@ export default {
                 resourceTitle: item.title || '',
                 resourceDesc: item.desc || '',
                 address: item.address || '',
+                linkType: item.linkType || 1,
                 belongTypeId: item.typeId || '',
                 resourceImg: item.picLink || ''
             }
@@ -259,6 +280,12 @@ export default {
                             padding: 2px 8px;
                             border-radius: 4px;
                             color: #fff;
+                        }
+                        .typeTagWater{
+                            background: #a268ce;
+                        }
+                        .typeTagGreen{
+                            background: #32a08c;
                         }
                         .btn_details{
                             width: 52px;

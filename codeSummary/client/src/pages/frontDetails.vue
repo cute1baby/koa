@@ -11,6 +11,8 @@
                         <span class="name ellipsis2">{{item.title}}</span>
                         <p class="details ellipsis2">{{item.desc}}</p>
                     </div>
+                    <span class="tag tagv" v-if="Number(item.linkType)===1">视频</span>
+                    <span class="tag tagw" v-else>文章</span>
                 </div>
             </li>
         </ul>
@@ -78,6 +80,8 @@ export default {
                 background: #fff;
                 transition: all 0.3s;
                 cursor: pointer;
+                position: relative;
+                z-index: 1;
                 .cover{
                     width: 100%;
                     display: block;
@@ -97,6 +101,22 @@ export default {
                         color: #979b9e;
                         opacity: 0.7;
                     }
+                }
+                .tag{
+                    font-size: 14px;
+                    padding: 2px 8px;
+                    border-radius: 4px;
+                    color: #fff;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    z-index: 5;
+                }
+                .tagv{
+                    background: #a268ce;
+                }
+                .tagw{
+                    background: #32a08c;
                 }
                 &:hover{
                     transform: translateY(-5px);

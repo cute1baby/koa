@@ -9,7 +9,7 @@ class ArticleController extends Controller {
   // 添加文章或视频的类型
   async addArticleData() {
     const { ctx, service } = this;
-    const {articleId, title, desc, address, typeId, picLink} = ctx.request.body
+    const {articleId, title, desc, address, linkType, typeId, picLink} = ctx.request.body
     let resArticle = null
     // 编辑
     if(articleId){
@@ -19,6 +19,7 @@ class ArticleController extends Controller {
             title,
             desc,
             address,
+            linkType,
             typeId,
             picLink
         })
@@ -31,6 +32,7 @@ class ArticleController extends Controller {
             title,
             desc,
             address,
+            linkType,
             typeId,
             picLink
         })
