@@ -60,7 +60,7 @@ export default {
 }
 @media (max-width: 768px){
     .app-footer{
-        display: none;
+        width: 100%;
     }
 }
 </style>

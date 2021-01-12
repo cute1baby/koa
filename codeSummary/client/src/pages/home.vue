@@ -199,10 +199,16 @@ export default {
             &:hover{
                 transform: rotate(1deg) skewX(1deg) scale(1.02);
             }
+            &.disabled{
+                background-image: linear-gradient(45deg, #ccc, #ddd);
+                transition: none;
+                cursor: no-drop;
+                &:hover{
+                    transform: none;
+                }
+            }
         }
-        .disabled{
-            background: #ccc;
-        }
+        
     }
 }
 @keyframes framesShape1 {
@@ -333,28 +339,60 @@ export default {
         }
     }
 }
-// @media (max-width: 768px){
-//     .app-header{
-//         .header-main{
-//             margin: 0 2rem;
-//             .header-logo{
-//                 flex:0 0 70px;
-//             }
-//             .header-nav, .concat, .header-search{
-//                 display: none;
-//             }
-//             .btn-search-phone{
-//                 display: flex;
-//                 .iconfont{
-//                     display: block;
-//                     height: 40px;
-//                     line-height: 40px;
-//                     padding: 0 2rem;
-//                     font-size: 1.8rem;
-//                     color: #757575;
-//                 }
-//             }
-//         }
-//     }
-// }
+@media (max-width: 768px){
+    .app-header{
+        .header-main{
+            margin: 0 2rem;
+            .header-logo{
+                flex:0 0 70px;
+            }
+            .header-nav, .concat, .header-search{
+                display: none;
+            }
+            .btn-search-phone{
+                display: flex;
+                .iconfont{
+                    display: block;
+                    height: 40px;
+                    line-height: 40px;
+                    padding: 0 2rem;
+                    font-size: 1.8rem;
+                    color: #757575;
+                }
+            }
+        }
+    }
+    .home{
+        .swiper-container{
+            .swiper-slide{
+                .pos{
+                    width: 100%;
+                    padding: 0 50px;
+                    .desc{
+                        color: #2f2f2f;
+                    }
+                }
+                .cover{
+                    right: 50%;
+                    top: 50px;
+                    width: 90%;
+                    transform: translateX(50%);
+                    opacity: 0.1;
+                }
+            }
+            .swiper-button-prev, .swiper-button-next{
+                display: none !important;
+            }
+        }
+        .mode{
+            flex-wrap: wrap;
+            margin: 24px 0 -24px 0;
+            padding: 0 32px;
+            li{
+                flex: 0 0 100%;
+                margin: 0 0 24px 0;
+            }
+        }
+    }
+}
 </style>
