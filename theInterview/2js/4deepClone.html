@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深拷贝</title>
+</head>
+<body>
+<script>
+const obj = {
+    a: {
+        name: "李钟"
+    },
+    b: ["1", "2", "3"],
+    c: function(){console.log(111)},
+    d: new Date(),
+    e: /\d/g
+}
+function deepClone(obj){
+    // 排除不是对象的情况，直接返回本身
+    if(typeof obj !== 'object' || obj === null){
+        return obj
+    }
+    // 处理时间、正则、函数的情况
+    if(obj instanceof Function){
+        return new Function(obj)
+    }
+    if(obj instanceof RegExp){
+        return new RegExp(obj)
+    }
+    if(obj instanceof Date){
+        return new Date(obj)
+    }
+    var newObj = new obj.constructor;
+    for (var key in obj) {
+        if(obj.hasOwnProperty(key)){
+            newObj[key] = deepClone(obj[key])
+        }
+    }
+    return newObj
+}
+var obj1 = deepClone(obj)
+console.log(obj1)
+console.log(obj1 === obj)
+console.log(obj1.b === obj.b)
+obj1.c()
+</script>
+</body>
+</html>

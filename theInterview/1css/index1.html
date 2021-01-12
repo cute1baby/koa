@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圣杯布局</title>
+</head>
+<style>
+    /* 为什么叫圣杯？中间的先渲染，两侧的后渲染。这样做并不是说为了让主内容先渲染出来，
+    而是说在样式加载慢或无样式的时候先向用户呈现主要内容。但最主要的还是因为SEO和无障碍方面做出的考虑。 */
+*{
+    margin: 0;
+    padding: 0;
+}
+.container{
+    height: 100%;
+    padding: 0 200px;
+}
+.center{
+    float: left;
+    width: 100%;
+    min-height: 200px;
+    background: #000;
+}
+.left,.right{
+    float: left;
+    width: 200px;
+    height: 400px;
+    
+}
+.left{
+    margin-left: -100%;
+    position: relative;
+    left: -200px;
+    background: orange;
+}
+.right{
+    margin-right: -200px;
+    background: red;
+}
+.clear{
+    clear: both;
+}
+</style>
+<body>
+<div class="container clear">
+    <div class="center"></div>
+    <div class="left"></div>
+    <div class="right"></div>
+</div>
+</body>
+</html>
