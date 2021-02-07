@@ -25,6 +25,12 @@ exports.htmlPlugin = function() {
     let arr = []
     entryHtml.forEach((filePath) => {
       let filename = filePath.substring(filePath.lastIndexOf('\/') + 1, filePath.lastIndexOf('.'))
+    //   let conf = {
+    //     template: filePath,
+    //     filename: filename + '.html',
+    //     chunks: [filename],
+    //     inject: true
+    //   }
       let conf = {
         template: filePath,
         filename: filename + '.html',
