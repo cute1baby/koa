@@ -24,7 +24,7 @@
                 width="80"
             >
                 <template slot-scope="scope">
-                    <span class="code_base">{{ Number(scope.row.index) + 1}}</span>
+                    <span class="code_base">{{ Number((pageNum-1)*pageSize + scope.row.index) + 1}}</span>
                 </template>
             </el-table-column>
             <el-table-column

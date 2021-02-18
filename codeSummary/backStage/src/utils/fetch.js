@@ -37,6 +37,7 @@ instance.interceptors.response.use(
     response => {
         //拦截响应，做统一处理 
         if (response.data.code) {
+            debugger
             // 判断是否是登录或者首页
             const isPath = v.$route.path.trim() === '/login' || v.$route.path.trim() === '/'
             // 1002: token过期； 2003：非法请求

@@ -94,7 +94,7 @@ export default {
             });
         },
         login() {
-            // const {userName, pass} = this.ruleForm;
+            const {userName, pass} = this.ruleForm;
             const that = this
             // const resetForm = {
             //     userName: '',
@@ -126,13 +126,20 @@ export default {
             // .catch(function (error) {
             //     console.log(error);
             // });
-            that.$message({
-                message: '登录成功',
-                type: 'success'
-            });
-            Cookies.set('LOGINKEY', 'agent_haoduoke', { expires: 7 })
-            Cookies.set('userName', '李钟', { expires: 7 })
-            that.$router.push('/home');
+            if(userName.trim() === 'lizhong' && String(pass.trim()) === '111111'){
+                that.$message({
+                    message: '登录成功',
+                    type: 'success'
+                });
+                Cookies.set('LOGINKEY', 'agent_haoduoke', { expires: 7 })
+                Cookies.set('userName', '李钟', { expires: 7 })
+                that.$router.push('/home');
+            }else{
+                that.$message({
+                    message: '账号或密码错误',
+                    type: 'warning'
+                });
+            }
         }
     }
 }

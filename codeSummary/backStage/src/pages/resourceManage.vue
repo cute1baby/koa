@@ -31,7 +31,7 @@
                 label="资源描述"
             >
                 <template slot-scope="scope">
-                    <span class="code_base">{{ scope.row.desc || '-'}}</span>
+                    <span class="code_base ellipsis2">{{ scope.row.desc || '-'}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -56,15 +56,15 @@
                 <template slot-scope="scope">
                     <el-image 
                         class="code_img"
-                        style="width: 100px; height: 100px"
-                        :src="scope.row.picLink"
-                        :preview-src-list="[scope.row.picLink]"
+                        :src="scope.row.picLink || imgCover"
+                        :preview-src-list="[scope.row.picLink || imgCover]"
                     >
                     </el-image>
                 </template>
             </el-table-column>
             <el-table-column
                 label="链接类型"
+                width="80"
             >
                 <template slot-scope="scope">
                     <span class="typeTag typeTagWater" v-if="scope.row.linkType===1">{{ formatLinkType(scope.row.linkType)}}</span>
@@ -124,6 +124,7 @@ export default {
         return {
             loading: false,
             tableData: [],
+            imgCover: require('@/assets/img/resource.jpg'),
             articleName: '',  //文章名称
             pageNum: 1, // 当前页数
             pageSize: 20, // 每页显示条目个数
@@ -273,6 +274,10 @@ export default {
                             font-size: 14px;
                             color: #111C2A;
                             line-height: 1.2;
+                        }
+                        .code_img{
+                            width: 100%;
+                            height: auto;
                         }
                         .typeTag{
                             background: #FF9759;

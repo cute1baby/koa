@@ -83,7 +83,7 @@ export default {
     };
   },
   created() {
-    this.getWechatInfoList();
+    // this.getWechatInfoList();
   },
   methods: {
     // tab 切换

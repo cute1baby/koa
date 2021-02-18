@@ -68,7 +68,7 @@ export default {
         }
     },
     created(){
-        this.initData()
+        // this.initData()
     },
     computed: {
         currentMenu(){
