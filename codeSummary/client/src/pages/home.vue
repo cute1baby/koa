@@ -31,9 +31,10 @@
                 <i class="iconfont">&#xe61c;</i>
                 <span>前端整理</span>
             </li>
-            <li class="df dfc disabled">
+            <!-- disabled -->
+            <li class="df dfc" @click="routerPath('/production')">
                 <i class="iconfont">&#xe6ab;</i>
-                <span>生活总结</span>
+                <span>我的产品</span>
             </li>
         </ul>
     </div>

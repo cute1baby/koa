@@ -31,12 +31,13 @@
 </template>
 <script>
 export default {
+    props: ['currentPath'],
     data(){
         return {
-            currentPath: '',
             navList: [
                 {id: 1, name: '前端', isOpen: true, path: '/front', belongList:['/front', '/frontDetails']},
-                {id: 2, name: '生活', isOpen: false, path: '/life', belongList:[] }
+                // {id: 2, name: '产品', isOpen: false, path: '/production', belongList:['/production'] }
+                {id: 2, name: '产品', isOpen: true, path: '/production', belongList:['/production']}
             ]
         }
     },
@@ -44,11 +45,11 @@ export default {
         // console.log(this.$route)
     },
     methods: {
-        isClass(nav, currentPath){
+        isClass(nav, cPath){
             if(!nav.isOpen){
                 return 'disabled'
             }else{
-                return nav.belongList.includes(currentPath)?'navActive' : ''
+                return nav.belongList.includes(cPath)?'navActive' : ''
             }
         },
         changeNav(nav){
@@ -59,12 +60,14 @@ export default {
             if(path === nav.path){
                 return
             }
-            this.currentPath = nav.path
+            this.$emit('handlePathChange', nav.path)
+            // this.currentPath = nav.path
             this.toPath(nav.path)
         },
         toHome(){
             const { path } = this.$route
-            this.currentPath = ''
+            this.$emit('handlePathChange', '')
+            // this.currentPath = ''
             if(path !== '/'){
                 this.toPath('/')
             }

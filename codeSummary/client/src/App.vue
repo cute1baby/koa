@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- <img src="./assets/logo.png"> -->
-    <Header />
+    <Header :currentPath="currentPath" @handlePathChange="handlePathChange"/>
     <div class="appCon">
         <router-view/>
     </div>
@@ -14,6 +14,25 @@ const Header = () => import('@/components/Header')
 const Footer = () => import('@/components/Footer')
 export default {
     name: 'App',
+    data(){
+        return {
+            currentPath: ''
+        }
+    },
+    watch: {
+        $route(to, from) {
+            this.currentPath = to.path
+        }
+    },
+    created(){
+        const {path} = this.$route
+        this.currentPath = path
+    },
+    methods: {
+        handlePathChange(path){
+            this.currentPath = path;
+        }
+    },
     components: {
         Header,
         Footer

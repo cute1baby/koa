@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Home from '@/pages/home'
 import Front from '@/pages/front'
 import FrontDetails from '@/pages/frontDetails'
-import Life from '@/pages/life'
+import Production from '@/pages/production'
 
 Vue.use(Router)
 
@@ -26,9 +26,9 @@ export default new Router({
         component: FrontDetails
     },
     {
-        path: '/life',
-        name: 'Life',
-        component: Life
+        path: '/production',
+        name: 'Production',
+        component: Production
     },
   ]
 })
