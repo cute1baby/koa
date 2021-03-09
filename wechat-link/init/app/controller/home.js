@@ -244,10 +244,11 @@ class HomeController extends Controller {
   async uploadImg(){
     const { ctx } = this;
     const fileName = ctx.request.body
+    const token = uploadToken();
     console.log('bodyVal===', fileName)
     // 获取token
-    console.log('uploadToken>>>>>>', uploadToken)
-    ctx.body = successRes(uploadToken)
+    console.log('token>>>>>>', token)
+    ctx.body = successRes(token)
   }
 
   async getBasicTicket(){
