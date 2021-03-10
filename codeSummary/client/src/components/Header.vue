@@ -14,18 +14,23 @@
                 @click="changeNav(nav)"
             >{{nav.name}}</li>
         </ul>
+        <!-- pc端 -->
         <div class="header-search df dfaic">
-            <input type="text" class="ipt-search" placeholder="输入关键词搜索"/>
-            <button class="btn-search">
+            <input type="text" class="ipt-search" placeholder="输入关键词搜索" @keyup.enter="showSearch"/>
+            <button class="btn-search" @click="showSearch">
                 <i class="iconfont">&#xe66d;</i>
             </button>
         </div>
+        <!-- 移动端 -->
         <div class="btn-search-phone df dfaic dfjend df1">
             <i class="iconfont" @click="showSearch">&#xe66d;</i>
         </div>
         <p class="concat df dfaic">联系我
             <img src="http://img.familyli.cn/myWechat.jpg" alt="" class="wechatImg" />
         </p>
+    </div>
+    <div class="df dfc bgMsg" v-if="isTips">
+      <p class="message">{{tips}}</p>
     </div>
 </div>
 </template>
@@ -34,11 +39,13 @@ export default {
     props: ['currentPath'],
     data(){
         return {
-            navList: [
-                {id: 1, name: '前端', isOpen: true, path: '/front', belongList:['/front', '/frontDetails']},
-                // {id: 2, name: '产品', isOpen: false, path: '/production', belongList:['/production'] }
-                {id: 2, name: '产品', isOpen: true, path: '/production', belongList:['/production']}
-            ]
+          tips: '',
+          isTips: false,
+          navList: [
+              {id: 1, name: '前端', isOpen: true, path: '/front', belongList:['/front', '/frontDetails']},
+              // {id: 2, name: '产品', isOpen: false, path: '/production', belongList:['/production'] }
+              {id: 2, name: '产品', isOpen: true, path: '/production', belongList:['/production']}
+          ]
         }
     },
     created() {
@@ -79,8 +86,16 @@ export default {
         toPath(path) {
             this.$router.push(path);
         },
+        sayMessage(msg, timer=2000){
+          this.isTips = true
+          this.tips = msg;
+          setTimeout(() => {
+            this.isTips = false
+            this.tips = ''
+          }, timer)
+        },
         showSearch(){
-            console.log('跳转页面')
+          this.sayMessage('功能未开放，敬请期待');
         }
     },
 }
@@ -200,6 +215,23 @@ export default {
                 }
             }
         }
+    }
+
+    .bgMsg{
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 100;
+      .message{
+        font-size: 16px;
+        color: #fff;
+        padding: 6px 16px;
+        background: rgba(0,0,0,.6);
+        border-radius: 6px;
+
+      }
     }
 }
 

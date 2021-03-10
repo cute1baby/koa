@@ -11,7 +11,7 @@
                         <span class="name ellipsis2">{{item.title}}</span>
                         <p class="details ellipsis2">{{item.desc}}</p>
                     </div>
-                    <span class="tag tagv">项目</span>
+                    <span class="tag tagv">{{tags[item.tag]}}</span>
                 </div>
             </li>
         </ul>
@@ -19,45 +19,35 @@
 </template>
 
 <script>
-import axios from '@/utils/fetch'
+// import axios from '@/utils/fetch'
+import { tags } from '@/config/setting.js'
 export default {
     data () {
         return {
-            artList: [
-                {
-                    id: 1,
-                    title: '私有化的Easy Mock，更快更方便',
-                    desc: '前后端分离，解放双手，快速生成模拟数据的持久化服务',
-                    address: 'http://62.234.192.179:7300/'
-                }
-            ],
-            // typeTitle: '',
-            imgCover: require('@/assets/img/resource.jpg')
+          tags,
+          artList: [
+              {
+                  id: 1,
+                  title: '私有化的Easy Mock，更快更方便',
+                  tag: 1,
+                  desc: '前后端分离，解放双手，快速生成模拟数据的持久化服务',
+                  address: 'http://62.234.192.179:7300/'
+              },
+              {
+                  id: 2,
+                  title: '图片批量生成，解放生产力',
+                  tag: 1,
+                  desc: '约定式图片模板，工具化生成。包含证书、宣传海报等等',
+                  address: 'http://www.familyli.cn/imgGenerate/'
+              }
+          ],
+          imgCover: require('@/assets/img/resource.jpg')
         }
     },
-    // created(){
-    //     const {typeId, typeTitle} = this.$route.query
-    //     this.typeTitle = typeTitle
-    //     this.initData(typeId)
-    // },
     methods: {
         goToPath(item){
             window.open(item.address)
-        },
-        // initData(typeId){
-        //     axios.get('/qianduan/findArticleByParams', {
-        //         params: {
-        //             typeId
-        //         }
-        //     }).then(res => {
-        //         const {status, data} = res.data
-        //         if(!status){
-        //             this.artList = data
-        //         }
-        //     }).catch(err => {
-        //         console.log('获取类型列表接口出现问题：' + err)
-        //     })
-        // }
+        }
     }
 }
 </script>
@@ -65,12 +55,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped>
 .d_wrapper{
-    // .title{
-    //     font-size: 60px;
-    //     color: #3c4248;
-    //     text-align: center;
-    //     padding: 60px 0;
-    // }
     .u_list{
         margin: 50px auto;
         width: 1200px;
