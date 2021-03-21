@@ -3,7 +3,10 @@
         <div class="swiper-container"
         >
             <div class="swiper-wrapper">
-                <div class="swiper-slide df dfaic" v-for="(poster, index) in posterList" :key="index">
+                <div class="swiper-slide df dfaic" 
+                  @click="routerPath(poster.jumpUrl)"
+                  v-for="(poster, index) in posterList" 
+                  :key="index">
                     <div class="bg-holder">
                         <img src="http://img.familyli.cn/shape-56.svg" class="shape1">
                         <img src="http://img.familyli.cn/shape-58.svg" class="shape2">
@@ -17,7 +20,7 @@
                         <p class="desc">{{poster.desc}}</p>
                     </div>
                     <img class="cover" 
-                        :src="poster.imgAddr" alt="" 
+                        :src="poster.imgAddr" alt=""
                     >
                 </div>
             </div>
@@ -49,13 +52,15 @@ export default {
         posterList: [
             {
                 title: '干净、整洁，无广告',
-                desc: '打造最干净、整洁和极简化的前端学习网站。将前端资源进行整合和归纳，为他人创造价值。',
-                imgAddr: 'http://img.familyli.cn/line.png'
+                desc: '打造最干净、整洁和极简化的前端学习网站。对自己前端知识进行归纳和整合，也为他人创造价值。',
+                imgAddr: 'http://img.familyli.cn/line.png',
+                jumpUrl: '/front'
             },
             {
                 title: '日复一日，做专业的事',
-                desc: '很喜欢一句话：因为你一直没有一堵很稳的墙可以靠，所以你自己要成为那座山。',
-                imgAddr: 'http://img.familyli.cn/type.png'
+                desc: '接受不完美的自己，接纳残缺，始终一个方向；时间的复利，会告诉自己纯粹的专注是件多么棒的事',
+                imgAddr: 'http://img.familyli.cn/type.png',
+                jumpUrl: '/production'
             }
         ],
         swiper: {}
@@ -92,6 +97,7 @@ export default {
     .swiper-container{
         height: 400px;
         box-shadow: 0 0 7px hsla(210,8%,51%,.2);
+        cursor: pointer;
         .swiper-slide{
             position: relative;
             z-index: 5;
@@ -379,6 +385,7 @@ export default {
                     width: 90%;
                     transform: translateX(50%);
                     opacity: 0.1;
+                    cursor: pointer;
                 }
             }
             .swiper-button-prev, .swiper-button-next{
